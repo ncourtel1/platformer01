@@ -6,12 +6,10 @@ export default class InputComponent{
       this.jumpPressed = false;
 
       window.addEventListener("keydown", (e) =>{
-         console.log(e.keyCode);
          this.keys.add(e.key);
       })
       window.addEventListener("keyup", (e) =>{
          this.keys.delete(e.key);
-         console.log("key up")
       })
    }
 
