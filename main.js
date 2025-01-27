@@ -9,10 +9,14 @@ import JumpSystem from "./systems/jumpSystem.js";
 import GravitySystem from "./systems/gravitySystem.js";
 
 const ecs = new ECS();
-const player = createPlayer(500, 500, 20, 20, "white", 100, 100);
+const player = createPlayer(600, 500, 20, 20, "white", 100, 100);
 ecs.addEntity(player);
-const obj1 = createObject(200, 700, "green", 32, 32);
+const obj1 = createObject(400, 700, "green", 32, 32);
 ecs.addEntity(obj1);
+const obj2 = createObject(100, 700, "green", 32, 32);
+ecs.addEntity(obj2);
+const obj3 = createObject(800, 400, "green", 32, 32);
+ecs.addEntity(obj3);
 
 const game_container = document.getElementById("game-container");
 

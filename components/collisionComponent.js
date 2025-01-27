@@ -1,8 +1,6 @@
 export default class CollisionComponent{
-   constructor(bodyComponent, collisionTag){
-      this.bodyComponent = bodyComponent;
+   constructor(collisionTag){
       this.collisionTag = collisionTag;
-      this.collisionCallbacks = [];
    }
 
    // setCollisionCallback(targetCollisionTag, callback){
