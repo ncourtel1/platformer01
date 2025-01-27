@@ -1,0 +1,60 @@
+Inspired by Ultimate 2D Platformer Controller in Unity 
+link: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller/tree/main
+
+Player Data:
+   Movement:
+      - speed => current horizontal movement speed
+      - maxSpeed => max horizontal speed
+      - acceleration => player's capacity to gain horizontal speed
+      - groundingForce => constant downward force applied while grounded 
+      - groundDeceleration => pace at which the player comes to stop
+      - airDeceleration => deceleration in air only after stopping input mid-air
+      - jumpPower => immediate velocity applied when jumping
+      - maxFallSpeed => maximum vertical movement speed
+      - fallAcceleration => player's capacity to gain fall speed
+      - jumpEndGravityModifier => gravity multiplier added when jump is released early
+      - coyoteTime => time before the coyote jump becomes unusable
+      - jumpBuffer => amount of time we buffer a jump
+
+
+Separate Game fonctionality in different files for more flexibility
+
+Lundi: 
+   Faire avancer/sauter le personnage dans la fenetre
+   Utiliser une architecture de projet clean
+
+
+My Game:
+   General:
+      - one room Platformer
+      - You to reach the end of the room without dying in as little time as possible
+      - You have 3 lifes
+      - If you die you lose 1 life (1 second to respawn at the same place)
+      - If you lose 3 lifes you lose the game
+      - There 1 special item to get in the level, it will reduce the final by 3 seconde (it's hard to get it)
+
+   Gameplay:
+      - You can jump (jump height depend on press "space" time)
+      - You can bounce and glid on the wall
+      - Very responsive input
+      - There is obstacle on platform that kill you 
+      - There is sort of lava (object that you cant touch)
+      - No monster only obstacle
+
+   Why ?
+      - One level to design so easy collision detection
+      - Easy to make 
+      - Simple player mechanics
+
+
+ECS :
+   Entity:
+      only one
+   Component:
+      - run
+      - jump
+      - gravity
+      - wall jump
+      - coyote/buffer (for better jump)
+   System:
+      

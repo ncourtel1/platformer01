@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platformer ECS</title>
+  <style>
+   body {
+      background: #222;
+      margin: 0;
+      overflow: hidden;
+   }
+   .camera{
+      margin: auto;
+      border: solid 1px black;
+      background-color: rgb(220, 245, 231);
+      position: relative;
+   }
+   #game-container {
+      position: absolute;
+      width: 3000px;
+      height: 1000px;
+      background-color: rgb(102, 65, 65);
+      image-rendering: pixelated;
+   }
+  </style>
+</head>
+<body>
+   <div class="camera">
+      <div id="game-container"></div>  
+   </div>
+  <script src="main.js" type="module"></script>
+</body>
+</html>
