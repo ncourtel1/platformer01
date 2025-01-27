@@ -7,6 +7,7 @@ import CollisionSystem from "./systems/collisionSystem.js";
 import CameraSystem from "./systems/cameraSystem.js";
 import JumpSystem from "./systems/jumpSystem.js";
 import GravitySystem from "./systems/gravitySystem.js";
+import healthSystem from "./systems/healthSysteme.js";
 
 const ecs = new ECS();
 const player = createPlayer(100, 500, 20, 20, "white", 100, 100);
@@ -22,6 +23,7 @@ ecs.addSystem(new CollisionSystem());
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
 ecs.addSystem(new JumpSystem());
 ecs.addSystem(new GravitySystem());
+ecs.addSystem(new healthSystem(game_container, player))
 
 let lastTime = performance.now();
 
