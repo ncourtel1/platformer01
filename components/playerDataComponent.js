@@ -3,7 +3,8 @@ export const PlayerDataComponent = {
    
 
    // Gravity
-   gravity: 1000,
+   gravity: 10,
    jumpForce: 300,
-   maxFallSpeed: 500
+   maxFallSpeed: 500,
+   
 }

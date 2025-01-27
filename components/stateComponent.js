@@ -5,5 +5,6 @@ export default class StateComponent{
       this.isCollidingLeft = false;
       this.isCollidingTop = false;
       this.isCollidingBottom = false;
+      this.isGrounded = false;
    }
-}
+} 
