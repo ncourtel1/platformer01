@@ -74,7 +74,7 @@ export default class CollisionSystem {
         // Collision avec le haut de l'objet B (sol)
         posA.y = posB.y - visualA.height;
         VelA.vy = 0;
-        stateA.isGrounded = true;
+        stateA.isGrounded = true
       } else{
         // Collision avec le bas de l'objet B (plafond)
         posA.y = posB.y + visualB.height;
