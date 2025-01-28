@@ -72,8 +72,24 @@ playerParticleRun5.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Run 0
 
 const playerParticleRunImages = [playerParticleRun1, playerParticleRun2, playerParticleRun3, playerParticleRun4, playerParticleRun5];
 
+const playerParticleJump1 = new Image();
+playerParticleJump1.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Jump 01.png";
+const playerParticleJump2 = new Image();
+playerParticleJump2.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Jump 02.png";
+const playerParticleJump3 = new Image();
+playerParticleJump3.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Jump 03.png";
+const playerParticleJump4 = new Image();
+playerParticleJump4.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Jump 04.png";
+const playerParticleJump5 = new Image();
+playerParticleJump5.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Jump 05.png";
+const playerParticleJump6 = new Image();
+playerParticleJump6.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Jump 06.png";
+
+const playerParticleJumpImages = [playerParticleJump1, playerParticleJump2, playerParticleJump3, playerParticleJump4, playerParticleJump5, playerParticleJump6];
+
 const playerParticle = new Map();
 playerParticle.set('run', playerParticleRunImages)
+//playerParticle.set('jump', playerParticleJumpImages)
 
 /*
 
