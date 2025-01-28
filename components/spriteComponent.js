@@ -1,6 +1,7 @@
 export default class SpriteComponent {
-    constructor(states) {
+    constructor(states, particleStates) {
       this.states = states;
+      this.particleStates = particleStates
       this.currentState = states.keys().next().value || null;
       this.currentFrame = 0;
       this.flip = false;

@@ -59,6 +59,22 @@ playerAnimation.set('run', playerRunImages)
 playerAnimation.set('jump', playerJumpImages)
 playerAnimation.set('fall', playerFallImages)
 
+const playerParticleRun1 = new Image();
+playerParticleRun1.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Run 01.png";
+const playerParticleRun2 = new Image();
+playerParticleRun2.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Run 02.png";
+const playerParticleRun3 = new Image();
+playerParticleRun3.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Run 03.png";
+const playerParticleRun4 = new Image();
+playerParticleRun4.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Run 04.png";
+const playerParticleRun5 = new Image();
+playerParticleRun5.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Run 05.png";
+
+const playerParticleRunImages = [playerParticleRun1, playerParticleRun2, playerParticleRun3, playerParticleRun4, playerParticleRun5];
+
+const playerParticle = new Map();
+playerParticle.set('run', playerParticleRunImages)
+
 /*
 
 const playerIdle1 = new Image();
@@ -117,7 +133,7 @@ playerAnimation.set('fall', playerFallImages)
 
 */
 
-const player = createPlayer(100, 500, 0, 0, "", 320, 200, playerAnimation);
+const player = createPlayer(100, 500, 0, 0, "", 160, 100, playerAnimation, playerParticle);
 ecs.addEntity(player);
 const obj1 = createObject(200, 500, "green", 32, 32);
 ecs.addEntity(obj1);
