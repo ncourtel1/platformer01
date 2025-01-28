@@ -1,46 +1,57 @@
 export default class HealthSystem {
-    constructor(container, player) {
+  constructor(container, player) {
       this.container = container;
       this.player = player;
-      
-      // Créer un conteneur pour le texte et la barre de santé visuelle
-      this.healthBarContainer = document.createElement("div");
-      this.healthBarContainer.style.position = "absolute";
-      this.healthBarContainer.style.top = "30px";  
-      this.healthBarContainer.style.left = "10px"; 
-      this.healthBarContainer.style.width = "200px";  
-      this.container.appendChild(this.healthBarContainer);
-  
-      // Créer la barre de santé texte (centré au-dessus de la barre)
-      this.healthBarText = document.createElement("div");
-      this.healthBarText.style.position = "absolute";
-      this.healthBarText.style.top = "-20px"; 
-      this.healthBarText.style.left = "50%";  
-      this.healthBarText.style.transform = "translateX(-50%)"; 
-      this.healthBarText.style.color = "white";
-      this.healthBarText.style.fontSize = "16px";
-      this.healthBarContainer.appendChild(this.healthBarText);
-  
-      // Créer la barre de santé visuelle (rouge)
-      this.healthBarVisual = document.createElement("div");
-      this.healthBarVisual.style.height = "10px";  
-      this.healthBarVisual.style.backgroundColor = "red";
-      this.healthBarVisual.style.borderRadius = "5px"; 
-      this.healthBarContainer.appendChild(this.healthBarVisual);
-  
-      // Mettre à jour les deux barres au démarrage
+      const imgSize = 150; // Taille de base des images
+
+      // Créer une div pour contenir les images
+      this.imagesContainer = document.createElement("div");
+      this.imagesContainer.style.display = "flex";
+      this.container.appendChild(this.imagesContainer);
+
+      // Créer les images de la barre (1.png, 3.png, 4.png)
+      this.imageElement1 = document.createElement("img");
+      this.imageElement1.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/1.png";
+      this.imageElement1.style.width = `${imgSize}px`;
+      this.imagesContainer.appendChild(this.imageElement1);
+
+      this.imageElement3 = document.createElement("img");
+      this.imageElement3.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/3.png";
+      this.imageElement3.style.width = `${imgSize}px`;
+      this.imagesContainer.appendChild(this.imageElement3);
+
+      this.imageElement4 = document.createElement("img");
+      this.imageElement4.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/4.png";
+      this.imageElement4.style.width = `${imgSize}px`;
+      this.imagesContainer.appendChild(this.imageElement4);
+
+      // Créer l'image de la barre de vie
+      this.imageHealthBar = document.createElement("div");
+      this.imageHealthBar.style.backgroundColor = "red";
+      this.imageHealthBar.style.transition = "width 0.3s ease";
+      this.imageHealthBar.style.position = "absolute";
+
+      // Calculer les dimensions relatives à imgSize
+      const heightRatio = 5 / 90; 
+      const topOffsetRatio = 40 / 90; 
+      const leftOffsetRatio = 48 / 90; 
+
+      // Appliquer les dimensions relatives
+      this.imageHealthBar.style.height = `${(imgSize * heightRatio) + 1}px`;
+      this.imageHealthBar.style.top = `${(imgSize * topOffsetRatio) - 1}px`;
+      this.imageHealthBar.style.left = `${imgSize * leftOffsetRatio}px`;
+      this.imagesContainer.appendChild(this.imageHealthBar);
+
+      // Mettre à jour les barres de santé au démarrage
       this.update();
-    }
-  
-    update() {
-      let playerHealth = this.player.getComponent("health");
-      
-    
-      this.healthBarText.textContent = `${playerHealth.currentHealth} / ${playerHealth.maxHealth}`;
-      const maxBarWidth = 200; 
-      let healthPercentage = (playerHealth.currentHealth / playerHealth.maxHealth);
-      let newWidth = healthPercentage * maxBarWidth;
-      this.healthBarVisual.style.width = `${newWidth}px`;
-    }
   }
-  
+
+  update() {
+    let playerHealth = this.player.getComponent("health");
+    const healthRatio = playerHealth.currentHealth / playerHealth.maxHealth;
+    const imgSize = parseInt(this.imageElement1.style.width);
+    const maxBarWidth = imgSize * 2.34;
+    const healthBarWidth = maxBarWidth * healthRatio;
+    this.imageHealthBar.style.width = `${healthBarWidth}px`;
+}
+}
