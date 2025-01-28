@@ -26,9 +26,10 @@ const game_container = document.getElementById("game-container");
 
 ecs.addSystem(new RunSystem());
 ecs.addSystem(new RenderSystem(game_container));
+ecs.addSystem(new JumpSystem());
 ecs.addSystem(new CollisionSystem());
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
-ecs.addSystem(new JumpSystem());
+
 ecs.addSystem(new GravitySystem());
 
 let lastTime = performance.now();

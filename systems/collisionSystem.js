@@ -87,7 +87,7 @@ export default class CollisionSystem {
         stateA.isGrounded = true;
       } else {
         // Collision par le bas
-        posA.y = posB.y + visualB.height + 33;
+        posA.y = posB.y + visualB.height;
         velA.vy = 0;
         // Seulement annuler la vélocité verticale si l'entité monte
         if (velA.vy < 0) {
