@@ -1,18 +1,18 @@
 export default class SpriteComponent {
-    constructor(images, states) {
-      this.images = images;
+    constructor(states) {
       this.states = states;
-      this.currentState = null;
+      this.currentState = states.keys().next().value || null;
       this.currentFrame = 0;
+      this.flip = false;
     }
     setState(state) {
       if (this.currentState !== state) {
         this.currentState = state;
         this.currentFrame = 0;
       }
-    }  
+    }
     getCurrentState() {
-      return this.states[this.currentState];
+      return this.states.get(this.currentState);
     }
   }
   

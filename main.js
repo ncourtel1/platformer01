@@ -7,7 +7,6 @@ import CollisionSystem from "./systems/collisionSystem.js";
 import CameraSystem from "./systems/cameraSystem.js";
 import JumpSystem from "./systems/jumpSystem.js";
 import GravitySystem from "./systems/gravitySystem.js";
-import AnimationSystem from "./systems/animationSystem.js";
 import SpriteSystem from "./systems/spriteSystem.js";
 
 const ecs = new ECS();
@@ -27,9 +26,30 @@ const playerIdle7 = new Image();
 playerIdle7.src = "assets/The Crusty Crew/Sprites/Pink Star/01-Idle/Idle 07.png";
 const playerIdle8 = new Image();
 playerIdle8.src = "assets/The Crusty Crew/Sprites/Pink Star/01-Idle/Idle 08.png";
-const playerImages = [playerIdle1, playerIdle2, playerIdle3, playerIdle4, playerIdle5, playerIdle6, playerIdle7, playerIdle8];
 
-const player = createPlayer(100, 500, 0, 0, "", 100, 100, playerImages, "idle");
+const playerIdleImages = [playerIdle1, playerIdle2, playerIdle3, playerIdle4, playerIdle5, playerIdle6, playerIdle7, playerIdle8];
+
+
+const playerRun1 = new Image();
+playerRun1.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 01.png";
+const playerRun2 = new Image();
+playerRun2.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 02.png";
+const playerRun3 = new Image();
+playerRun3.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 03.png";
+const playerRun4 = new Image();
+playerRun4.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 04.png";
+const playerRun5 = new Image();
+playerRun5.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 05.png";
+const playerRun6 = new Image();
+playerRun6.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 06.png";
+
+const playerRunImages = [playerRun1, playerRun2, playerRun3, playerRun4, playerRun5, playerRun6];
+
+const playerAnimation = new Map();
+playerAnimation.set('idle', playerIdleImages)
+playerAnimation.set('run', playerRunImages)
+
+const player = createPlayer(100, 500, 0, 0, "", 100, 100, playerAnimation);
 ecs.addEntity(player);
 const obj1 = createObject(200, 500, "green", 32, 32);
 ecs.addEntity(obj1);
@@ -42,7 +62,6 @@ ecs.addSystem(new CollisionSystem());
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
 ecs.addSystem(new JumpSystem());
 ecs.addSystem(new GravitySystem());
-//ecs.addSystem(new AnimationSystem());
 ecs.addSystem(new SpriteSystem(game_container));
 
 let lastTime = performance.now();
