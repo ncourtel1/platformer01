@@ -35,6 +35,17 @@ ecs.addSystem(new GravitySystem());
 let lastTime = performance.now();
 
 
+function gameLoop(time){
+   const dt = (time - lastTime) / 1000;
+   lastTime = time;
+
+   ecs.update(dt);
+
+   requestAnimationFrame(gameLoop);
+}
+
+gameLoop(lastTime);
+
 function fpsMeter() {
    let prevTime = Date.now(),
        frames = 0;
@@ -55,14 +66,3 @@ function fpsMeter() {
  }
  
  fpsMeter();
-
-function gameLoop(time){
-   const dt = (time - lastTime) / 1000;
-   lastTime = time;
-
-   ecs.update(dt);
-
-   requestAnimationFrame(gameLoop);
-}
-
-gameLoop(lastTime);

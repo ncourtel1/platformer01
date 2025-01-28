@@ -10,6 +10,6 @@ export const PlayerDataComponent = {
    // Friction
    x_acceleration: 10000,
    braking_force: 15000, 
-   x_max_speed: 2000,
+   x_max_speed: 1000,
    //groundLevel: 700,
 }
