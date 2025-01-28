@@ -45,11 +45,27 @@ playerRun6.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 06.png";
 
 const playerRunImages = [playerRun1, playerRun2, playerRun3, playerRun4, playerRun5, playerRun6];
 
+const playerJump1 = new Image();
+playerJump1.src = "assets/The Crusty Crew/Sprites/Pink Star/03-Jump/Jump 01.png";
+const playerJump2 = new Image();
+playerJump2.src = "assets/The Crusty Crew/Sprites/Pink Star/03-Jump/Jump 02.png";
+const playerJump3 = new Image();
+playerJump3.src = "assets/The Crusty Crew/Sprites/Pink Star/03-Jump/Jump 03.png";
+
+const playerJumpImages = [playerJump1, playerJump2, playerJump3];
+
+const playerFall1 = new Image();
+playerFall1.src = "assets/The Crusty Crew/Sprites/Pink Star/04-Fall/Fall 01.png";
+
+const playerFallImages = [playerFall1];
+
 const playerAnimation = new Map();
 playerAnimation.set('idle', playerIdleImages)
 playerAnimation.set('run', playerRunImages)
+playerAnimation.set('jump', playerJumpImages)
+playerAnimation.set('fall', playerFallImages)
 
-const player = createPlayer(100, 500, 0, 0, "", 100, 100, playerAnimation);
+const player = createPlayer(100, 500, 0, 0, "", 104, 100, playerAnimation);
 ecs.addEntity(player);
 const obj1 = createObject(200, 500, "green", 32, 32);
 ecs.addEntity(obj1);

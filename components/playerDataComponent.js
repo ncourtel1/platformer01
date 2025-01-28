@@ -13,7 +13,7 @@ export const PlayerDataComponent = {
    x_max_speed: 2000,
    groundLevel: 700,
    // Sprites
-   idle: { frames: [0, 1, 2, 3], frameRate: 4 },
+   //idle: { frames: [0, 1, 2, 3], frameRate: 4 },
    //run: { frames: [4, 5, 6, 7], frameRate: 8 },
    //jump: { frames: [8, 9, 10], frameRate: 6 },
     
