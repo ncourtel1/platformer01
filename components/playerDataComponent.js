@@ -11,5 +11,5 @@ export const PlayerDataComponent = {
    x_acceleration: 10000,
    braking_force: 15000, 
    x_max_speed: 2000,
-   groundLevel: 700,
+   //groundLevel: 700,
 }

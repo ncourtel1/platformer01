@@ -29,7 +29,7 @@ export default class JumpSystem {
             if (!state.isGrounded) {
                position.y += velocity.vy * dt;
             }
-            if (position.y > playerData.groundLevel) {
+            if (state.isGrounded) {
                state.isJumping = false;
             }
          }

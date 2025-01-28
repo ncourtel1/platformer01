@@ -4,23 +4,35 @@ export default class InputComponent{
       this.y = 0;
       this.keys = new Set();
       this.jumpPressed = false;
+      this.facingRight = false;
+      this.facingLeft = false;
 
       window.addEventListener("keydown", (e) =>{
-         console.log(e.keyCode);
          this.keys.add(e.key);
       })
       window.addEventListener("keyup", (e) =>{
          this.keys.delete(e.key);
-         console.log("key up")
       })
    }
 
    update(){
       this.x = 0;
       this.y = 0;
-      if(this.keys.has("d") && this.keys.has("a")) this.x = 0;
-      else if(this.keys.has("d")) this.x = 1;
-      else if(this.keys.has("a")) this.x = -1;
+      if(this.keys.has("d") && this.keys.has("a")){
+         this.x = 0;
+         this.facingRight = false;
+         this.facingLeft = false; 
+      } 
+      else if(this.keys.has("d")){
+         this.x = 1;
+         this.facingRight = true;
+         this.facingLeft = false;
+      } 
+      else if(this.keys.has("a")){
+         this.x = -1;
+         this.facingLeft = true;
+         this.facingRight = false;
+      } 
       
       if(this.keys.has(" ")){
          this.jumpPressed = true;
