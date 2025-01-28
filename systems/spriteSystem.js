@@ -19,14 +19,15 @@ export default class SpriteSystem {
                 }
                 const currentStateImages = sprite.getCurrentState();
                 if (currentStateImages && currentStateImages.length > 0) {
-                    sprite.currentFrame += 0.2;
-                    const frameIndex = Math.floor(sprite.currentFrame) % currentStateImages.length;
+                    sprite.currentFrame += sprite.speed;
+                    const frameIndex = Math.floor(sprite.currentFrame + sprite.offset) % currentStateImages.length;
                     entityElement.style.backgroundImage = `url(${currentStateImages[frameIndex].src})`;
                     entityElement.style.backgroundSize = `${visual.width}px auto`;
                     entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"
                         }`;
                 }
                 // Particles
+                if (sprite.particleStates) {
                 const particleStateImages = sprite.particleStates.get(sprite.currentState);
                 if (particleStateImages && particleStateImages.length > 0) {
                     let particleElement = document.getElementById(`${entity.id}-particles`);
@@ -48,6 +49,7 @@ export default class SpriteSystem {
                     let particleElement = document.getElementById(`${entity.id}-particles`);
                     if (particleElement) particleElement.remove();
                 }
+            }
             }
         }
     }

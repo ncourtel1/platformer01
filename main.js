@@ -91,6 +91,20 @@ const playerParticle = new Map();
 playerParticle.set('run', playerParticleRunImages)
 //playerParticle.set('jump', playerParticleJumpImages)
 
+const backPalmTree1 = new Image();
+backPalmTree1.src = "assets/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 01.png";
+const backPalmTree2 = new Image();
+backPalmTree2.src = "assets/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 02.png";
+const backPalmTree3 = new Image();
+backPalmTree3.src = "assets/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 03.png";
+const backPalmTree4 = new Image();
+backPalmTree4.src = "assets/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 04.png";
+
+const backPalmTrees = [backPalmTree1, backPalmTree2, backPalmTree3, backPalmTree4]
+
+const backgroundPalmTrees = new Map();
+backgroundPalmTrees.set('regular', backPalmTrees)
+
 /*
 
 const playerIdle1 = new Image();
@@ -149,10 +163,44 @@ playerAnimation.set('fall', playerFallImages)
 
 */
 
-const player = createPlayer(100, 500, 0, 0, "", 160, 100, playerAnimation, playerParticle);
-ecs.addEntity(player);
-const obj1 = createObject(200, 500, "green", 32, 32);
+const obj3 = createObject(350, 500, "", 180, 180, backgroundPalmTrees, undefined, 0, 0.2);
+ecs.addEntity(obj3);
+
+const obj1 = createObject(200, 400, "", 320, 320, backgroundPalmTrees, undefined, 1, 0.1);
 ecs.addEntity(obj1);
+
+const obj2 = createObject(100, 550, "", 160, 160, backgroundPalmTrees, undefined, 2, 0.09);
+ecs.addEntity(obj2);
+
+const obj4 = createObject(600, 550, "", 160, 160, backgroundPalmTrees, undefined, 3, 0.08);
+ecs.addEntity(obj4);
+
+const obj5 = createObject(350 + 500, 500, "", 180, 180, backgroundPalmTrees, undefined, 4, 0.07);
+ecs.addEntity(obj5);
+
+const obj6 = createObject(200 + 500, 400, "", 320, 320, backgroundPalmTrees, undefined, 5, 0.11);
+ecs.addEntity(obj6);
+
+const obj7 = createObject(100 + 500, 550, "", 160, 160, backgroundPalmTrees, undefined, 6, 0.12);
+ecs.addEntity(obj7);
+
+const obj8 = createObject(600 + 500, 550, "", 160, 160, backgroundPalmTrees, undefined, 7, 0.13);
+ecs.addEntity(obj8);
+
+const obj9 = createObject(350 + 800, 500, "", 180, 180, backgroundPalmTrees, undefined, 8, 0.14);
+ecs.addEntity(obj9);
+
+const obj10 = createObject(200 + 1200, 400, "", 320, 320, backgroundPalmTrees, undefined, 9, 0.15);
+ecs.addEntity(obj10);
+
+const obj11 = createObject(100 + 1000, 550, "", 160, 160, backgroundPalmTrees, undefined, 10, 0.16);
+ecs.addEntity(obj11);
+
+const obj12 = createObject(600 + 1000, 550, "", 160, 160, backgroundPalmTrees, undefined, 11, 0.17);
+ecs.addEntity(obj12);
+
+const player = createPlayer(100, 1000, 0, 0, "", 160, 100, playerAnimation, playerParticle);
+ecs.addEntity(player);
 
 const game_container = document.getElementById("game-container");
 
