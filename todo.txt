@@ -19,7 +19,6 @@ Player Data:
 
 Separate Game fonctionality in different files for more flexibility
 
-Lundi: 
    Faire avancer/sauter le personnage dans la fenetre
    Utiliser une architecture de projet clean
 

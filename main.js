@@ -1,7 +1,7 @@
-import ECS from "./systems/Ecs.js";
+import ECS from "./systems/ecs.js";
 import createPlayer from "./entities/createPlayer.js";
 import createObject from "./entities/createObject.js";
-import RunSystem from "./systems/RunSystem.js";
+import RunSystem from "./systems/runSystem.js";
 import RenderSystem from "./systems/renderSystem.js";
 import CollisionSystem from "./systems/collisionSystem.js";
 import CameraSystem from "./systems/cameraSystem.js";
@@ -9,14 +9,18 @@ import JumpSystem from "./systems/jumpSystem.js";
 import GravitySystem from "./systems/gravitySystem.js";
 
 const ecs = new ECS();
-const player = createPlayer(600, 500, 20, 20, "white", 100, 100);
+const player = createPlayer(100, 500, 0, 0, "white", 100, 100);
 ecs.addEntity(player);
 const obj1 = createObject(400, 700, "green", 32, 32);
 ecs.addEntity(obj1);
 const obj2 = createObject(100, 700, "green", 32, 32);
 ecs.addEntity(obj2);
-const obj3 = createObject(800, 400, "green", 32, 32);
+const obj3 = createObject(700, 550, "green", 100, 100);
 ecs.addEntity(obj3);
+const obj4 = createObject(1000, 550, "green", 100, 10);
+ecs.addEntity(obj4);
+const ground = createObject(0, 800, "green", 3000, 10);
+ecs.addEntity(ground);
 
 const game_container = document.getElementById("game-container");
 

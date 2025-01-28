@@ -1,4 +1,4 @@
-import PositionComponent from "../components/PositionComponent.js"
+import PositionComponent from "../components/positionComponent.js"
 import VisualComponent from "../components/visualComponent.js"
 import CollisionComponent from "../components/collisionComponent.js"
 import StateComponent from "../components/stateComponent.js"
