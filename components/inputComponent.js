@@ -25,6 +25,6 @@ export default class InputComponent{
       if(this.keys.has(" ")){
          this.jumpPressed = true;
          console.log("jump pressed");
-      } 
+      } else this.jumpPressed = false;
    }
 }

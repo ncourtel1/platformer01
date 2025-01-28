@@ -10,7 +10,7 @@ import GravitySystem from "./systems/gravitySystem.js";
 import healthSystem from "./systems/healthSysteme.js";
 
 const ecs = new ECS();
-const player = createPlayer(100, 500, 20, 20, "white", 100, 100);
+const player = createPlayer(100, 500, 0, 0, "white", 100, 100);
 ecs.addEntity(player);
 const obj1 = createObject(200, 500, "green", 32, 32);
 ecs.addEntity(obj1);
