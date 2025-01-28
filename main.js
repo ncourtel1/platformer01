@@ -17,7 +17,7 @@ const obj2 = createObject(100, 700, "green", 32, 32);
 ecs.addEntity(obj2);
 const obj3 = createObject(700, 550, "green", 100, 100);
 ecs.addEntity(obj3);
-const obj4 = createObject(1000, 550, "green", 100, 10);
+const obj4 = createObject(1000, 550, "green", 100, 50);
 ecs.addEntity(obj4);
 const ground = createObject(0, 800, "green", 3000, 10);
 ecs.addEntity(ground);
