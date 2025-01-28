@@ -4,10 +4,10 @@ import createObject from "./entities/createObject.js";
 import RunSystem from "./systems/runSystem.js";
 import RenderSystem from "./systems/renderSystem.js";
 import CollisionSystem from "./systems/collisionSystem.js";
-import CameraSystem from "./systems/cameraSystem.js";
 import JumpSystem from "./systems/jumpSystem.js";
 import GravitySystem from "./systems/gravitySystem.js";
-import healthSystem from "./systems/healthSysteme.js";
+import HealthSystem from "./systems/healthSysteme.js";
+import TimerSystem from "./systems/timerSystem.js";
 
 const ecs = new ECS();
 const player = createPlayer(100, 500, 0, 0, "white", 100, 100);
@@ -23,7 +23,8 @@ ecs.addSystem(new CollisionSystem());
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
 ecs.addSystem(new JumpSystem());
 ecs.addSystem(new GravitySystem());
-ecs.addSystem(new healthSystem(game_container, player))
+ecs.addSystem(new HealthSystem(game_container, player))
+ecs.addSystem(new TimerSystem(game_container, 10))
 
 let lastTime = performance.now();
 
