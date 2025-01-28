@@ -10,6 +10,57 @@ import GravitySystem from "./systems/gravitySystem.js";
 import SpriteSystem from "./systems/spriteSystem.js";
 
 const ecs = new ECS();
+
+const playerIdle1 = new Image();
+playerIdle1.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 01.png";
+const playerIdle2 = new Image();
+playerIdle2.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 02.png";
+const playerIdle3 = new Image();
+playerIdle3.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 03.png";
+const playerIdle4 = new Image();
+playerIdle4.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 04.png";
+const playerIdle5 = new Image();
+playerIdle5.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 05.png";
+
+const playerIdleImages = [playerIdle1, playerIdle2, playerIdle3, playerIdle4, playerIdle5];
+
+const playerRun1 = new Image();
+playerRun1.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 01.png";
+const playerRun2 = new Image();
+playerRun2.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 02.png";
+const playerRun3 = new Image();
+playerRun3.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 03.png";
+const playerRun4 = new Image();
+playerRun4.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 04.png";
+const playerRun5 = new Image();
+playerRun5.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 05.png";
+const playerRun6 = new Image();
+playerRun6.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 06.png";
+
+const playerRunImages = [playerRun1, playerRun2, playerRun3, playerRun4, playerRun5, playerRun6];
+
+const playerJump1 = new Image();
+playerJump1.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/03-Jump/Jump 01.png";
+const playerJump2 = new Image();
+playerJump2.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/03-Jump/Jump 02.png";
+const playerJump3 = new Image();
+playerJump3.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/03-Jump/Jump 03.png";
+
+const playerJumpImages = [playerJump1, playerJump2, playerJump3];
+
+const playerFall1 = new Image();
+playerFall1.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/04-Fall/Fall 01.png";
+
+const playerFallImages = [playerFall1];
+
+const playerAnimation = new Map();
+playerAnimation.set('idle', playerIdleImages)
+playerAnimation.set('run', playerRunImages)
+playerAnimation.set('jump', playerJumpImages)
+playerAnimation.set('fall', playerFallImages)
+
+/*
+
 const playerIdle1 = new Image();
 playerIdle1.src = "assets/The Crusty Crew/Sprites/Pink Star/01-Idle/Idle 01.png";
 const playerIdle2 = new Image();
@@ -28,7 +79,6 @@ const playerIdle8 = new Image();
 playerIdle8.src = "assets/The Crusty Crew/Sprites/Pink Star/01-Idle/Idle 08.png";
 
 const playerIdleImages = [playerIdle1, playerIdle2, playerIdle3, playerIdle4, playerIdle5, playerIdle6, playerIdle7, playerIdle8];
-
 
 const playerRun1 = new Image();
 playerRun1.src = "assets/The Crusty Crew/Sprites/Pink Star/02-Run/Run 01.png";
@@ -65,7 +115,9 @@ playerAnimation.set('run', playerRunImages)
 playerAnimation.set('jump', playerJumpImages)
 playerAnimation.set('fall', playerFallImages)
 
-const player = createPlayer(100, 500, 0, 0, "", 104, 100, playerAnimation);
+*/
+
+const player = createPlayer(100, 500, 0, 0, "", 320, 200, playerAnimation);
 ecs.addEntity(player);
 const obj1 = createObject(200, 500, "green", 32, 32);
 ecs.addEntity(obj1);

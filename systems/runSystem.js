@@ -12,8 +12,8 @@ export default class RunSystem {
             if (input.x !== 0) 
             {
                animation.setState('run');
-               if (velocity.vx > 0) animation.flip = true;
-               else animation.flip = false;
+               if (velocity.vx > 0) animation.flip = false;
+               else animation.flip = true;
             }
             else animation.setState('idle');
             const acceleration = (input.x * playerData.x_acceleration) / playerData.mass;
