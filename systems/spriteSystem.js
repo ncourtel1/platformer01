@@ -28,14 +28,16 @@ export default class SpriteSystem {
                         entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"}`;
                     } else {
                         if (currentStateImages && currentStateImages.length > 0) {
+                            const yoffset = 955;
+                            const zoom = 3.75;
                             const tileImage = currentStateImages[0];  // Première tile
-                            entityElement.style.width = `${visual.width}px`;
-                            entityElement.style.height = `${visual.height}px`;
+                            entityElement.style.width = `${visual.width * zoom}px`;
+                            entityElement.style.height = `${visual.height * zoom}px`;
                             entityElement.style.backgroundImage = `url(${tileImage.src})`;
-                            entityElement.style.backgroundPosition = `-${sprite.sx}px -${sprite.sy}px`;
-                            entityElement.style.backgroundSize = `${tileImage.naturalWidth}px ${tileImage.naturalHeight}px`;
+                            entityElement.style.backgroundPosition = `-${sprite.sx * zoom}px -${sprite.sy * zoom}px`;
+                            entityElement.style.backgroundSize = `${tileImage.naturalWidth * zoom}px ${tileImage.naturalHeight * zoom}px`;
                             entityElement.style.imageRendering = 'pixelated';
-                            entityElement.style.transform = `translate(${position.x}px, ${position.y}px)`;
+                            entityElement.style.transform = `translate(${position.x * zoom}px, ${position.y * zoom - yoffset}px)`;
                         }
                     }
                 }
