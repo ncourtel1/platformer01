@@ -1,12 +1,14 @@
 export default class TimerSystem {
   constructor(container, maxTime) {
     this.container = container;
-    this.maxTime = maxTime
-    this.currTime = maxTime
+    this.maxTime = maxTime;
+    this.currTime = maxTime;
+    this.isPaused = false;
+    this.timer = null;
 
     const imgSize = 150;
 
-    // Créer une div pour contenir les images
+    {// Créer une div pour contenir les images
     this.imagesContainer = document.createElement("div");
     this.imagesContainer.style.display = "flex";
     this.container.appendChild(this.imagesContainer);
@@ -46,19 +48,42 @@ export default class TimerSystem {
     this.imageTimerBar.style.top = `${imgSize * topOffsetRatio - 1 + imgSize}px`;
     this.imageTimerBar.style.left = `${imgSize * leftOffsetRatio}px`;
     this.imagesContainer.appendChild(this.imageTimerBar);
+    }
 
-    let timer = setInterval(() => {
-        this.currTime--
-        if (this.currTime == 0) {
-            
-            clearInterval(timer)
-            
-        }
-        console.log(`time: ${this.currTime}s`)
-    }, 1000)
-
-    {() => timer}
+    this.startTimer();
     this.update();
+  }
+
+  startTimer() {
+    this.timer = setInterval(() => {
+      if (!this.isPaused) {
+        this.currTime--;
+        if (this.currTime <= 0) {
+          this.currTime = 0;
+          clearInterval(this.timer);
+        }
+        console.log(`time: ${this.currTime}s`);
+        this.update();
+      }
+    }, 1000);
+  }
+
+  pauseTimer() {
+    this.isPaused = true;
+    console.log('Timer paused');
+  }
+
+  resumeTimer() {
+    this.isPaused = false;
+    console.log('Timer resumed');
+  }
+
+  toggleTimer() {
+    if (this.isPaused) {
+      this.resumeTimer();
+    } else {
+      this.pauseTimer();
+    }
   }
 
   update() {

@@ -1,8 +1,9 @@
 // MenuSystem.js
 export default class MenuSystem {
-  constructor(container) {
+  constructor(container, timerSys) {
     this.container = container;
     this.paused = false;
+    this.timerSys = timerSys
 
     // Créer une div pour contenir les images
     this.imagesContainer = document.createElement("div");
@@ -33,6 +34,7 @@ export default class MenuSystem {
 
   togglePause() {
     this.paused = !this.paused;
+    this.timerSys.toggleTimer()
     this.imagesContainer.style.display = this.paused ? "block" : "none";
   }
 

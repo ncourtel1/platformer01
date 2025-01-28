@@ -26,23 +26,25 @@ ecs.addSystem(new CollisionSystem());
 ecs.addSystem(new JumpSystem());
 ecs.addSystem(new GravitySystem());
 
-ecs.addSystem(new HealthSystem(game_container, player))
-ecs.addSystem(new TimerSystem(game_container, 10))
-ecs.addSystem(new MenuSystem(game_container))
+ecs.addSystem(new HealthSystem(game_container, player));
+
+const timerSys = new TimerSystem(game_container, 10);
+const menuSys = new MenuSystem(game_container, timerSys);
+
+ecs.addSystem(timerSys);
+ecs.addSystem(menuSys);
 
 let lastTime = performance.now();
 
-function gameLoop(time){
-   const dt = (time - lastTime) / 1000;
-   lastTime = time;
-   
-   const menuSystem = ecs.systems.find(system => system instanceof MenuSystem);
-   if (!menuSystem.isPaused())
-   {
-   ecs.update(dt);
-}
+function gameLoop(time) {
+  const dt = (time - lastTime) / 1000;
+  lastTime = time;
 
-   requestAnimationFrame(gameLoop);
+  if (!menuSys.isPaused()) {
+    ecs.update(dt);
+  }
+
+  requestAnimationFrame(gameLoop);
 }
 
 gameLoop(lastTime);
