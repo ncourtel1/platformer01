@@ -32,7 +32,7 @@ export default class TimerSystem {
 
     // Créer l'image de la barre de vie
     this.imageTimerBar = document.createElement("div");
-    this.imageTimerBar.style.backgroundColor = "#D4E5F7";
+    this.imageTimerBar.style.backgroundColor = "#f7ebb5";
     this.imageTimerBar.style.transition = "width 0.3s ease";
     this.imageTimerBar.style.position = "absolute";
 

@@ -27,7 +27,7 @@ export default class HealthSystem {
 
       // Créer l'image de la barre de vie
       this.imageHealthBar = document.createElement("div");
-      this.imageHealthBar.style.backgroundColor = "red";
+      this.imageHealthBar.style.backgroundColor = "#db4848";
       this.imageHealthBar.style.transition = "width 0.3s ease";
       this.imageHealthBar.style.position = "absolute";
 
