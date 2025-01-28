@@ -208,6 +208,31 @@ ecs.addEntity(obj12);
 const player = createPlayer(100, 1000, 0, 0, "", 160, 100, playerAnimation, playerParticle);
 ecs.addEntity(player);
 
+const map1 = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[0,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,2],[17,19,-1,68,69,69,70,-1,-1,4,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,21,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,21,-1,-1,72,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,38,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,17,19],[83,69,69,69,69,69,69,69,69,69,69,69,69,69,69,84]];
+
+function generateObjectsFromMap() {
+   const tileSize = 32;
+   const tilesPerRow = 17;
+   const tilemapImage = new Image();
+   tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png';
+   const states = new Map();
+   states.set('tile', [tilemapImage]);
+   for (let y = 0; y < map1.length; y++) {
+      for (let x = 0; x < map1[y].length; x++) {
+         const tileIndex = map1[y][x];
+         if (tileIndex !== -1) {
+            const sx = (tileIndex % tilesPerRow) * tileSize;
+            const sy = Math.floor(tileIndex / tilesPerRow) * tileSize;
+            const posX = x * tileSize;
+            const posY = y * tileSize;
+            const obj = createObject(posX, posY, "", tileSize, tileSize, states, null, 0, 0, sx, sy);
+            ecs.addEntity(obj);
+         }
+      }
+   }
+}
+
+
 const game_container = document.getElementById("game-container");
 
 ecs.addSystem(new RunSystem());
@@ -220,7 +245,7 @@ ecs.addSystem(new SpriteSystem(game_container));
 
 let lastTime = performance.now();
 
-function gameLoop(time){
+function gameLoop(time) {
    const dt = (time - lastTime) / 1000;
    lastTime = time;
 
@@ -229,4 +254,5 @@ function gameLoop(time){
    requestAnimationFrame(gameLoop);
 }
 
+generateObjectsFromMap();
 gameLoop(lastTime);

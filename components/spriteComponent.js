@@ -1,5 +1,5 @@
 export default class SpriteComponent {
-    constructor(states, particleStates, offset, speed) {
+    constructor(states, particleStates, offset, speed, sx, sy) {
       this.states = states;
       this.particleStates = particleStates
       this.currentState = states.keys().next().value || null;
@@ -7,6 +7,8 @@ export default class SpriteComponent {
       this.flip = false;
       this.offset = offset || 0;
       this.speed = speed || 0.2;
+      this.sx = sx || 0;
+      this.sy = sy || 0;
     }
     setState(state) {
       if (this.currentState !== state) {
