@@ -28,7 +28,7 @@ ecs.addSystem(new GravitySystem());
 
 ecs.addSystem(new HealthSystem(game_container, player));
 
-const timerSys = new TimerSystem(game_container, 10);
+const timerSys = new TimerSystem(game_container, 60);
 const menuSys = new MenuSystem(game_container, timerSys);
 
 ecs.addSystem(timerSys);
