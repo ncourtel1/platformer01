@@ -6,8 +6,9 @@ import RenderSystem from "./systems/renderSystem.js";
 import CollisionSystem from "./systems/collisionSystem.js";
 import JumpSystem from "./systems/jumpSystem.js";
 import GravitySystem from "./systems/gravitySystem.js";
-import HealthSystem from "./systems/healthSysteme.js";
+import HealthSystem from "./systems/healthSystem.js";
 import TimerSystem from "./systems/timerSystem.js";
+import MenuSystem from "./systems/menuSystem.js";
 
 const ecs = new ECS();
 const player = createPlayer(100, 500, 0, 0, "white", 100, 100);
@@ -19,20 +20,27 @@ const game_container = document.getElementById("game-container");
 
 ecs.addSystem(new RunSystem());
 ecs.addSystem(new RenderSystem(game_container));
+
 ecs.addSystem(new CollisionSystem());
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
 ecs.addSystem(new JumpSystem());
 ecs.addSystem(new GravitySystem());
+
 ecs.addSystem(new HealthSystem(game_container, player))
 ecs.addSystem(new TimerSystem(game_container, 10))
+ecs.addSystem(new MenuSystem(game_container))
 
 let lastTime = performance.now();
 
 function gameLoop(time){
    const dt = (time - lastTime) / 1000;
    lastTime = time;
-
+   
+   const menuSystem = ecs.systems.find(system => system instanceof MenuSystem);
+   if (!menuSystem.isPaused())
+   {
    ecs.update(dt);
+}
 
    requestAnimationFrame(gameLoop);
 }
