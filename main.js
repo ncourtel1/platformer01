@@ -105,6 +105,20 @@ const backPalmTrees = [backPalmTree1, backPalmTree2, backPalmTree3, backPalmTree
 const backgroundPalmTrees = new Map();
 backgroundPalmTrees.set('regular', backPalmTrees)
 
+const waterReflect1 = new Image();
+waterReflect1.src = "assets/Palm Tree Island/Sprites/Background/Water Reflect Big 01.png";
+const waterReflect2 = new Image();
+waterReflect2.src = "assets/Palm Tree Island/Sprites/Background/Water Reflect Big 02.png";
+const waterReflect3 = new Image();
+waterReflect3.src = "assets/Palm Tree Island/Sprites/Background/Water Reflect Big 03.png";
+const waterReflect4 = new Image();
+waterReflect4.src = "assets/Palm Tree Island/Sprites/Background/Water Reflect Big 04.png";
+
+const waterReflects = [waterReflect1, waterReflect2, waterReflect3, waterReflect4]
+
+const backgroundWaterReflects = new Map();
+backgroundWaterReflects.set('big', waterReflects)
+
 /*
 
 const playerIdle1 = new Image();
@@ -162,43 +176,35 @@ playerAnimation.set('jump', playerJumpImages)
 playerAnimation.set('fall', playerFallImages)
 
 */
-
-const obj3 = createObject(350, 500, "", 180, 180, backgroundPalmTrees, undefined, 0, 0.2);
+const waterReflections = createObject(200, 700, "", 1500, 50, backgroundWaterReflects, undefined, 0, 0.1);
+ecs.addEntity(waterReflections);
+const forestYOffset = 100;
+// BACK PALMS START
+const obj3 = createObject(350, 500 + forestYOffset, "", 180, 180, backgroundPalmTrees, undefined, 0, 0.2);
 ecs.addEntity(obj3);
-
-const obj1 = createObject(200, 400, "", 320, 320, backgroundPalmTrees, undefined, 1, 0.1);
+const obj1 = createObject(200, 400 + forestYOffset, "", 320, 320, backgroundPalmTrees, undefined, 1, 0.1);
 ecs.addEntity(obj1);
-
-const obj2 = createObject(100, 550, "", 160, 160, backgroundPalmTrees, undefined, 2, 0.09);
+const obj2 = createObject(100, 550 + forestYOffset, "", 160, 160, backgroundPalmTrees, undefined, 2, 0.09);
 ecs.addEntity(obj2);
-
-const obj4 = createObject(600, 550, "", 160, 160, backgroundPalmTrees, undefined, 3, 0.08);
+const obj4 = createObject(600, 550 + forestYOffset, "", 160, 160, backgroundPalmTrees, undefined, 3, 0.08);
 ecs.addEntity(obj4);
-
-const obj5 = createObject(350 + 500, 500, "", 180, 180, backgroundPalmTrees, undefined, 4, 0.07);
+const obj5 = createObject(350 + 500, 500 + forestYOffset, "", 180, 180, backgroundPalmTrees, undefined, 4, 0.07);
 ecs.addEntity(obj5);
-
-const obj6 = createObject(200 + 500, 400, "", 320, 320, backgroundPalmTrees, undefined, 5, 0.11);
+const obj6 = createObject(200 + 500, 400 + forestYOffset, "", 320, 320, backgroundPalmTrees, undefined, 5, 0.11);
 ecs.addEntity(obj6);
-
-const obj7 = createObject(100 + 500, 550, "", 160, 160, backgroundPalmTrees, undefined, 6, 0.12);
+const obj7 = createObject(100 + 500, 550 + forestYOffset, "", 160, 160, backgroundPalmTrees, undefined, 6, 0.12);
 ecs.addEntity(obj7);
-
-const obj8 = createObject(600 + 500, 550, "", 160, 160, backgroundPalmTrees, undefined, 7, 0.13);
+const obj8 = createObject(600 + 500, 550 + forestYOffset, "", 160, 160, backgroundPalmTrees, undefined, 7, 0.13);
 ecs.addEntity(obj8);
-
-const obj9 = createObject(350 + 800, 500, "", 180, 180, backgroundPalmTrees, undefined, 8, 0.14);
+const obj9 = createObject(350 + 800, 500 + forestYOffset, "", 180, 180, backgroundPalmTrees, undefined, 8, 0.14);
 ecs.addEntity(obj9);
-
-const obj10 = createObject(200 + 1200, 400, "", 320, 320, backgroundPalmTrees, undefined, 9, 0.15);
+const obj10 = createObject(200 + 1200, 400 + forestYOffset, "", 320, 320, backgroundPalmTrees, undefined, 9, 0.15);
 ecs.addEntity(obj10);
-
-const obj11 = createObject(100 + 1000, 550, "", 160, 160, backgroundPalmTrees, undefined, 10, 0.16);
+const obj11 = createObject(100 + 1000, 550 + forestYOffset, "", 160, 160, backgroundPalmTrees, undefined, 10, 0.16);
 ecs.addEntity(obj11);
-
-const obj12 = createObject(600 + 1000, 550, "", 160, 160, backgroundPalmTrees, undefined, 11, 0.17);
+const obj12 = createObject(600 + 1000, 550 + forestYOffset, "", 160, 160, backgroundPalmTrees, undefined, 11, 0.17);
 ecs.addEntity(obj12);
-
+// BACK PALMS END
 const player = createPlayer(100, 1000, 0, 0, "", 160, 100, playerAnimation, playerParticle);
 ecs.addEntity(player);
 
