@@ -1,26 +1,28 @@
 export default class TimerSystem {
-  constructor(container, maxTime) {
+  constructor(container, maxTime, player) {
     this.container = container;
     this.maxTime = maxTime;
     this.currTime = maxTime;
     this.isPaused = false;
     this.timer = null;
-    this.darkeningThreshold = 30;
+    this.darkeningThreshold = 7;
+    this.player = player;
 
     const imgSize = 150;
 
-    // Create darkening screen
+    // Create darkening screen with radial gradient
     this.darkOverlay = document.createElement("div");
     this.darkOverlay.style.position = "fixed";
     this.darkOverlay.style.top = "0";
     this.darkOverlay.style.left = "0";
-    this.darkOverlay.style.width = "100%";
-    this.darkOverlay.style.height = "100%";
-    this.darkOverlay.style.backgroundColor = "black";
-    this.darkOverlay.style.opacity = "0";
-    this.darkOverlay.style.transition = "opacity 0.1s ease";
+    this.darkOverlay.style.width = "100vw";
+    this.darkOverlay.style.height = "100vh";
+    this.darkOverlay.style.transition = "all 0.7s ease";
     this.darkOverlay.style.pointerEvents = "none";
     this.darkOverlay.style.zIndex = "1000";
+    
+    // Set initial radial gradient
+    this.updateRadialGradient(0);
     document.body.appendChild(this.darkOverlay);
 
     // Create div for GameOver text
@@ -36,7 +38,7 @@ export default class TimerSystem {
     this.gameOverText.style.fontFamily = "Arial, sans-serif";
     this.gameOverText.style.textShadow = "2px 2px 4px rgba(0,0,0,0.5)";
     this.gameOverText.style.opacity = "0";
-    this.gameOverText.style.transition = "opacity 0.5s ease";
+    this.gameOverText.style.transition = "all 0.7s ease";
     this.gameOverText.style.zIndex = "1001";
     this.gameOverText.style.display = "none";
     document.body.appendChild(this.gameOverText);
@@ -46,7 +48,7 @@ export default class TimerSystem {
     this.imagesContainer.style.display = "flex";
     this.container.appendChild(this.imagesContainer);
 
-    // Créer les images de la barre (1.png, 3.png, 4.png)
+    // Create bar images
     this.imageElement1 = document.createElement("img");
     this.imageElement1.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/2.png";
     this.imageElement1.style.width = `${imgSize}px`;
@@ -62,25 +64,68 @@ export default class TimerSystem {
     this.imageElement4.style.width = `${imgSize}px`;
     this.imagesContainer.appendChild(this.imageElement4);
 
-    // Créer l'image de la barre de vie
+    // Create timer bar
     this.imageTimerBar = document.createElement("div");
     this.imageTimerBar.style.backgroundColor = "#f7ebb5";
     this.imageTimerBar.style.transition = "width 0.3s ease";
     this.imageTimerBar.style.position = "absolute";
 
-    // Calculer les dimensions relatives à imgSize
+    // Calculate dimensions relative to imgSize
     const heightRatio = 5 / 90;
     const topOffsetRatio = 40 / 90;
     const leftOffsetRatio = 48 / 90;
 
-    // Appliquer les dimensions relatives
+    // Apply relative dimensions
     this.imageTimerBar.style.height = `${imgSize * heightRatio + 1}px`;
     this.imageTimerBar.style.top = `${imgSize * topOffsetRatio - 1 + imgSize}px`;
     this.imageTimerBar.style.left = `${imgSize * leftOffsetRatio}px`;
     this.imagesContainer.appendChild(this.imageTimerBar);
 
+    // Start the animation loop for continuous player position updates
+    this.startAnimationLoop();
     this.startTimer();
     this.update();
+  }
+
+  updateRadialGradient(darkness) {
+    if (!this.player) return;
+    
+    // Get player position and dimensions
+    const visualComponent = this.player.getComponent('visual');
+    const positionComponent = this.player.getComponent('position');
+
+    // Calculate the center position of the player
+    const playerCenterX = positionComponent.x + (visualComponent.width / 2);
+    const playerCenterY = positionComponent.y + 3*(visualComponent.height);
+
+    // Calculate the radius based on remaining time
+    const maxRadius = Math.max(window.innerWidth, window.innerHeight);
+    const minRadius = 100; // Minimum visibility radius around player
+    const radius = maxRadius - (maxRadius - minRadius) * darkness;
+
+    if (darkness >= 1) {
+      // Complete darkness when time is up
+      this.darkOverlay.style.background = 'black';
+    } else {
+      // Create radial gradient with smooth transition to black
+      const gradient = `radial-gradient(circle ${radius}px at ${playerCenterX}px ${playerCenterY}px, 
+        transparent,
+        rgba(0, 0, 0, ${darkness}) ${radius * 0.7}px,
+        rgba(0, 0, 0, ${darkness}) ${radius}px)`;
+      
+      this.darkOverlay.style.background = gradient;
+    }
+  }
+
+  startAnimationLoop() {
+    const updatePosition = () => {
+      if (this.currTime <= this.darkeningThreshold) {
+        const darkness = 1 - (this.currTime / this.darkeningThreshold);
+        this.updateRadialGradient(darkness);
+      }
+      requestAnimationFrame(updatePosition);
+    };
+    requestAnimationFrame(updatePosition);
   }
 
   startTimer() {
@@ -92,7 +137,6 @@ export default class TimerSystem {
           clearInterval(this.timer);
           this.showGameOver();
         }
-        console.log(`time: ${this.currTime}s`);
         this.update();
       }
     }, 1000);
@@ -100,12 +144,10 @@ export default class TimerSystem {
 
   pauseTimer() {
     this.isPaused = true;
-    console.log('Timer paused');
   }
 
   resumeTimer() {
     this.isPaused = false;
-    console.log('Timer resumed');
   }
 
   toggleTimer() {
@@ -117,7 +159,7 @@ export default class TimerSystem {
   }
 
   showGameOver() {
-    this.darkOverlay.style.opacity = "1";
+    this.updateRadialGradient(1);
     this.gameOverText.style.display = "block";
     setTimeout(() => {
       this.gameOverText.style.opacity = "1";
@@ -131,10 +173,10 @@ export default class TimerSystem {
     const healthBarWidth = maxBarWidth * healthRatio;
     this.imageTimerBar.style.width = `${healthBarWidth}px`;
 
-    // Gestion de l'assombrissement progressif
+    // Update darkening effect
     if (this.currTime <= this.darkeningThreshold) {
-      const darknessFactor = 1 - (this.currTime / this.darkeningThreshold);
-      this.darkOverlay.style.opacity = darknessFactor.toString();
+      const darkness = 1 - (this.currTime / this.darkeningThreshold);
+      this.updateRadialGradient(darkness);
     }
   }
 }
