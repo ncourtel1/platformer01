@@ -149,7 +149,7 @@ playerAnimation.set('fall', playerFallImages)
 
 */
 
-const player = createPlayer(100, 500, 0, 0, "", 160, 100, playerAnimation, playerParticle);
+const player = createPlayer(100, 500, 0, 0, "white", 160, 100, playerAnimation, playerParticle);
 ecs.addEntity(player);
 const obj1 = createObject(400, 700, "green", 32, 32);
 ecs.addEntity(obj1);
@@ -165,14 +165,14 @@ ecs.addEntity(ground);
 const game_container = document.getElementById("game-container");
 
 ecs.addSystem(new RunSystem());
+ecs.addSystem(new CollisionSystem());
+ecs.addSystem(new GravitySystem());
+ecs.addSystem(new JumpSystem());
 ecs.addSystem(new RenderSystem(game_container));
 ecs.addSystem(new SpriteSystem(game_container));
-ecs.addSystem(new JumpSystem());
-ecs.addSystem(new CollisionSystem());
+
+
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
-
-ecs.addSystem(new GravitySystem());
-
 
 let lastTime = performance.now();
 

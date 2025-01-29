@@ -14,13 +14,7 @@ export default class GravitySystem{
             }else{
                state.isGrounded = false;
             }
-            // if(position.y >= 700){
-            //    position.y = 700;
-            //    velocity.vy = 0;
-            //    console.log("bounce");
-            //    state.isGrounded = true;
-            // }
-            //else state.isGrounded = false;
+
          }
       }
    }

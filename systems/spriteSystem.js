@@ -8,6 +8,8 @@ export default class SpriteSystem {
             const position = entity.getComponent("position");
             const sprite = entity.getComponent("sprite");
             const visual = entity.getComponent("visual");
+            const state = entity.getComponent("state");
+            //console.log(state.isGrounded);
 
             if (position && sprite) {  
                 let entityElement = document.getElementById(entity.id);
@@ -20,7 +22,6 @@ export default class SpriteSystem {
                 const currentStateImages = sprite.getCurrentState();
                 if (currentStateImages && currentStateImages.length > 0) {
                     sprite.currentFrame += 0.2;
-                    console.log(sprite.currentFrame);
                     const frameIndex = Math.floor(sprite.currentFrame) % currentStateImages.length;
                     entityElement.style.backgroundImage = `url(${currentStateImages[frameIndex].src})`;
                     entityElement.style.backgroundSize = `${visual.width}px auto`;

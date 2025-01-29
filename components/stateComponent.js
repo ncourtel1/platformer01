@@ -4,4 +4,4 @@ export default class StateComponent{
       this.isGrounded = false;
       this.isJumping = false;
    }
-} 
+}
