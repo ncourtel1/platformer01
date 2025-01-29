@@ -6,6 +6,7 @@ import VisualComponent from "../components/visualComponent.js"
 import CollisionComponent from "../components/collisionComponent.js"
 import StateComponent from "../components/stateComponent.js"
 import Entity from "./entity.js"
+import HealthComponent from "../components/healthComponent.js"
 
 // Create an Entity player with components attached to it
 export default function createPlayer(x, y, vx, vy, color, width, height){
@@ -16,6 +17,7 @@ export default function createPlayer(x, y, vx, vy, color, width, height){
    player.addComponent('velocity', new VelocityComponent(vx, vy));
    player.addComponent('visual', new VisualComponent(color, width, height))
    player.addComponent('state', new StateComponent());
+   player.addComponent('health', new HealthComponent(3))
    //player.addComponent('collision', new CollisionComponent("box", {width:32, height: 32}));
    return player;
 }
