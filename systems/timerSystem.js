@@ -7,6 +7,9 @@ export default class TimerSystem {
     this.timer = null;
     this.darkeningThreshold = 7;
     this.player = player;
+    this.lastDarkness = 0;
+    this.targetDarkness = 0;
+    this.transitionSpeed = 0.009; // Contrôle la vitesse de transition
 
     const imgSize = 150;
 
@@ -17,7 +20,6 @@ export default class TimerSystem {
     this.darkOverlay.style.left = "0";
     this.darkOverlay.style.width = "100vw";
     this.darkOverlay.style.height = "100vh";
-    this.darkOverlay.style.transition = "all 0.7s ease";
     this.darkOverlay.style.pointerEvents = "none";
     this.darkOverlay.style.zIndex = "1000";
     
@@ -120,8 +122,14 @@ export default class TimerSystem {
   startAnimationLoop() {
     const updatePosition = () => {
       if (this.currTime <= this.darkeningThreshold) {
-        const darkness = 1 - (this.currTime / this.darkeningThreshold);
-        this.updateRadialGradient(darkness);
+        // Calculer la nouvelle valeur cible de l'obscurité
+        this.targetDarkness = 1 - (this.currTime / this.darkeningThreshold);
+        
+        // Interpolation linéaire entre la dernière valeur et la valeur cible
+        this.lastDarkness += (this.targetDarkness - this.lastDarkness) * this.transitionSpeed;
+        
+        // Mettre à jour le gradient avec la valeur interpolée
+        this.updateRadialGradient(this.lastDarkness);
       }
       requestAnimationFrame(updatePosition);
     };
@@ -159,7 +167,7 @@ export default class TimerSystem {
   }
 
   showGameOver() {
-    this.updateRadialGradient(1);
+    this.targetDarkness = 1;
     this.gameOverText.style.display = "block";
     setTimeout(() => {
       this.gameOverText.style.opacity = "1";
@@ -172,11 +180,5 @@ export default class TimerSystem {
     const maxBarWidth = imgSize * 2.34;
     const healthBarWidth = maxBarWidth * healthRatio;
     this.imageTimerBar.style.width = `${healthBarWidth}px`;
-
-    // Update darkening effect
-    if (this.currTime <= this.darkeningThreshold) {
-      const darkness = 1 - (this.currTime / this.darkeningThreshold);
-      this.updateRadialGradient(darkness);
-    }
   }
 }
