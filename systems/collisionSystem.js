@@ -15,7 +15,9 @@ export default class CollisionSystem {
       const inputA = entityA.getComponent('input');
       const stateA = entityA.getComponent("state");
       if (!inputA) continue;
-      
+      const velA = entityA.getComponent('velocity');
+      console.log(velA);
+      //if (velA.vy !== 0 || velA.vx !== 0) stateA.isGrounded = false;
       for (let j = 0; j < entities.length; j++) {
         if (i === j) continue;
         const entityB = entities[j];
@@ -32,6 +34,7 @@ export default class CollisionSystem {
     const visualB = entityB.getComponent('visual');
     const posA = entityA.getComponent('position');
     const posB = entityB.getComponent('position');
+    
 
     return (
       posA.x < posB.x + visualB.width &&
@@ -102,5 +105,6 @@ export default class CollisionSystem {
     } 
     
     stateA.isColliding = true;
+
   }
 }

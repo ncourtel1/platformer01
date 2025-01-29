@@ -165,9 +165,9 @@ ecs.addEntity(ground);
 const game_container = document.getElementById("game-container");
 
 ecs.addSystem(new RunSystem());
+ecs.addSystem(new JumpSystem());
 ecs.addSystem(new CollisionSystem());
 ecs.addSystem(new GravitySystem());
-ecs.addSystem(new JumpSystem());
 ecs.addSystem(new RenderSystem(game_container));
 ecs.addSystem(new SpriteSystem(game_container));
 
