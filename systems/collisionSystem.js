@@ -18,7 +18,12 @@ export default class CollisionSystem {
       for (let j = 0; j < entities.length; j++) {
         if (i === j) continue;
         const entityB = entities[j];
+        const collisionTagB = entityB.getComponent('collisionTag');
         if (this.checkOverlap(entityA, entityB)) {
+          //console.log("here")
+          //console.log(collisionTagB)
+          if(collisionTagB.collisionTag == "trap") console.log("You lose a life");
+          if(collisionTagB.collisionTag == "chess") console.log("You win!!!");
           this.handleCollision(entityA, entityB);
         }
       }

@@ -11,23 +11,24 @@ import GravitySystem from "./systems/gravitySystem.js";
 const ecs = new ECS();
 const player = createPlayer(100, 500, 0, 0, "white", 64, 64);
 ecs.addEntity(player);
-const obj1 = createObject(400, 700, "green", 32, 32);
+const obj1 = createObject(400, 700, "green", 32, 32, "trap");
 ecs.addEntity(obj1);
-const obj2 = createObject(100, 700, "green", 32, 32);
+const obj2 = createObject(100, 700, "green", 32, 32, "chess");
 ecs.addEntity(obj2);
-const obj3 = createObject(700, 550, "green", 200, 200);
+const obj3 = createObject(700, 550, "green", 200, 200, "hello");
 ecs.addEntity(obj3);
-const obj4 = createObject(1000, 550, "green", 100, 50);
+const obj4 = createObject(1000, 550, "green", 100, 50, "test");
 ecs.addEntity(obj4);
-const ground = createObject(0, 800, "green", 3000, 100);
+const ground = createObject(0, 800, "green", 3000, 100, "ground");
 ecs.addEntity(ground);
 
 const game_container = document.getElementById("game-container");
 
 ecs.addSystem(new RunSystem());
-ecs.addSystem(new RenderSystem(game_container));
+
 ecs.addSystem(new JumpSystem());
 ecs.addSystem(new CollisionSystem());
+ecs.addSystem(new RenderSystem(game_container));
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
 
 ecs.addSystem(new GravitySystem());
