@@ -7,7 +7,7 @@ export default class RunSystem {
          const input = entity.getComponent('input');
          const playerData = entity.getComponent('data');
          const animation = entity.getComponent('sprite');
-         if (position && velocity) {
+         if (position && velocity && playerData) {
             
             input.update();
             if (input.x !== 0) 

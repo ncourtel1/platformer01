@@ -6,12 +6,14 @@ import RenderSystem from "./systems/renderSystem.js";
 import CollisionSystem from "./systems/collisionSystem.js";
 import JumpSystem from "./systems/jumpSystem.js";
 import GravitySystem from "./systems/gravitySystem.js";
+import ShooterSystem from "./systems/shooterSystem.js";
 import HealthSystem from "./systems/healthSystem.js";
 import TimerSystem from "./systems/timerSystem.js";
 import MenuSystem from "./systems/menuSystem.js";
 import SpriteSystem from "./systems/spriteSystem.js";
+import createShooter from "./entities/createShooter.js";
 
-const ecs = new ECS();
+export const ecs = new ECS();
 
 const playerIdle1 = new Image();
 playerIdle1.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 01.png";
@@ -121,6 +123,30 @@ const waterReflects = [waterReflect1, waterReflect2, waterReflect3, waterReflect
 const backgroundWaterReflects = new Map();
 backgroundWaterReflects.set('big', waterReflects)
 
+const canonBall = new Image();
+canonBall.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Idle/1.png";
+
+const canonBallProjectile = new Map();
+canonBallProjectile.set('projectile', [canonBall]);
+
+const canonFire1 = new Image();
+canonFire1.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/1.png";
+const canonFire2 = new Image();
+canonFire2.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/2.png";
+const canonFire3 = new Image();
+canonFire3.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/3.png";
+const canonFire4 = new Image();
+canonFire4.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/4.png";
+const canonFire5 = new Image();
+canonFire5.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/5.png";
+const canonFire6 = new Image();
+canonFire6.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/6.png";
+
+const canonFires = [canonFire1, canonFire2, canonFire3, canonFire4, canonFire5, canonFire6];
+
+const canonFireAnim = new Map();
+canonFireAnim.set('fire', canonFires);
+
 /*
 
 const playerIdle1 = new Image();
@@ -213,6 +239,9 @@ ecs.addEntity(obj12);
 const player = createPlayer(300, 500, 0, 0, "", 80, 92, playerAnimation, playerParticle);
 ecs.addEntity(player);
 
+const canonBallObj = createObject(0, 0, "", 50, 50, canonBallProjectile, undefined, undefined, undefined, undefined, undefined, true, true);
+const canon1 = createShooter(600, 746, "", 160, 104, canonFireAnim, undefined, 11, 0.17, true, canonBallObj);
+ecs.addEntity(canon1);
 const map1 = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[0,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,2],[17,19,-1,68,69,69,70,-1,-1,4,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,21,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,21,-1,-1,72,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,38,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,17,19],[83,69,69,69,69,69,69,69,69,69,69,69,69,69,69,84]];
 
 function generateObjectsFromMap() {
@@ -250,6 +279,7 @@ ecs.addSystem(new CollisionSystem());
 ecs.addSystem(new GravitySystem());
 ecs.addSystem(new RenderSystem(game_container));
 ecs.addSystem(new SpriteSystem(game_container));
+ecs.addSystem(new ShooterSystem());
 
 
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
