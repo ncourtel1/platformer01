@@ -13,13 +13,14 @@ export default class CollisionSystem {
     for (let i = 0; i < entities.length; i++) {
       const entityA = entities[i];
       const inputA = entityA.getComponent('input');
+      const stateA = entityA.getComponent("state");
       if (!inputA) continue;
-      
       for (let j = 0; j < entities.length; j++) {
         if (i === j) continue;
         const entityB = entities[j];
         if (this.checkOverlap(entityA, entityB)) {
           this.handleCollision(entityA, entityB);
+          console.log(stateA.isGrounded)
         }
       }
     }
@@ -30,6 +31,7 @@ export default class CollisionSystem {
     const visualB = entityB.getComponent('visual');
     const posA = entityA.getComponent('position');
     const posB = entityB.getComponent('position');
+    
 
     return (
       posA.x < posB.x + visualB.width &&
@@ -46,8 +48,9 @@ export default class CollisionSystem {
     const posB = entityB.getComponent('position');
     const velA = entityA.getComponent('velocity');
     const stateA = entityA.getComponent('state');
+    const stateB = entityB.getComponent('state');
     const dataA = entityA.getComponent('data');
-
+    if (!stateA.canCollide || !stateB.canCollide) return;
     // Calculer le centre des entités
     const centerA = {
       x: posA.x + visualA.width / 2,
@@ -68,6 +71,25 @@ export default class CollisionSystem {
       posB.y + visualB.height - posA.y
     );
 
+    if (overlapX >= overlapY){
+      // Collision verticale
+      if (centerA.y < centerB.y) {
+        // Collision par le haut
+        posA.y = posB.y - visualA.height;
+        velA.vy = 0;
+        stateA.isGrounded = true;
+      } else {
+        //stateA.isGrounded = false;
+        // Collision par le bas
+        posA.y = posB.y + visualB.height;
+        velA.vy = 0;
+        // Seulement annuler la vélocité verticale si l'entité monte
+        if (velA.vy < 0) {
+          velA.vy = 0;
+        }
+      }
+    }
+
     // Déterminer la direction de la collision
     if (overlapX < overlapY) {
       // Collision horizontale
@@ -78,23 +100,9 @@ export default class CollisionSystem {
         posA.x = posB.x + visualB.width;
         velA.vx = 0;
       }
-    } else {
-      // Collision verticale
-      if (centerA.y < centerB.y) {
-        // Collision par le haut
-        posA.y = posB.y - visualA.height;
-        velA.vy = 0;
-        stateA.isGrounded = true;
-      } else {
-        // Collision par le bas
-        posA.y = posB.y + visualB.height;
-        velA.vy = 0;
-        // Seulement annuler la vélocité verticale si l'entité monte
-        if (velA.vy < 0) {
-          velA.vy = 0;
-        }
-      }
-    }
+    } 
+    
     stateA.isColliding = true;
+
   }
 }

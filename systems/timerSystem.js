@@ -12,6 +12,8 @@ export default class TimerSystem {
     this.transitionSpeed = 0.009; // Contrôle la vitesse de transition
 
     const imgSize = 150;
+    const xOffset = 50;
+    const yOffset = -40;
 
     // Create darkening screen with radial gradient
     this.darkOverlay = document.createElement("div");
@@ -47,6 +49,8 @@ export default class TimerSystem {
 
     // Create div for images
     this.imagesContainer = document.createElement("div");
+    this.imagesContainer.style.marginLeft = `${xOffset}px`;
+    this.imagesContainer.style.marginTop = `${yOffset}px`;
     this.imagesContainer.style.display = "flex";
     this.container.appendChild(this.imagesContainer);
 
@@ -54,23 +58,32 @@ export default class TimerSystem {
     this.imageElement1 = document.createElement("img");
     this.imageElement1.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/2.png";
     this.imageElement1.style.width = `${imgSize}px`;
+    this.imageElement1.style.zIndex = "1";
+    this.imageElement1.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement1);
 
     this.imageElement3 = document.createElement("img");
     this.imageElement3.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/3.png";
     this.imageElement3.style.width = `${imgSize}px`;
+    this.imageElement3.style.zIndex = "1";
+    this.imageElement3.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement3);
 
     this.imageElement4 = document.createElement("img");
     this.imageElement4.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/4.png";
     this.imageElement4.style.width = `${imgSize}px`;
+    this.imageElement4.style.zIndex = "1";
+    this.imageElement4.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement4);
 
     // Create timer bar
     this.imageTimerBar = document.createElement("div");
     this.imageTimerBar.style.backgroundColor = "#f7ebb5";
+    this.imageTimerBar.style.marginLeft = `${xOffset}px`;
     this.imageTimerBar.style.transition = "width 0.3s ease";
     this.imageTimerBar.style.position = "absolute";
+    this.imageTimerBar.style.marginTop = `${yOffset}px`;
+    this.imageTimerBar.style.zIndex = "2000";
 
     // Calculate dimensions relative to imgSize
     const heightRatio = 5 / 90;
@@ -98,7 +111,7 @@ export default class TimerSystem {
 
     // Calculate the center position of the player
     const playerCenterX = positionComponent.x + (visualComponent.width / 2);
-    const playerCenterY = positionComponent.y + 3*(visualComponent.height);
+    const playerCenterY = positionComponent.y + (visualComponent.height) - 30;
 
     // Calculate the radius based on remaining time
     const maxRadius = Math.max(window.innerWidth, window.innerHeight);

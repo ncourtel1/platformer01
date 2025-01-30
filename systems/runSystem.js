@@ -6,8 +6,17 @@ export default class RunSystem {
          const velocity = entity.getComponent('velocity');
          const input = entity.getComponent('input');
          const playerData = entity.getComponent('data');
+         const animation = entity.getComponent('sprite');
          if (position && velocity) {
+            
             input.update();
+            if (input.x !== 0) 
+            {
+               animation.setState('run');
+               if (velocity.vx > 0) animation.flip = false;
+               else animation.flip = true;
+            }
+            else animation.setState('idle');
             const acceleration = (input.x * playerData.x_acceleration) / playerData.mass;
             velocity.vx += acceleration * dt;
             if (input.x === 0 || Math.sign(input.x) !== Math.sign(velocity.vx)) {

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tilemap Editor</title>
+  <style>
+    body {
+      display: flex;
+      margin: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    #editor {
+      display: grid;
+      grid-template-columns: auto 200px;
+      width: 100%;
+    }
+    canvas {
+      border: 1px solid black;
+    }
+    #map {
+      cursor: crosshair;
+    }
+    #tilemap {
+      cursor: pointer;
+    }
+    #controls {
+      padding: 10px;
+      background-color: #f8f8f8;
+    }
+    button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="editor">
+    <canvas id="map" width="512" height="512"></canvas>
+    <div id="controls">
+      <canvas id="tilemap" width="544" height="166"></canvas>
+      <button id="export">Export JSON</button>
+      <pre id="output"></pre>
+    </div>
+  </div>
+  <script>
+    const tileSize = 32;
+    const mapWidth = 16;
+    const mapHeight = 16;
+
+    const mapCanvas = document.getElementById('map');
+    const mapCtx = mapCanvas.getContext('2d');
+    const tilemapCanvas = document.getElementById('tilemap');
+    const tilemapCtx = tilemapCanvas.getContext('2d');
+    const exportButton = document.getElementById('export');
+    const output = document.getElementById('output');
+
+    const map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
+    let tilemapImage = new Image();
+    let selectedTile = null;
+
+    tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png'; // Remplace par le chemin de ta tilemap
+    tilemapImage.onload = () => {
+      tilemapCanvas.width = tilemapImage.width;
+      tilemapCanvas.height = tilemapImage.height;
+      tilemapCtx.drawImage(tilemapImage, 0, 0);
+    };
+
+    function drawGrid() {
+      mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+      for (let y = 0; y < mapHeight; y++) {
+        for (let x = 0; x < mapWidth; x++) {
+          mapCtx.strokeStyle = '#ddd';
+          mapCtx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+          if (map[y][x] !== -1) {
+            const sx = (map[y][x] % (tilemapImage.width / tileSize)) * tileSize;
+            const sy = Math.floor(map[y][x] / (tilemapImage.width / tileSize)) * tileSize;
+            mapCtx.drawImage(tilemapImage, sx, sy, tileSize, tileSize, x * tileSize, y * tileSize, tileSize, tileSize);
+          }
+        }
+      }
+    }
+
+    tilemapCanvas.addEventListener('click', (e) => {
+      const rect = tilemapCanvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / tileSize);
+      const y = Math.floor((e.clientY - rect.top) / tileSize);
+      selectedTile = y * (tilemapImage.width / tileSize) + x;
+    });
+
+    mapCanvas.addEventListener('click', (e) => {
+      if (selectedTile === null) return;
+      const rect = mapCanvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / tileSize);
+      const y = Math.floor((e.clientY - rect.top) / tileSize);
+      if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
+        map[y][x] = selectedTile;
+        drawGrid();
+      }
+    });
+
+    exportButton.addEventListener('click', () => {
+      const json = JSON.stringify(map);
+      output.textContent = json;
+      console.log(json); // Optional: log to console
+    });
+
+    drawGrid();
+  </script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 export default class StateComponent{
-   constructor(){
+   constructor(canCollide = true){
       this.isColliding = false;
       this.isGrounded = false;
       this.isJumping = false;
+      this.canCollide = canCollide;
    }
-} 
+}

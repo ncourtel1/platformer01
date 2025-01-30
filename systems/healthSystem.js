@@ -3,9 +3,11 @@ export default class HealthSystem {
     this.container = container;
     this.player = player;
     const imgSize = 150; // Taille de base des images
+    const xOffset = 50;
 
     // Créer une div pour contenir les images
     this.imagesContainer = document.createElement("div");
+    this.imagesContainer.style.marginLeft = `${xOffset}px`;
     this.imagesContainer.style.display = "flex";
     this.container.appendChild(this.imagesContainer);
 
@@ -14,18 +16,24 @@ export default class HealthSystem {
     this.imageElement1.src =
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/1.png";
     this.imageElement1.style.width = `${imgSize}px`;
+    this.imageElement1.style.zIndex = "1";
+    this.imageElement1.style.imageRendering = 'pixelated';
     this.imagesContainer.appendChild(this.imageElement1);
 
     this.imageElement3 = document.createElement("img");
     this.imageElement3.src =
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/3.png";
     this.imageElement3.style.width = `${imgSize}px`;
+    this.imageElement3.style.zIndex = "1";
+    this.imageElement3.style.imageRendering = 'pixelated';
     this.imagesContainer.appendChild(this.imageElement3);
 
     this.imageElement4 = document.createElement("img");
     this.imageElement4.src =
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/4.png";
     this.imageElement4.style.width = `${imgSize}px`;
+    this.imageElement4.style.zIndex = "1";
+    this.imageElement4.style.imageRendering = 'pixelated';
     this.imagesContainer.appendChild(this.imageElement4);
 
     // Créer l'image de la barre de vie
@@ -33,6 +41,8 @@ export default class HealthSystem {
     this.imageHealthBar.style.backgroundColor = "#db4848";
     this.imageHealthBar.style.transition = "width 0.3s ease";
     this.imageHealthBar.style.position = "absolute";
+    this.imageHealthBar.style.marginLeft = `${xOffset}px`;;
+    this.imageHealthBar.style.zIndex = "1";
 
     // Calculer les dimensions relatives à imgSize
     const heightRatio = 5 / 90;
