@@ -149,7 +149,7 @@ playerAnimation.set('fall', playerFallImages)
 
 */
 
-const player = createPlayer(100, 500, 0, 0, "white", 160, 100, playerAnimation, playerParticle);
+const player = createPlayer(100, 500, 0, 0, "", 80, 92, playerAnimation, playerParticle);
 ecs.addEntity(player);
 const obj1 = createObject(400, 700, "green", 32, 32);
 ecs.addEntity(obj1);

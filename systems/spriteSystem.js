@@ -9,6 +9,7 @@ export default class SpriteSystem {
             const sprite = entity.getComponent("sprite");
             const visual = entity.getComponent("visual");
             const state = entity.getComponent("state");
+            const data = entity.getComponent("data");
             //console.log(state.isGrounded);
 
             if (position && sprite) {  
@@ -24,7 +25,8 @@ export default class SpriteSystem {
                     sprite.currentFrame += 0.2;
                     const frameIndex = Math.floor(sprite.currentFrame) % currentStateImages.length;
                     entityElement.style.backgroundImage = `url(${currentStateImages[frameIndex].src})`;
-                    entityElement.style.backgroundSize = `${visual.width}px auto`;
+                    entityElement.style.backgroundSize = `${visual.width + (data ? 129 : 0)}px auto`;
+                    if (data) entityElement.style.backgroundPosition = `center -13px`;
                     entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"
                         }`;
                 }
@@ -41,9 +43,9 @@ export default class SpriteSystem {
                     const particleFrameIndex = Math.floor(sprite.currentFrame) % particleStateImages.length;
                     particleElement.style.backgroundImage = `url(${particleStateImages[particleFrameIndex].src})`;
                     particleElement.style.backgroundRepeat = 'no-repeat';
-                    particleElement.style.width = `${particleStateImages[particleFrameIndex].width * 1.8}px`;
+                    particleElement.style.width = `${particleStateImages[particleFrameIndex].width * 2}px`;
                     particleElement.style.height = `${particleStateImages[particleFrameIndex].height * 2}px`;
-                    particleElement.style.transform = `translate(${position.x + (particleStateImages[particleFrameIndex].width / 1.8)}px, ${position.y + visual.height - (particleStateImages[particleFrameIndex].height * 2.2)}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"
+                    particleElement.style.transform = `translate(${position.x + (particleStateImages[particleFrameIndex].width) - 60}px, ${position.y + visual.height - (particleStateImages[particleFrameIndex].height * 1.1)}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"
                         }`;
                 }
                 else {
