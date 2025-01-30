@@ -11,7 +11,7 @@ export default class SpriteComponent {
       this.sx = sx || 0;
       this.sy = sy || 0;
       this.lastRequestedState = this.currentState;
-    this.stateRequestCount = 0;
+      this.stateRequestCount = 0;
     }
     setState(state) {
       const currentTime = Date.now();

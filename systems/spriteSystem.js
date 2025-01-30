@@ -34,22 +34,21 @@ export default class SpriteSystem {
                         }`;
                     } else {
                         if (currentStateImages && currentStateImages.length > 0) {
-                            const yoffset = 955;
                             const zoom = 3.75;
-                            const tileImage = currentStateImages[0];  // Première tile
-                            entityElement.style.width = `${visual.width * zoom}px`;
-                            entityElement.style.height = `${visual.height * zoom}px`;
+                            const tileImage = currentStateImages[0];
+                            entityElement.style.width = `${visual.width}px`;
+                            entityElement.style.height = `${visual.height}px`;
                             entityElement.style.backgroundImage = `url(${tileImage.src})`;
-                            entityElement.style.backgroundPosition = `-${sprite.sx * zoom}px -${sprite.sy * zoom}px`;
+                            entityElement.style.backgroundPosition = `-${sprite.sx}px -${sprite.sy}px`;
                             entityElement.style.backgroundSize = `${tileImage.naturalWidth * zoom}px ${tileImage.naturalHeight * zoom}px`;
                             entityElement.style.imageRendering = 'pixelated';
-                            entityElement.style.transform = `translate(${position.x * zoom}px, ${position.y * zoom - yoffset}px)`;
+                            entityElement.style.transform = `translate(${position.x}px, ${position.y}px)`;
                         }
                     }
                 }
                 // Particles
-                /*
                 if (sprite.particleStates) {
+                    console.log(sprite.particleStates, sprite.currentState)
                     const particleStateImages = sprite.particleStates.get(sprite.currentState);
                     if (particleStateImages && particleStateImages.length > 0) {
                         let particleElement = document.getElementById(`${entity.id}-particles`);
@@ -60,30 +59,23 @@ export default class SpriteSystem {
                             this.container.appendChild(particleElement);
                         }
                         const particleFrameIndex = Math.floor(sprite.currentFrame) % particleStateImages.length;
-                        particleElement.style.backgroundImage = `url(${particleStateImages[particleFrameIndex].src})`;
-                        particleElement.style.backgroundRepeat = 'no-repeat';
-                        particleElement.style.width = `${particleStateImages[particleFrameIndex].width * 1.8}px`;
-                        particleElement.style.height = `${particleStateImages[particleFrameIndex].height * 2}px`;
-                        particleElement.style.transform = `translate(${position.x + (particleStateImages[particleFrameIndex].width / 1.8)}px, ${position.y + visual.height - (particleStateImages[particleFrameIndex].height * 2.2)}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"
-                            }`;
-                    }
-                    else {
-                        let particleElement = document.getElementById(`${entity.id}-particles`);
-                        if (particleElement) particleElement.remove();
-                    }
-                    const particleFrameIndex = Math.floor(sprite.currentFrame) % particleStateImages.length;
                     particleElement.style.backgroundImage = `url(${particleStateImages[particleFrameIndex].src})`;
                     particleElement.style.backgroundRepeat = 'no-repeat';
                     particleElement.style.width = `${particleStateImages[particleFrameIndex].width * 2}px`;
                     particleElement.style.height = `${particleStateImages[particleFrameIndex].height * 2}px`;
                     particleElement.style.transform = `translate(${position.x + (particleStateImages[particleFrameIndex].width) - 60}px, ${position.y + visual.height - (particleStateImages[particleFrameIndex].height * 1.1)}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"
                         }`;
+                    }
+                    else {
+                        let particleElement = document.getElementById(`${entity.id}-particles`);
+                        if (particleElement) particleElement.remove();
+                    }
+                    
                 }
                 else {
                     let particleElement = document.getElementById(`${entity.id}-particles`);
                     if (particleElement) particleElement.remove();
                 }
-                    */
             }
         }
     }

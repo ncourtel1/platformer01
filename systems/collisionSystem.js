@@ -15,9 +15,6 @@ export default class CollisionSystem {
       const inputA = entityA.getComponent('input');
       const stateA = entityA.getComponent("state");
       if (!inputA) continue;
-      const velA = entityA.getComponent('velocity');
-      console.log(velA);
-      //if (velA.vy !== 0 || velA.vx !== 0) stateA.isGrounded = false;
       for (let j = 0; j < entities.length; j++) {
         if (i === j) continue;
         const entityB = entities[j];
@@ -51,8 +48,9 @@ export default class CollisionSystem {
     const posB = entityB.getComponent('position');
     const velA = entityA.getComponent('velocity');
     const stateA = entityA.getComponent('state');
+    const stateB = entityB.getComponent('state');
     const dataA = entityA.getComponent('data');
-
+    if (!stateA.canCollide || !stateB.canCollide) return;
     // Calculer le centre des entités
     const centerA = {
       x: posA.x + visualA.width / 2,
