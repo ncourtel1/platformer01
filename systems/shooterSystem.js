@@ -10,7 +10,6 @@ export default class ShooterSystem {
          const position = entity.getComponent('position');
          const state = entity.getComponent('state');
          const sprite = entity.getComponent('sprite');
-         console.log(sprite.currentState.length);
          if (sprite.currentState === 'fire' && Math.round(sprite.currentFrame) === sprite.currentState.length && projectileComp) {
             sprite.setState('idle');
             sprite.setState('idle');

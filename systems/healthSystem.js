@@ -42,7 +42,7 @@ export default class HealthSystem {
     this.imageHealthBar.style.transition = "width 0.3s ease";
     this.imageHealthBar.style.position = "absolute";
     this.imageHealthBar.style.marginLeft = `${xOffset}px`;;
-    this.imageHealthBar.style.zIndex = "1";
+    this.imageHealthBar.style.zIndex = "10";
 
     // Calculer les dimensions relatives à imgSize
     const heightRatio = 5 / 90;
@@ -50,6 +50,7 @@ export default class HealthSystem {
     const leftOffsetRatio = 48 / 90;
 
     // Appliquer les dimensions relatives
+    console.log(imgSize * heightRatio + 1, this.player)
     this.imageHealthBar.style.height = `${imgSize * heightRatio + 1}px`;
     this.imageHealthBar.style.top = `${imgSize * topOffsetRatio - 1}px`;
     this.imageHealthBar.style.left = `${imgSize * leftOffsetRatio}px`;
@@ -61,9 +62,8 @@ export default class HealthSystem {
 
   update() {
     let playerHealth = this.player.getComponent("health");
-    const healthRatio = playerHealth.currentHealth / playerHealth.maxHealth;
-    const imgSize = parseInt(this.imageElement1.style.width);
-    const maxBarWidth = imgSize * 2.34;
+    const healthRatio = playerHealth.currentHealth / playerHealth.maxHealth;;
+    const maxBarWidth = 150 * 2.34;
     const healthBarWidth = maxBarWidth * healthRatio;
     this.imageHealthBar.style.width = `${healthBarWidth}px`;
   }
