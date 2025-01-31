@@ -3,7 +3,7 @@ export default class MenuSystem {
   constructor(container, timerSys) {
     this.container = container;
     this.paused = false;
-    this.timerSys = timerSys
+    this.timerSys = timerSys;
 
     // Créer une div pour contenir les images
     this.imagesContainer = document.createElement("div");
@@ -30,11 +30,20 @@ export default class MenuSystem {
         this.togglePause();
       }
     });
+    
+  // Si l'utilisateur quitte la fenêtre, mettre le jeu en pause
+    window.addEventListener("blur", () => {
+      this.togglePause();
+    });
+
+    window.addEventListener("focus", () => {
+      this.togglePause();
+    });
   }
 
   togglePause() {
     this.paused = !this.paused;
-    this.timerSys.toggleTimer()
+    this.timerSys.toggleTimer();
     this.imagesContainer.style.display = this.paused ? "block" : "none";
   }
 
