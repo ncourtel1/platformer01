@@ -48,7 +48,6 @@ export default class SpriteSystem {
                 }
                 // Particles
                 if (sprite.particleStates) {
-                    console.log(sprite.particleStates, sprite.currentState)
                     const particleStateImages = sprite.particleStates.get(sprite.currentState);
                     if (particleStateImages && particleStateImages.length > 0) {
                         let particleElement = document.getElementById(`${entity.id}-particles`);

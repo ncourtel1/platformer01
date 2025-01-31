@@ -14,13 +14,12 @@ export default class CollisionSystem {
       const entityA = entities[i];
       const inputA = entityA.getComponent('input');
       const stateA = entityA.getComponent("state");
-      if (!inputA) continue;
+      //if (!inputA) continue;
       for (let j = 0; j < entities.length; j++) {
         if (i === j) continue;
         const entityB = entities[j];
         if (this.checkOverlap(entityA, entityB)) {
           this.handleCollision(entityA, entityB);
-          console.log(stateA.isGrounded)
         }
       }
     }
@@ -47,10 +46,13 @@ export default class CollisionSystem {
     const posA = entityA.getComponent('position');
     const posB = entityB.getComponent('position');
     const velA = entityA.getComponent('velocity');
+    const velB = entityB.getComponent('velocity');
     const stateA = entityA.getComponent('state');
     const stateB = entityB.getComponent('state');
     const dataA = entityA.getComponent('data');
-    if (!stateA.canCollide || !stateB.canCollide) return;
+    const projectileA = entityA.getComponent('projectile');
+    const projectileB = entityB.getComponent('projectile');
+    if (!stateA.canCollide || !stateB.canCollide || projectileA && stateB.isProjectile || projectileB && stateA.isProjectile) return;
     // Calculer le centre des entités
     const centerA = {
       x: posA.x + visualA.width / 2,
@@ -103,6 +105,7 @@ export default class CollisionSystem {
     } 
     
     stateA.isColliding = true;
+    stateB.isColliding = true;
 
   }
 }

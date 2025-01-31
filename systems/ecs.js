@@ -9,6 +9,12 @@ export default class ECS{
       this.entities.push(entity);
    }
 
+   removeEntity(entity) {
+      this.entities = this.entities.filter(e => e.id !== entity.id);
+      let entityElement = document.getElementById(entity.id);
+      if (entityElement) entityElement.remove();
+   }
+
    addSystem(system){
       this.systems.push(system);
    }
