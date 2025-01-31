@@ -55,6 +55,7 @@ export default class CollisionSystem {
     if (!stateA.canCollide || !stateB.canCollide || projectileA && stateB.isProjectile || projectileB && stateA.isProjectile) return;
 
     this.checkItem(entityA, entityB);
+    this.trapCollision(entityA, entityB);
 
     if (!stateA.canCollide || !stateB.canCollide) return;
     // Calculer le centre des entités
@@ -148,6 +149,23 @@ export default class CollisionSystem {
         // Time += 1/4
       }else if(stateB.tag == "timeBonus"){
         // Time += 1/4
+      }
+    }
+  }
+
+  trapCollision(entityA, entityB){
+    const stateA = entityA.getComponent("state");
+    const stateB = entityB.getComponent("state");
+    const inputA = entityA.getComponent("input");
+    const inputB = entityB.getComponent("input");
+    const healthA = entityA.getComponent("health");
+    const healthB = entityB.getComponent("health");
+
+    if((inputA && stateB) || (stateA && inputB)){
+      if(stateB.tag == "trap"){
+        healthA.removeHealth(1);
+      }else if(stateA.tag == "trap"){
+        healthB.removeHealth(1);
       }
     }
   }
