@@ -55,6 +55,7 @@ export default class CollisionSystem {
     if (!stateA.canCollide || !stateB.canCollide || projectileA && stateB.isProjectile || projectileB && stateA.isProjectile) return;
 
     this.checkItem(entityA, entityB);
+    this.checkEndLevel(entityA, entityB);
 
     if (!stateA.canCollide || !stateB.canCollide) return;
     // Calculer le centre des entités
@@ -148,6 +149,22 @@ export default class CollisionSystem {
         // Time += 1/4
       }else if(stateB.tag == "timeBonus"){
         // Time += 1/4
+      }
+    }
+  }
+
+  // Handle chess collision for new level
+  checkEndLevel(entityA, entityB){
+    const stateA = entityA.getComponent("state");
+    const stateB = entityB.getComponent("state");
+    const inputA = entityA.getComponent("input");
+    const inputB = entityB.getComponent("input");
+
+    if((inputA && stateB) || (stateA && inputB)){
+      if(stateA.tag == "chess" && stateB.canFinish){
+        stateB.levelFinish = true;
+      }else if(stateB.tag == "chess" && stateB.canFinish){
+        stateA.levelFinish = true;
       }
     }
   }
