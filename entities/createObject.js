@@ -6,7 +6,7 @@ import SpriteComponent from "../components/spriteComponent.js"
 import Entity from "./entity.js"
 
 // Create Entity object with components attached to it 
-export default function createObject(x, y, color , width, height, states, particles, offset, speed, sx, sy, canCollide){
+export default function createObject(x, y, color , width, height, states, particles, offset, speed, sx, sy, canCollide, collisionTag){
    const object = new Entity();
    object.addComponent('position', new PositionComponent(x, y));
    object.addComponent('visual', new VisualComponent(color, width, height))

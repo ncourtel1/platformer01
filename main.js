@@ -10,6 +10,7 @@ import HealthSystem from "./systems/healthSystem.js";
 import TimerSystem from "./systems/timerSystem.js";
 import MenuSystem from "./systems/menuSystem.js";
 import SpriteSystem from "./systems/spriteSystem.js";
+import RespawnSystem from "./systems/respawnSystem.js";
 
 const ecs = new ECS();
 
@@ -253,7 +254,7 @@ ecs.addSystem(new SpriteSystem(game_container));
 
 
 //ecs.addSystem(new CameraSystem(game_container, player, 400, 400));
-
+ecs.addSystem(new RespawnSystem());
 ecs.addSystem(new HealthSystem(HUD, player));
 
 const timerSys = new TimerSystem(HUD, 10, player);

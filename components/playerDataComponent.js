@@ -16,5 +16,6 @@ export const PlayerDataComponent = {
    //idle: { frames: [0, 1, 2, 3], frameRate: 4 },
    //run: { frames: [4, 5, 6, 7], frameRate: 8 },
    //jump: { frames: [8, 9, 10], frameRate: 6 },
-    
+   xStart: 300,
+   yStart: 500
 }
