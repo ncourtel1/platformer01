@@ -1,8 +1,11 @@
 export default class CollisionSystem {
+  constructor(timerSys){
+    this.timerSys = timerSys
+  }
   update(entities) {
     // Réinitialisation des états
-    entities.forEach(entity => {
-      const state = entity.getComponent('state');
+    entities.forEach((entity) => {
+      const state = entity.getComponent("state");
       if (state) {
         state.isColliding = false;
         state.isGrounded = false;
@@ -12,7 +15,7 @@ export default class CollisionSystem {
     // Vérification des collisions
     for (let i = 0; i < entities.length; i++) {
       const entityA = entities[i];
-      const inputA = entityA.getComponent('input');
+      const inputA = entityA.getComponent("input");
       const stateA = entityA.getComponent("state");
       //if (!inputA) continue;
       for (let j = 0; j < entities.length; j++) {
@@ -26,11 +29,10 @@ export default class CollisionSystem {
   }
 
   checkOverlap(entityA, entityB) {
-    const visualA = entityA.getComponent('visual');
-    const visualB = entityB.getComponent('visual');
-    const posA = entityA.getComponent('position');
-    const posB = entityB.getComponent('position');
-    
+    const visualA = entityA.getComponent("visual");
+    const visualB = entityB.getComponent("visual");
+    const posA = entityA.getComponent("position");
+    const posB = entityB.getComponent("position");
 
     return (
       posA.x < posB.x + visualB.width &&
@@ -41,18 +43,24 @@ export default class CollisionSystem {
   }
 
   handleCollision(entityA, entityB) {
-    const visualA = entityA.getComponent('visual');
-    const visualB = entityB.getComponent('visual');
-    const posA = entityA.getComponent('position');
-    const posB = entityB.getComponent('position');
-    const velA = entityA.getComponent('velocity');
-    const velB = entityB.getComponent('velocity');
-    const stateA = entityA.getComponent('state');
-    const stateB = entityB.getComponent('state');
-    const dataA = entityA.getComponent('data');
-    const projectileA = entityA.getComponent('projectile');
-    const projectileB = entityB.getComponent('projectile');
-    if (!stateA.canCollide || !stateB.canCollide || projectileA && stateB.isProjectile || projectileB && stateA.isProjectile) return;
+    const visualA = entityA.getComponent("visual");
+    const visualB = entityB.getComponent("visual");
+    const posA = entityA.getComponent("position");
+    const posB = entityB.getComponent("position");
+    const velA = entityA.getComponent("velocity");
+    const velB = entityB.getComponent("velocity");
+    const stateA = entityA.getComponent("state");
+    const stateB = entityB.getComponent("state");
+    const dataA = entityA.getComponent("data");
+    const projectileA = entityA.getComponent("projectile");
+    const projectileB = entityB.getComponent("projectile");
+    if (
+      !stateA.canCollide ||
+      !stateB.canCollide ||
+      (projectileA && stateB.isProjectile) ||
+      (projectileB && stateA.isProjectile)
+    )
+      return;
 
     this.checkItem(entityA, entityB);
     this.trapCollision(entityA, entityB);
@@ -62,11 +70,11 @@ export default class CollisionSystem {
     // Calculer le centre des entités
     const centerA = {
       x: posA.x + visualA.width / 2,
-      y: posA.y + visualA.height / 2
+      y: posA.y + visualA.height / 2,
     };
     const centerB = {
       x: posB.x + visualB.width / 2,
-      y: posB.y + visualB.height / 2
+      y: posB.y + visualB.height / 2,
     };
 
     // Calculer les chevauchements
@@ -79,7 +87,7 @@ export default class CollisionSystem {
       posB.y + visualB.height - posA.y
     );
 
-    if (overlapX >= overlapY){
+    if (overlapX >= overlapY) {
       // Collision verticale
       if (centerA.y < centerB.y) {
         // Collision par le haut
@@ -108,14 +116,13 @@ export default class CollisionSystem {
         posA.x = posB.x + visualB.width;
         velA.vx = 0;
       }
-    } 
-    
+    }
+
     stateA.isColliding = true;
     stateB.isColliding = true;
-
   }
 
-  checkItem(entityA, entityB){
+  checkItem(entityA, entityB) {
     const stateA = entityA.getComponent("state");
     const stateB = entityB.getComponent("state");
     const inputA = entityA.getComponent("input");
@@ -123,33 +130,30 @@ export default class CollisionSystem {
     const healthA = entityA.getComponent("health");
     const healthB = entityB.getComponent("health");
 
-
     // Handle Key for Opening Chess
-    if((inputA && stateB) || (stateA && inputB)){
-      if(stateA.tag == "keyChess"){
+    if ((inputA && stateB) || (stateA && inputB)) {
+      if (stateA.tag == "keyChess") {
         stateB.canFinish = true;
-      }else if(stateB.tag == "keyChess"){
+      } else if (stateB.tag == "keyChess") {
         stateA.canFinish = true;
       }
     }
 
     // Handle Health Bonus
-    if((inputA && stateB) || (stateA && inputB)){
-      if(stateA.tag == "healthBonus"){
-        // FUNCTION ADRIEN
-        // life += 1
-      }else if(stateB.tag == "healthBonus"){
-        // life += 1
+    if ((inputA && stateB) || (stateA && inputB)) {
+      if (stateA.tag == "healthBonus") {
+        healthB.addHealth(1);
+      } else if (stateB.tag == "healthBonus") {
+        healthA.addHealth(1);
       }
     }
 
     // Handle Time Bonus
-    if((inputA && stateB) || (stateA && inputB)){
-      if(stateA.tag == "timeBonus"){
-        // FUNCTION ADRIEN
-        // Time += 1/4
-      }else if(stateB.tag == "timeBonus"){
-        // Time += 1/4
+    if ((inputA && stateB) || (stateA && inputB)) {
+      if (stateA.tag == "timeBonus") {
+        this.timerSys.addTime()
+      } else if (stateB.tag == "timeBonus") {
+        this.timerSys.addTime()
       }
     }
   }

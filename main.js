@@ -277,10 +277,11 @@ function generateObjectsFromMap() {
 const game_container = document.getElementById("game-container");
 const HUD = document.getElementById("HUD");
 
+let timerSys = null
+
 ecs.addSystem(new RunSystem());
 ecs.addSystem(new JumpSystem());
-
-ecs.addSystem(new CollisionSystem());
+ecs.addSystem(new CollisionSystem(timerSys));
 ecs.addSystem(new GravitySystem());
 ecs.addSystem(new RenderSystem(game_container));
 ecs.addSystem(new SpriteSystem(game_container));
@@ -291,7 +292,7 @@ ecs.addSystem(new ShooterSystem());
 ecs.addSystem(new RespawnSystem());
 ecs.addSystem(new HealthSystem(HUD, player));
 
-const timerSys = new TimerSystem(HUD, 10, player);
+timerSys = new TimerSystem(HUD, 1000, player);
 const menuSys = new MenuSystem(HUD, timerSys);
 
 ecs.addSystem(timerSys);

@@ -1,9 +1,9 @@
 export default class HealthComponent {
-  constructor(player, health) {
+  constructor(health) {
     this.maxHealth = health;
     this.currentHealth = health;
     this.oldCurrent = health;
-    this.player = player;
+    this.dead = false
   }
 
   removeHealth(dmg) {
@@ -11,8 +11,7 @@ export default class HealthComponent {
     this.currentHealth = this.currentHealth < 0 ? 0 : this.currentHealth;
 
     if (this.currentHealth == 0) {
-      const playerTags = this.player.getComponent("state");
-      playerTags.dead = true;
+      this.dead = true;
     }
   }
 
