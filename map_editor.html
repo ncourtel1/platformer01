@@ -29,9 +29,9 @@
       padding: 10px;
       background-color: #f8f8f8;
     }
-    button {
+    button, input {
       margin-top: 10px;
-      padding: 5px 10px;
+      padding: 5px;
       font-size: 14px;
     }
   </style>
@@ -41,6 +41,9 @@
     <canvas id="map" width="512" height="512"></canvas>
     <div id="controls">
       <canvas id="tilemap" width="544" height="166"></canvas>
+      <input type="file" id="importFile" accept=".json">
+      <input type="text" id="filename" placeholder="map.json">
+      <button id="import">Import JSON</button>
       <button id="export">Export JSON</button>
       <pre id="output"></pre>
     </div>
@@ -54,14 +57,17 @@
     const mapCtx = mapCanvas.getContext('2d');
     const tilemapCanvas = document.getElementById('tilemap');
     const tilemapCtx = tilemapCanvas.getContext('2d');
+    const importButton = document.getElementById('import');
     const exportButton = document.getElementById('export');
+    const importFileInput = document.getElementById('importFile');
+    const filenameInput = document.getElementById('filename');
     const output = document.getElementById('output');
 
-    const map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
+    let map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
     let tilemapImage = new Image();
     let selectedTile = null;
 
-    tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png'; // Remplace par le chemin de ta tilemap
+    tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png';
     tilemapImage.onload = () => {
       tilemapCanvas.width = tilemapImage.width;
       tilemapCanvas.height = tilemapImage.height;
@@ -104,7 +110,37 @@
     exportButton.addEventListener('click', () => {
       const json = JSON.stringify(map);
       output.textContent = json;
-      console.log(json); // Optional: log to console
+      const blob = new Blob([json], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filenameInput.value.trim() || "map.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    importButton.addEventListener('click', () => {
+      const file = importFileInput.files[0];
+      if (!file) {
+        alert("Sélectionne un fichier JSON");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target.result);
+          if (Array.isArray(data) && data.length === mapHeight && data.every(row => Array.isArray(row) && row.length === mapWidth)) {
+            map = data;
+            drawGrid();
+          } else {
+            alert("Fichier JSON invalide");
+          }
+        } catch (error) {
+          alert("Erreur lors du chargement du fichier");
+        }
+      };
+      reader.readAsText(file);
     });
 
     drawGrid();

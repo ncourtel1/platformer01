@@ -8,6 +8,7 @@
    body {
       margin: 0;
       overflow: hidden;
+      background-color: rgb(51, 51, 51);
    }
    .camera{
       margin: auto;
@@ -44,12 +45,14 @@
   </style>
 </head>
 <body>
+<main style="transform: scale(0.7);">
    <div class="camera">
-      <div id="game-container">
-         <div id="big-cloud"></div>
+      <div id="game-container" style="width: 1920px;">
+         <div id="big-cloud" style="width: 1920px;"></div>
       </div>  
    </div>
    <div id="HUD"></div> 
   <script src="main.js" type="module"></script>
+</main>
 </body>
 </html>
