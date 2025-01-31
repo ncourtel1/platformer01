@@ -262,7 +262,7 @@ async function loadMap(filename) {
  }
  
  async function generateObjectsFromMap() {
-   const map1 = await loadMap('zob.json');
+   const map1 = await loadMap('test.json');
    if (!map1) return;
 
    const yoffset = 950;
