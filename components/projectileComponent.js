@@ -1,5 +1,7 @@
 export default class ProjectileComponent{
-   constructor(projectile){
+   constructor(projectile, fireRate){
       this.projectile = projectile;
+      this.fireRate = fireRate;
+      this.lastShotTime;
    }
 }

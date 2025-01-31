@@ -5,5 +5,6 @@ export default class StateComponent{
       this.isJumping = false;
       this.canCollide = canCollide;
       this.isProjectile = isProjectile;
+      this.hasActiveProjectile = false;
    }
 }

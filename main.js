@@ -129,6 +129,9 @@ canonBall.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Idle/1.png";
 const canonBallProjectile = new Map();
 canonBallProjectile.set('projectile', [canonBall]);
 
+const canonIdle1 = new Image();
+canonIdle1.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Idle/1.png";
+
 const canonFire1 = new Image();
 canonFire1.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/1.png";
 const canonFire2 = new Image();
@@ -145,6 +148,7 @@ canonFire6.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Fire/6.png";
 const canonFires = [canonFire1, canonFire2, canonFire3, canonFire4, canonFire5, canonFire6];
 
 const canonFireAnim = new Map();
+canonFireAnim.set('idle', [canonIdle1]);
 canonFireAnim.set('fire', canonFires);
 
 /*
@@ -240,7 +244,7 @@ const player = createPlayer(300, 500, 0, 0, "", 80, 92, playerAnimation, playerP
 ecs.addEntity(player);
 
 const canonBallObj = createObject(0, 0, "", 50, 50, canonBallProjectile, undefined, undefined, undefined, undefined, undefined, true, true);
-const canon1 = createShooter(600, 746, "", 160, 104, canonFireAnim, undefined, 11, 0.17, true, canonBallObj);
+const canon1 = createShooter(600, 746, "", 160, 104, canonFireAnim, undefined, 11, 0.17, true, canonBallObj, 500);
 ecs.addEntity(canon1);
 const map1 = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],[0,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,2],[17,19,-1,68,69,69,70,-1,-1,4,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,21,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,21,-1,-1,72,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,38,-1,-1,-1,-1,17,19],[17,19,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,17,19],[83,69,69,69,69,69,69,69,69,69,69,69,69,69,69,84]];
 
