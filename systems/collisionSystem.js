@@ -50,6 +50,9 @@ export default class CollisionSystem {
     const stateA = entityA.getComponent('state');
     const stateB = entityB.getComponent('state');
     const dataA = entityA.getComponent('data');
+
+    this.checkItem(entityA, entityB);
+
     if (!stateA.canCollide || !stateB.canCollide) return;
     // Calculer le centre des entités
     const centerA = {
@@ -104,5 +107,44 @@ export default class CollisionSystem {
     
     stateA.isColliding = true;
 
+  }
+
+  checkItem(entityA, entityB){
+    const stateA = entityA.getComponent("state");
+    const stateB = entityB.getComponent("state");
+    const inputA = entityA.getComponent("input");
+    const inputB = entityB.getComponent("input");
+    const healthA = entityA.getComponent("health");
+    const healthB = entityB.getComponent("health");
+
+
+    // Handle Key for Opening Chess
+    if((inputA && stateB) || (stateA && inputB)){
+      if(stateA.tag == "keyChess"){
+        stateB.canFinish = true;
+      }else if(stateB.tag == "keyChess"){
+        stateA.canFinish = true;
+      }
+    }
+
+    // Handle Health Bonus
+    if((inputA && stateB) || (stateA && inputB)){
+      if(stateA.tag == "healthBonus"){
+        // FUNCTION ADRIEN
+        // life += 1
+      }else if(stateB.tag == "healthBonus"){
+        // life += 1
+      }
+    }
+
+    // Handle Time Bonus
+    if((inputA && stateB) || (stateA && inputB)){
+      if(stateA.tag == "timeBonus"){
+        // FUNCTION ADRIEN
+        // Time += 1/4
+      }else if(stateB.tag == "timeBonus"){
+        // Time += 1/4
+      }
+    }
   }
 }
