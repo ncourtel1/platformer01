@@ -187,6 +187,10 @@ export default class TimerSystem {
     }, 500);
   }
 
+  addTime(){
+    this.currTime += (this.maxTime*(1/4))
+  }
+
   update() {
     const healthRatio = this.currTime / this.maxTime;
     const imgSize = parseInt(this.imageElement1.style.width);

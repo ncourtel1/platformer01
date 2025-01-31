@@ -8,5 +8,6 @@ export default class StateComponent{
       this.hasActiveProjectile = false;
       this.tag = tag;
       this.canFinish = false;
+      this.dead = false;
    }
 }
