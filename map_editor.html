@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial="1.0">
   <title>Tilemap Editor</title>
   <style>
     body { display: flex; margin: 0; height: 100vh; font-family: Arial, sans-serif; }
@@ -21,6 +21,7 @@
       <canvas id="tilemap" width="544" height="166"></canvas>
       <button id="player">Place Player</button>
       <button id="shooter">Place Shooter</button>
+      <button id="removeShooter">Remove Shooter</button> <!-- Nouveau bouton -->
       <input type="file" id="importFile" accept=".json">
       <input type="text" id="filename" placeholder="map.json">
       <button id="import">Import JSON</button>
@@ -82,6 +83,10 @@
     document.getElementById('player').addEventListener('click', () => mode = 'player');
     document.getElementById('shooter').addEventListener('click', () => mode = 'shooter');
 
+    document.getElementById('removeShooter').addEventListener('click', () => {
+      mode = 'removeShooter'; // Passer en mode suppression
+    });
+
     mapCanvas.addEventListener('click', (e) => {
       const rect = mapCanvas.getBoundingClientRect();
       const x = Math.floor((e.clientX - rect.left) / tileSize);
@@ -92,6 +97,9 @@
         playerPosition = { x, y };
       } else if (mode === 'shooter') {
         shooters.push({ x, y });
+      } else if (mode === 'removeShooter') {
+        // Supprimer le shooter qui se trouve à la position cliquée
+        shooters = shooters.filter(shooter => shooter.x !== x || shooter.y !== y);
       }
       drawGrid();
     });

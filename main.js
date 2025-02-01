@@ -22,7 +22,7 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('vache2.json');
+  const map1 = await loadMap('zouzou.json');
   if (!map1) return;
 
   const yoffset = 950;
