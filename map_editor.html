@@ -5,35 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tilemap Editor</title>
   <style>
-    body {
-      display: flex;
-      margin: 0;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-    }
-    #editor {
-      display: grid;
-      grid-template-columns: auto 200px;
-      width: 100%;
-    }
-    canvas {
-      border: 1px solid black;
-    }
-    #map {
-      cursor: crosshair;
-    }
-    #tilemap {
-      cursor: pointer;
-    }
-    #controls {
-      padding: 10px;
-      background-color: #f8f8f8;
-    }
-    button, input {
-      margin-top: 10px;
-      padding: 5px;
-      font-size: 14px;
-    }
+    body { display: flex; margin: 0; height: 100vh; font-family: Arial, sans-serif; }
+    #editor { display: grid; grid-template-columns: auto 200px; width: 100%; }
+    canvas { border: 1px solid black; }
+    #map { cursor: crosshair; }
+    #tilemap { cursor: pointer; }
+    #controls { padding: 10px; background-color: #f8f8f8; }
+    button, input { margin-top: 10px; padding: 5px; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -41,6 +19,8 @@
     <canvas id="map" width="512" height="512"></canvas>
     <div id="controls">
       <canvas id="tilemap" width="544" height="166"></canvas>
+      <button id="player">Place Player</button>
+      <button id="shooter">Place Shooter</button>
       <input type="file" id="importFile" accept=".json">
       <input type="text" id="filename" placeholder="map.json">
       <button id="import">Import JSON</button>
@@ -57,36 +37,38 @@
     const mapCtx = mapCanvas.getContext('2d');
     const tilemapCanvas = document.getElementById('tilemap');
     const tilemapCtx = tilemapCanvas.getContext('2d');
-    const importButton = document.getElementById('import');
-    const exportButton = document.getElementById('export');
-    const importFileInput = document.getElementById('importFile');
-    const filenameInput = document.getElementById('filename');
-    const output = document.getElementById('output');
-
+    
     let map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
-    let tilemapImage = new Image();
+    let playerPosition = null;
+    let shooters = [];
     let selectedTile = null;
+    let mode = 'tile';
 
+    const tilemapImage = new Image();
     tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png';
-    tilemapImage.onload = () => {
-      tilemapCanvas.width = tilemapImage.width;
-      tilemapCanvas.height = tilemapImage.height;
-      tilemapCtx.drawImage(tilemapImage, 0, 0);
-    };
+    tilemapImage.onload = () => tilemapCtx.drawImage(tilemapImage, 0, 0);
 
     function drawGrid() {
       mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
       for (let y = 0; y < mapHeight; y++) {
         for (let x = 0; x < mapWidth; x++) {
-          mapCtx.strokeStyle = '#ddd';
-          mapCtx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
           if (map[y][x] !== -1) {
             const sx = (map[y][x] % (tilemapImage.width / tileSize)) * tileSize;
             const sy = Math.floor(map[y][x] / (tilemapImage.width / tileSize)) * tileSize;
             mapCtx.drawImage(tilemapImage, sx, sy, tileSize, tileSize, x * tileSize, y * tileSize, tileSize, tileSize);
           }
+          mapCtx.strokeStyle = '#ddd';
+          mapCtx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
         }
       }
+      if (playerPosition) {
+        mapCtx.fillStyle = 'blue';
+        mapCtx.fillRect(playerPosition.x * tileSize, playerPosition.y * tileSize, tileSize, tileSize);
+      }
+      shooters.forEach(({x, y}) => {
+        mapCtx.fillStyle = 'red';
+        mapCtx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      });
     }
 
     tilemapCanvas.addEventListener('click', (e) => {
@@ -94,50 +76,50 @@
       const x = Math.floor((e.clientX - rect.left) / tileSize);
       const y = Math.floor((e.clientY - rect.top) / tileSize);
       selectedTile = y * (tilemapImage.width / tileSize) + x;
+      mode = 'tile';
     });
 
+    document.getElementById('player').addEventListener('click', () => mode = 'player');
+    document.getElementById('shooter').addEventListener('click', () => mode = 'shooter');
+
     mapCanvas.addEventListener('click', (e) => {
-      if (selectedTile === null) return;
       const rect = mapCanvas.getBoundingClientRect();
       const x = Math.floor((e.clientX - rect.left) / tileSize);
       const y = Math.floor((e.clientY - rect.top) / tileSize);
-      if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
+      if (mode === 'tile' && selectedTile !== null) {
         map[y][x] = selectedTile;
-        drawGrid();
+      } else if (mode === 'player') {
+        playerPosition = { x, y };
+      } else if (mode === 'shooter') {
+        shooters.push({ x, y });
       }
+      drawGrid();
     });
 
-    exportButton.addEventListener('click', () => {
-      const json = JSON.stringify(map);
-      output.textContent = json;
+    document.getElementById('export').addEventListener('click', () => {
+      const json = JSON.stringify({ map, player: playerPosition, shooters });
       const blob = new Blob([json], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = filenameInput.value.trim() || "map.json";
+      a.download = document.getElementById('filename').value.trim() || "map.json";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
     });
 
-    importButton.addEventListener('click', () => {
-      const file = importFileInput.files[0];
-      if (!file) {
-        alert("Sélectionne un fichier JSON");
-        return;
-      }
-
+    document.getElementById('import').addEventListener('click', () => {
+      const file = document.getElementById('importFile').files[0];
+      if (!file) return alert("Sélectionne un fichier JSON");
       const reader = new FileReader();
       reader.onload = (event) => {
         try {
           const data = JSON.parse(event.target.result);
-          if (Array.isArray(data) && data.length === mapHeight && data.every(row => Array.isArray(row) && row.length === mapWidth)) {
-            map = data;
-            drawGrid();
-          } else {
-            alert("Fichier JSON invalide");
-          }
-        } catch (error) {
-          alert("Erreur lors du chargement du fichier");
+          map = data.map;
+          playerPosition = data.player;
+          shooters = data.shooters;
+          drawGrid();
+        } catch {
+          alert("Erreur lors du chargement");
         }
       };
       reader.readAsText(file);

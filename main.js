@@ -22,10 +22,9 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('test.json');
+  const map1 = await loadMap('vache2.json');
   if (!map1) return;
-  player = createPlayer(300, 500, 0, 0, "", 80, 92, playerAnimation, playerParticle);
-  ecs.addEntity(player);
+
   const yoffset = 950;
   const zoom = 3.75;
   const tileSize = 32;
@@ -34,10 +33,11 @@ async function generateObjectsFromMap() {
   tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png';
   const states = new Map();
   states.set('tile', [tilemapImage]);
-
-  for (let y = 0; y < map1.length; y++) {
-    for (let x = 0; x < map1[y].length; x++) {
-      const tileIndex = map1[y][x];
+  player = createPlayer(map1.player.x * 32 * zoom, map1.player.y * 32 * zoom - yoffset, 0, 0, "", 80, 92, playerAnimation, playerParticle);
+  ecs.addEntity(player);
+  for (let y = 0; y < map1.map.length; y++) {
+    for (let x = 0; x < map1.map[y].length; x++) {
+      const tileIndex = map1.map[y][x];
       if (tileIndex !== -1) {
         const sx = (tileIndex % tilesPerRow) * tileSize;
         const sy = Math.floor(tileIndex / tilesPerRow) * tileSize;
@@ -49,9 +49,13 @@ async function generateObjectsFromMap() {
     }
   }
   const canonBallObj = createObject(0, 0, "", 50, 50, canonBallProjectile, undefined, undefined, undefined, undefined, undefined, true, true);
-  const canon1 = createShooter(600, 746, "", 160, 104, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000);
-  ecs.addEntity(canon1);
+  for (let i = 0; i < map1.shooters.length; i++) {
+    const shooterData = map1.shooters[i];
+    const canon = createShooter(shooterData.x * 32 * zoom, shooterData.y * 32 * zoom - yoffset + 16, "", 160, 104, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000);
+    ecs.addEntity(canon);
+  }
 }
+
 
 let lastTime = performance.now();
 
