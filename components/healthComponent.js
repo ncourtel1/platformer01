@@ -3,16 +3,20 @@ export default class HealthComponent {
     this.maxHealth = health;
     this.currentHealth = health;
     this.oldCurrent = health;
-    this.dead = false
+    this.loseLife = false;
+    this.dead = false;
   }
 
   removeHealth(dmg) {
+    this.oldCurrent = this.currentHealth;
     this.currentHealth -= dmg;
     this.currentHealth = this.currentHealth < 0 ? 0 : this.currentHealth;
 
     if (this.currentHealth == 0) {
       this.dead = true;
+      console.log("you die");
     }
+    this.loseLife = true;
   }
 
   addHealth(hp) {

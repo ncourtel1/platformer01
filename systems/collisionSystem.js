@@ -54,6 +54,11 @@ export default class CollisionSystem {
     const dataA = entityA.getComponent("data");
     const projectileA = entityA.getComponent("projectile");
     const projectileB = entityB.getComponent("projectile");
+
+    this.checkItem(entityA, entityB);
+    this.trapCollision(entityA, entityB);
+    this.checkEndLevel(entityA, entityB);
+
     if (
       !stateA.canCollide ||
       !stateB.canCollide ||
@@ -61,10 +66,6 @@ export default class CollisionSystem {
       (projectileB && stateA.isProjectile)
     )
       return;
-
-    this.checkItem(entityA, entityB);
-    this.trapCollision(entityA, entityB);
-    this.checkEndLevel(entityA, entityB);
 
     if (!stateA.canCollide || !stateB.canCollide) return;
     // Calculer le centre des entités
