@@ -3,11 +3,13 @@ export default class HealthSystem {
     this.container = container;
     this.player = player;
     const imgSize = 150; // Taille de base des images
-    const xOffset = 50;
+    const xOffset = -150;
 
     // Créer une div pour contenir les images
     this.imagesContainer = document.createElement("div");
+    
     this.imagesContainer.style.marginLeft = `${xOffset}px`;
+    this.imagesContainer.style.marginTop = '-870px';
     this.imagesContainer.style.display = "flex";
     this.container.appendChild(this.imagesContainer);
 
