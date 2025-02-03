@@ -220,8 +220,28 @@ chestKeySprite.set('chestKey', chestKeyAnim);
 const chest = new Image();
 chest.src = "assets/Merchant Ship/Sprites/Chest/Idle/1.png";
 
+const chestUnlocked1 = new Image();
+chestUnlocked1.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/1.png";
+const chestUnlocked2 = new Image();
+chestUnlocked2.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/2.png";
+const chestUnlocked3 = new Image();
+chestUnlocked3.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/3.png";
+const chestUnlocked4 = new Image();
+chestUnlocked4.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/4.png";
+const chestUnlocked5 = new Image();
+chestUnlocked5.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/5.png";
+const chestUnlocked6 = new Image();
+chestUnlocked6.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/6.png";
+const chestUnlocked7 = new Image();
+chestUnlocked7.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/7.png";
+const chestUnlocked8 = new Image();
+chestUnlocked8.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/8.png";
+
+const chestUnlockedAnim = [chestUnlocked1, chestUnlocked2, chestUnlocked3, chestUnlocked4, chestUnlocked5, chestUnlocked6, chestUnlocked7, chestUnlocked8];
+
 export const chestSprite = new Map();
 chestSprite.set('locked', [chest]);
+chestSprite.set('unlocked', chestUnlockedAnim);
 
 /**
  * @brief character sprites and animations alternative

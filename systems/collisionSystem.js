@@ -1,3 +1,5 @@
+import { ecs } from "../main.js";
+
 export default class CollisionSystem {
   constructor(timerSys){
     this.timerSys = timerSys
@@ -135,8 +137,12 @@ export default class CollisionSystem {
     if ((inputA && stateB) || (stateA && inputB)) {
       if (stateA.tag == "keyChess") {
         stateB.canFinish = true;
+        ecs.removeEntity(entityA);
+        console.log("key");
       } else if (stateB.tag == "keyChess") {
         stateA.canFinish = true;
+        ecs.removeEntity(entityB);
+        console.log("key");
       }
     }
 
@@ -179,14 +185,20 @@ export default class CollisionSystem {
   checkEndLevel(entityA, entityB){
     const stateA = entityA.getComponent("state");
     const stateB = entityB.getComponent("state");
+    const spriteA = entityA.getComponent('sprite');
+    const spriteB = entityB.getComponent('sprite');
     const inputA = entityA.getComponent("input");
     const inputB = entityB.getComponent("input");
-  
+    
     if((inputA && stateB) || (stateA && inputB)){
       if(stateA.tag == "chess" && stateB.canFinish){
         stateB.levelFinish = true;
-      }else if(stateB.tag == "chess" && stateB.canFinish){
+        spriteA.setState('unlocked');
+        spriteA.setState('unlocked');
+      }else if(stateB.tag == "chess" && stateA.canFinish){
         stateA.levelFinish = true;
+        spriteB.setState('unlocked');
+        spriteB.setState('unlocked');
       }
     }
   }

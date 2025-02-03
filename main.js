@@ -59,9 +59,9 @@ async function generateObjectsFromMap() {
     const canon = createShooter(shooterData.x * 32 * zoom, shooterData.y * 32 * zoom - yoffset + 16, "", 160, 104, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000, !shooterData.flip);
     ecs.addEntity(canon);
   }
-  const chestKey = createObject(map1.chestKey.x * 32 * zoom, map1.chestKey.y * 32 * zoom - yoffset, "", tileSize * zoom / 1.5, tileSize * zoom / 1.5, chestKeySprite, undefined, undefined, 0.2, undefined, undefined, true, false, "keyChest");
+  const chestKey = createObject(map1.chestKey.x * 32 * zoom, map1.chestKey.y * 32 * zoom - yoffset, "", tileSize * zoom / 1.5, tileSize * zoom / 1.5, chestKeySprite, undefined, undefined, 0.2, undefined, undefined, true, false, "keyChess");
   ecs.addEntity(chestKey);
-  const chest = createObject(map1.chest.x * 32 * zoom, map1.chest.y * 32 * zoom - yoffset, "", tileSize * zoom, tileSize * zoom, chestSprite, undefined, undefined, 0.2, undefined, undefined, true, false, "keyChest");
+  const chest = createObject(map1.chest.x * 32 * zoom, map1.chest.y * 32 * zoom - yoffset, "", tileSize * zoom, tileSize * zoom, chestSprite, undefined, undefined, 0.2, undefined, undefined, true, false, "chess");
   ecs.addEntity(chest);
 }
 
