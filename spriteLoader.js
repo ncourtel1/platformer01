@@ -134,8 +134,26 @@ backgroundWaterReflects.set('big', waterReflects)
 const canonBall = new Image();
 canonBall.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Idle/1.png";
 
+const canonBallExplosion1 = new Image();
+canonBallExplosion1.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Explosion/1.png";
+const canonBallExplosion2 = new Image();
+canonBallExplosion2.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Explosion/2.png";
+const canonBallExplosion3 = new Image();
+canonBallExplosion3.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Explosion/3.png";
+const canonBallExplosion4 = new Image();
+canonBallExplosion4.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Explosion/4.png";
+const canonBallExplosion5 = new Image();
+canonBallExplosion5.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Explosion/5.png";
+const canonBallExplosion6 = new Image();
+canonBallExplosion6.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Explosion/6.png";
+const canonBallExplosion7 = new Image();
+canonBallExplosion7.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Ball Explosion/7.png";
+
+const canonBallExplosionAnim = [canonBallExplosion1, canonBallExplosion2, canonBallExplosion3, canonBallExplosion4, canonBallExplosion5, canonBallExplosion6, canonBallExplosion7];
+
 export const canonBallProjectile = new Map();
 canonBallProjectile.set('projectile', [canonBall]);
+canonBallProjectile.set('explosion', canonBallExplosionAnim);
 
 const canonIdle1 = new Image();
 canonIdle1.src = "assets/Shooter Traps/Sprites/Cannon/Cannon Idle/1.png";
