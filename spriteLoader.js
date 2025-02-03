@@ -178,6 +178,16 @@ canonFireAnim.set('idle', [canonIdle1]);
 canonFireAnim.set('fire', canonFires);
 
 /**
+ * @brief exports spikes
+ * @exports spikeSprite
+ */
+const spike = new Image();
+spike.src = "assets/Palm Tree Island/Sprites/Objects/Spikes/Spikes.png";
+
+export const spikeSprite = new Map();
+spikeSprite.set('spike', [spike]);
+
+/**
  * @brief character sprites and animations alternative
  *
 const playerIdle1 = new Image();

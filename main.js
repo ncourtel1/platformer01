@@ -2,7 +2,7 @@ import ECS from "./systems/ecs.js";
 import createPlayer from "./entities/createPlayer.js";
 import createObject from "./entities/createObject.js";
 import createShooter from "./entities/createShooter.js";
-import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim } from "./spriteLoader.js";
+import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim, spikeSprite } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
 
@@ -22,7 +22,7 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('fliptest.json');
+  const map1 = await loadMap('spikes.json');
   if (!map1) return;
 
   const yoffset = 950;
@@ -47,6 +47,11 @@ async function generateObjectsFromMap() {
         ecs.addEntity(obj);
       }
     }
+  }
+  for (let i = 0; i < map1.spikes.length; i++) {
+    const spikesData = map1.spikes[i];
+    const spike = createObject(spikesData.x * 32 * zoom, spikesData.y * 32 * zoom - yoffset + 60, "", tileSize * zoom, tileSize * zoom / 2, spikeSprite, undefined, undefined, 0, undefined, undefined, true, false, "trap");
+    ecs.addEntity(spike);
   }
   for (let i = 0; i < map1.shooters.length; i++) {
     const shooterData = map1.shooters[i];
