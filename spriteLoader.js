@@ -214,6 +214,16 @@ export const chestKeySprite = new Map();
 chestKeySprite.set('chestKey', chestKeyAnim);
 
 /**
+ * @brief exports chest
+ * @exports chestSprite
+ */
+const chest = new Image();
+chest.src = "assets/Merchant Ship/Sprites/Chest/Idle/1.png";
+
+export const chestSprite = new Map();
+chestSprite.set('locked', [chest]);
+
+/**
  * @brief character sprites and animations alternative
  *
 const playerIdle1 = new Image();
