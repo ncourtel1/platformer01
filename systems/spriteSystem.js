@@ -29,13 +29,9 @@ export default class SpriteSystem {
                     if (!isTile) {
                         entityElement.style.backgroundImage = `url(${currentStateImages[frameIndex].src})`;
                     entityElement.style.backgroundSize = `${visual.width + (data ? 129 : 0)}px auto`;
-                    if (data) {
-                        entityElement.style.backgroundPosition = `center -13px`;
-                        entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"}`;
-                    } else if (sprite.states.has('spike')) {
-                        entityElement.style.backgroundPosition = `center -60px`;
-                        entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"}`;
-                    }
+                    if (data) entityElement.style.backgroundPosition = `center -13px`;
+                    else if (sprite.states.has('spike')) entityElement.style.backgroundPosition = `center -60px`;
+                    entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"}`;
                     } else {
                         if (currentStateImages && currentStateImages.length > 0) {
                             const zoom = 3.75;
