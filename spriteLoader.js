@@ -188,6 +188,32 @@ export const spikeSprite = new Map();
 spikeSprite.set('spike', [spike]);
 
 /**
+ * @brief exports chestKey
+ * @exports chestKeySprite
+ */
+const chestKey1 = new Image();
+chestKey1.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/1.png";
+const chestKey2 = new Image();
+chestKey2.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/2.png";
+const chestKey3 = new Image();
+chestKey3.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/3.png";
+const chestKey4 = new Image();
+chestKey4.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/4.png";
+const chestKey5 = new Image();
+chestKey5.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/5.png";
+const chestKey6 = new Image();
+chestKey6.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/6.png";
+const chestKey7 = new Image();
+chestKey7.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/7.png";
+const chestKey8 = new Image();
+chestKey8.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/8.png";
+
+const chestKeyAnim = [chestKey1, chestKey2, chestKey3, chestKey4, chestKey5, chestKey6, chestKey7, chestKey8];
+
+export const chestKeySprite = new Map();
+spikeSprite.set('chestKey', chestKeyAnim);
+
+/**
  * @brief character sprites and animations alternative
  *
 const playerIdle1 = new Image();
