@@ -1,19 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial="1.0">
+  <meta name="viewport" content="width=device-width, initial=" 1.0">
   <title>Tilemap Editor</title>
   <style>
-    body { display: flex; margin: 0; height: 100vh; font-family: Arial, sans-serif; justify-content: center;}
-    #editor { display: grid; grid-template-columns: auto 200px;  }
-    canvas { border: 1px solid black; }
-    #map { cursor: crosshair; }
-    #tilemap { cursor: pointer; }
-    #controls { padding: 10px; background-color: #f8f8f8; width: 550px;}
-    button, input { margin-top: 10px; padding: 5px; font-size: 14px; }
+    body {
+      display: flex;
+      margin: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      justify-content: center;
+    }
+
+    #editor {
+      display: grid;
+      grid-template-columns: auto 200px;
+    }
+
+    canvas {
+      border: 1px solid black;
+    }
+
+    #map {
+      cursor: crosshair;
+    }
+
+    #tilemap {
+      cursor: pointer;
+    }
+
+    #controls {
+      padding: 10px;
+      background-color: #f8f8f8;
+      width: 550px;
+    }
+
+    button,
+    input {
+      margin-top: 10px;
+      padding: 5px;
+      font-size: 14px;
+    }
   </style>
 </head>
+
 <body>
   <div id="editor">
     <canvas id="map" width="512" height="512"></canvas>
@@ -21,7 +53,8 @@
       <canvas id="tilemap" width="544" height="166"></canvas>
       <button id="player">Place Player</button>
       <button id="shooter">Place Shooter</button>
-      <button id="removeShooter">Remove Shooter</button> <!-- Nouveau bouton -->
+      <button id="removeShooter">Remove Shooter</button>
+      <button id="toggleFlip">Toggle Flip</button>
       <input type="file" id="importFile" accept=".json">
       <input type="text" id="filename" placeholder="map.json">
       <button id="import">Import JSON</button>
@@ -38,7 +71,7 @@
     const mapCtx = mapCanvas.getContext('2d');
     const tilemapCanvas = document.getElementById('tilemap');
     const tilemapCtx = tilemapCanvas.getContext('2d');
-    
+
     let map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
     let playerPosition = null;
     let shooters = [];
@@ -66,10 +99,25 @@
         mapCtx.fillStyle = 'blue';
         mapCtx.fillRect(playerPosition.x * tileSize, playerPosition.y * tileSize, tileSize, tileSize);
       }
-      shooters.forEach(({x, y}) => {
+      shooters.forEach(({ x, y, flip }) => {
         mapCtx.fillStyle = 'red';
         mapCtx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+
+        // Dessiner une flèche pour indiquer la direction
+        mapCtx.fillStyle = 'white';
+        mapCtx.beginPath();
+        if (flip) {
+          mapCtx.moveTo(x * tileSize + 8, y * tileSize + 16);
+          mapCtx.lineTo(x * tileSize + 24, y * tileSize + 8);
+          mapCtx.lineTo(x * tileSize + 24, y * tileSize + 24);
+        } else {
+          mapCtx.moveTo(x * tileSize + 24, y * tileSize + 16);
+          mapCtx.lineTo(x * tileSize + 8, y * tileSize + 8);
+          mapCtx.lineTo(x * tileSize + 8, y * tileSize + 24);
+        }
+        mapCtx.fill();
       });
+
     }
 
     tilemapCanvas.addEventListener('click', (e) => {
@@ -81,7 +129,12 @@
     });
 
     document.getElementById('player').addEventListener('click', () => mode = 'player');
-    document.getElementById('shooter').addEventListener('click', () => mode = 'shooter');
+    document.getElementById('shooter').addEventListener('click', () => { mode = 'shooter' });
+
+    document.getElementById('toggleFlip').addEventListener('click', () => {
+      mode = 'toggleFlip'; // Nouveau mode pour inverser le flip des shooters
+    });
+
 
     document.getElementById('removeShooter').addEventListener('click', () => {
       mode = 'removeShooter'; // Passer en mode suppression
@@ -91,18 +144,27 @@
       const rect = mapCanvas.getBoundingClientRect();
       const x = Math.floor((e.clientX - rect.left) / tileSize);
       const y = Math.floor((e.clientY - rect.top) / tileSize);
+
       if (mode === 'tile' && selectedTile !== null) {
         map[y][x] = selectedTile;
       } else if (mode === 'player') {
         playerPosition = { x, y };
       } else if (mode === 'shooter') {
-        shooters.push({ x, y });
+        shooters.push({ x, y, flip: false });
       } else if (mode === 'removeShooter') {
-        // Supprimer le shooter qui se trouve à la position cliquée
         shooters = shooters.filter(shooter => shooter.x !== x || shooter.y !== y);
+      } else if (mode === 'toggleFlip') {
+        shooters.forEach(shooter => {
+          if (shooter.x === x && shooter.y === y) {
+            shooter.flip = !shooter.flip;
+          }
+        });
       }
+
       drawGrid();
     });
+
+
 
     document.getElementById('export').addEventListener('click', () => {
       const json = JSON.stringify({ map, player: playerPosition, shooters });
@@ -124,7 +186,12 @@
           const data = JSON.parse(event.target.result);
           map = data.map;
           playerPosition = data.player;
-          shooters = data.shooters;
+          shooters = data.shooters.map(shooter => ({
+            x: shooter.x,
+            y: shooter.y,
+            flip: shooter.flip ?? false // Par défaut, flip = false s'il n'existe pas
+          }));
+
           drawGrid();
         } catch {
           alert("Erreur lors du chargement");
@@ -136,4 +203,5 @@
     drawGrid();
   </script>
 </body>
+
 </html>

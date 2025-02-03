@@ -22,7 +22,7 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('test.json');
+  const map1 = await loadMap('fliptest.json');
   if (!map1) return;
 
   const yoffset = 950;
@@ -48,10 +48,10 @@ async function generateObjectsFromMap() {
       }
     }
   }
-  const canonBallObj = createObject(0, 0, "", 50, 50, canonBallProjectile, undefined, undefined, undefined, undefined, undefined, true, true);
   for (let i = 0; i < map1.shooters.length; i++) {
     const shooterData = map1.shooters[i];
-    const canon = createShooter(shooterData.x * 32 * zoom, shooterData.y * 32 * zoom - yoffset + 16, "", 160, 104, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000, false);
+    const canonBallObj = createObject(0, 0, "", 50, 50, canonBallProjectile, undefined, undefined, undefined, undefined, undefined, true, true);
+    const canon = createShooter(shooterData.x * 32 * zoom, shooterData.y * 32 * zoom - yoffset + 16, "", 160, 104, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000, !shooterData.flip);
     ecs.addEntity(canon);
   }
 }
