@@ -1,4 +1,6 @@
 import { ecs } from "../main.js";
+import createObject from "../entities/createObject.js";
+import { canonBallProjectile } from "../spriteLoader.js";
 
 export default class ShooterSystem {
    update(entities) {
@@ -44,6 +46,12 @@ export default class ShooterSystem {
 
          if (position && velocity && state.isProjectile) {
             if (state.isColliding) {
+               const projectilePosition = entity.getComponent('position');
+               const explosion = createObject(projectilePosition.x, projectilePosition.y, "", 50, 50, canonBallProjectile, undefined, undefined, 0.2, undefined, undefined, false, false);
+               const explisionSprite = explosion.getComponent('sprite')
+               explisionSprite.setState('explosion');
+               explisionSprite.setState('explosion');
+               ecs.addEntity(explosion)
                ecs.removeEntity(entity);
                if (entity.shooter) {
                   const shooterProjectileComp = entity.shooter.getComponent('projectile');
@@ -52,6 +60,9 @@ export default class ShooterSystem {
             } else {
                position.x += velocity.vx;
             }
+         }
+         if (sprite && sprite.currentState === 'explosion' && Math.round(sprite.currentFrame) === sprite.currentState.length - 2) {
+            ecs.removeEntity(entity);
          }
       }
    }
