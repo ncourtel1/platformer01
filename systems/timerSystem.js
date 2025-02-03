@@ -12,7 +12,7 @@ export default class TimerSystem {
     this.transitionSpeed = 0.009; // Contrôle la vitesse de transition
 
     const imgSize = 150;
-    const xOffset = 50;
+    const xOffset = -150;
     const yOffset = -40;
 
     // Create darkening screen with radial gradient
