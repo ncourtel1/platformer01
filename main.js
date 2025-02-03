@@ -2,7 +2,7 @@ import ECS from "./systems/ecs.js";
 import createPlayer from "./entities/createPlayer.js";
 import createObject from "./entities/createObject.js";
 import createShooter from "./entities/createShooter.js";
-import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim, spikeSprite } from "./spriteLoader.js";
+import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim, spikeSprite, chestKeySprite } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
 
@@ -22,7 +22,7 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('spikes.json');
+  const map1 = await loadMap('key.json');
   if (!map1) return;
 
   const yoffset = 950;
@@ -59,6 +59,8 @@ async function generateObjectsFromMap() {
     const canon = createShooter(shooterData.x * 32 * zoom, shooterData.y * 32 * zoom - yoffset + 16, "", 160, 104, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000, !shooterData.flip);
     ecs.addEntity(canon);
   }
+  const chestKey = createObject(map1.chestKey.x * 32 * zoom, map1.chestKey.y * 32 * zoom - yoffset, "", tileSize * zoom / 1.5, tileSize * zoom / 1.5, chestKeySprite, undefined, undefined, 0.2, undefined, undefined, true, false, "keyChest");
+  ecs.addEntity(chestKey);
 }
 
 let lastTime = performance.now();

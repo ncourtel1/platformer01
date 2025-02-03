@@ -211,7 +211,7 @@ chestKey8.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/8.png";
 const chestKeyAnim = [chestKey1, chestKey2, chestKey3, chestKey4, chestKey5, chestKey6, chestKey7, chestKey8];
 
 export const chestKeySprite = new Map();
-spikeSprite.set('chestKey', chestKeyAnim);
+chestKeySprite.set('chestKey', chestKeyAnim);
 
 /**
  * @brief character sprites and animations alternative
