@@ -53,8 +53,10 @@
       <canvas id="tilemap" width="544" height="166"></canvas>
       <button id="player">Place Player</button>
       <button id="shooter">Place Shooter</button>
-      <button id="removeShooter">Remove Shooter</button>
       <button id="toggleFlip">Toggle Flip</button>
+      <button id="removeShooter">Remove Shooter</button>
+      <button id="placeSpikes">Place Spikes</button>
+      <button id="removeSpikes">Remove Spikes</button>
       <input type="file" id="importFile" accept=".json">
       <input type="text" id="filename" placeholder="map.json">
       <button id="import">Import JSON</button>
@@ -75,6 +77,7 @@
     let map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
     let playerPosition = null;
     let shooters = [];
+    let spikes = [];
     let selectedTile = null;
     let mode = 'tile';
 
@@ -99,6 +102,10 @@
         mapCtx.fillStyle = 'blue';
         mapCtx.fillRect(playerPosition.x * tileSize, playerPosition.y * tileSize, tileSize, tileSize);
       }
+      spikes.forEach(({ x, y }) => {
+        mapCtx.fillStyle = 'yellow';
+        mapCtx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      })
       shooters.forEach(({ x, y, flip }) => {
         mapCtx.fillStyle = 'red';
         mapCtx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
@@ -118,6 +125,7 @@
         mapCtx.fill();
       });
 
+
     }
 
     tilemapCanvas.addEventListener('click', (e) => {
@@ -130,6 +138,7 @@
 
     document.getElementById('player').addEventListener('click', () => mode = 'player');
     document.getElementById('shooter').addEventListener('click', () => { mode = 'shooter' });
+    document.getElementById('placeSpikes').addEventListener('click', () => { mode = 'spikes' });
 
     document.getElementById('toggleFlip').addEventListener('click', () => {
       mode = 'toggleFlip'; // Nouveau mode pour inverser le flip des shooters
@@ -139,6 +148,8 @@
     document.getElementById('removeShooter').addEventListener('click', () => {
       mode = 'removeShooter'; // Passer en mode suppression
     });
+
+    document.getElementById('removeSpikes').addEventListener('click', () => { mode = 'removeSpikes' });
 
     mapCanvas.addEventListener('click', (e) => {
       const rect = mapCanvas.getBoundingClientRect();
@@ -153,6 +164,10 @@
         shooters.push({ x, y, flip: false });
       } else if (mode === 'removeShooter') {
         shooters = shooters.filter(shooter => shooter.x !== x || shooter.y !== y);
+      } else if (mode === 'spikes') {
+        spikes.push({ x, y });
+      } else if (mode === 'removeSpikes') {
+        spikes = spikes.filter(spikes => spikes.x !== x || spikes.y !== y);
       } else if (mode === 'toggleFlip') {
         shooters.forEach(shooter => {
           if (shooter.x === x && shooter.y === y) {
@@ -167,7 +182,7 @@
 
 
     document.getElementById('export').addEventListener('click', () => {
-      const json = JSON.stringify({ map, player: playerPosition, shooters });
+      const json = JSON.stringify({ map, player: playerPosition, shooters, spikes });
       const blob = new Blob([json], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -191,6 +206,10 @@
             y: shooter.y,
             flip: shooter.flip ?? false // Par défaut, flip = false s'il n'existe pas
           }));
+          spikes = Array.isArray(data.spikes) ? data.spikes.map(spike => ({
+            x: spike.x,
+            y: spike.y,
+          })) : [];
 
           drawGrid();
         } catch {
