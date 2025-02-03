@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Platformer ECS</title>
     <style>
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -15,12 +14,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #33323d; /* Couleur de fond si jamais */
-        
+        background-color: #33323d;
       }
 
       #game {
-        position: fixed; /* Fixe à l'écran */
+        position: fixed;
         top: 0;
         left: 0;
         transform-origin: top left;
@@ -39,13 +37,58 @@
       }
 
       #big-cloud {
-        background: url("assets/Palm Tree Island/Sprites/Background/Big Clouds.png")
-          repeat-x;
+        background: url("assets/Palm Tree Island/Sprites/Background/Big Clouds.png") repeat-x;
         animation: scroll 180s linear infinite;
         width: 100%;
         height: 200px;
         position: absolute;
         top: 558px;
+      }
+
+      /* 📌 Le menu */
+      #start-menu {
+        position: relative;
+        width: 1920px;
+        height: 970px;
+        background: url("assets/background.gif") no-repeat center center;
+        background-size: cover;
+        image-rendering: pixelated;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 100px;
+      }
+
+      /* 📌 Conteneur des boutons */
+      .menu {
+        width: 900px; /* Taille définie */
+        height: 750px; /* Ajustement */
+        background: url("assets/Wood and Paper UI/Sprites/Prefabs/9.png") no-repeat center center;
+        background-size: contain;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      /* 📌 Boutons transparents */
+      .menu-button {
+        width: 240px;
+        height: 100px;
+        background: url("assets/btn.png") no-repeat center center;
+        background-size: contain;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        border: none;
+        font-size:larger;
+      }
+
+      /* 📌 Effet au survol */
+      .menu-button:hover {
+        transform: scale(1.1);
+        border-color: rgba(255, 255, 255, 0.5);
+
       }
 
       @keyframes scroll {
@@ -60,29 +103,32 @@
   </head>
   <body>
     <main id="game">
-      <div id="game-container">
+      <div id="start-menu">
+        <div class="menu">
+          <button id="playButton" class="menu-button btn-play">Play</button>
+          <button class="menu-button btn-settings">...</button>
+          <button class="menu-button btn-exit">...</button>
+        </div>
+      </div>
+      <div id="game-container" style="display: none">
         <div id="big-cloud"></div>
       </div>
-      <div id="HUD" style="transform: scale(0.7); "></div>
+      <div id="HUD" style="transform: scale(0.7)"></div>
     </main>
-    
-
     <script src="main.js" type="module"></script>
+
     <script>
       function adjustScale() {
         const gameElement = document.getElementById("game");
         const gameWidth = 1920;
         const gameHeight = 1080;
 
-        // Calcul du scale global
         const scaleX = window.innerWidth / gameWidth;
         const scaleY = window.innerHeight / gameHeight;
-        const scale = Math.min(scaleX, scaleY)/1.1;
+        const scale = Math.min(scaleX, scaleY) / 1.1;
 
-        // Appliquer le scale
         gameElement.style.transform = `scale(${scale})`;
 
-        // Centrer correctement avec `fixed`
         const offsetX = (window.innerWidth - gameWidth * scale) / 2;
         const offsetY = (window.innerHeight - gameHeight * scale) / 2;
         gameElement.style.left = `${offsetX}px`;
