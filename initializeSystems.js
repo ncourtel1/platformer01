@@ -30,11 +30,10 @@ export function initSystems() {
     ecs.addSystem(new SpriteSystem(game_container));
     ecs.addSystem(new ShooterSystem());
 
-
-    ecs.addSystem(new RespawnSystem());
     ecs.addSystem(new HealthSystem(HUD, player));
+    ecs.addSystem(new RespawnSystem());
 
-    const timerSys = new TimerSystem(HUD, 10, player);
+    const timerSys = new TimerSystem(HUD, 10000, player);
     menuSys = new MenuSystem(HUD, timerSys);
 
     ecs.addSystem(timerSys);
