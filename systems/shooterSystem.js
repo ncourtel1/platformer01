@@ -29,9 +29,9 @@ export default class ShooterSystem {
                projectile.shooter = entity;
 
                projectileState.isColliding = false;
-               projectilePosition.x = position.x + 17;
+               projectilePosition.x = position.x + (sprite.flip ? 95 : 17);
                projectilePosition.y = position.y + 17;
-               projectileVelocity.vx = -6;
+               projectileVelocity.vx = sprite.flip ? 6 : -6;
 
                ecs.addEntity(projectile);
                sprite.setState('fire');

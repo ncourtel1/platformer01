@@ -1,11 +1,11 @@
 export default class SpriteComponent {
   
-    constructor(states, particleStates, offset, speed, sx, sy) {
+    constructor(states, particleStates, offset, speed, sx, sy, flip = false) {
       this.states = states;
       this.particleStates = particleStates
       this.currentState = states.keys().next().value || null;
       this.currentFrame = 0;
-      this.flip = false;
+      this.flip = flip;
       this.offset = offset || 0;
       this.speed = speed || 0.2;
       this.sx = sx || 0;
