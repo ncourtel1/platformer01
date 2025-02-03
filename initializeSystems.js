@@ -34,7 +34,7 @@ export function initSystems() {
     ecs.addSystem(new RespawnSystem());
     ecs.addSystem(new HealthSystem(HUD, player));
 
-    const timerSys = new TimerSystem(HUD, 10, player);
+    const timerSys = new TimerSystem(HUD, 10000, player);
     menuSys = new MenuSystem(HUD, timerSys);
 
     ecs.addSystem(timerSys);
