@@ -22,7 +22,7 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('key.json');
+  const map1 = await loadMap('features.json');
   if (!map1) return;
 
   const yoffset = 950;
