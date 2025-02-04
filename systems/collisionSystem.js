@@ -1,6 +1,6 @@
 import { ecs } from "../main.js";
 import createObject from "../entities/createObject.js";
-import { rhumSprite } from "../spriteLoader.js";
+import { mapSprite } from "../spriteLoader.js";
 
 export default class CollisionSystem {
   constructor(timerSys){
@@ -210,13 +210,21 @@ export default class CollisionSystem {
     if (stateA.tag == "chess" && spriteA.currentState == 'unlocked' && spriteA.currentFrame >= spriteA.currentState.length - 1) {
       spriteA.setState('opened');
       spriteA.setState('opened');
-      const rhum = createObject(positionA.x + 30, positionA.y - 30, "", visualA.width / 2, visualA.height / 1.4, rhumSprite, undefined, undefined, 0.2, undefined, undefined, false, false);
-      ecs.addEntity(rhum);
+      const map = createObject(positionA.x + 21, positionA.y - 35, "", visualA.width / 1.5, visualA.height / 1.4, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+      ecs.addEntity(map);
     } else if (stateB.tag == "chess" && spriteB.currentState == 'unlocked' && spriteB.currentFrame >= spriteB.currentState.length - 1) {
       spriteB.setState('opened');
       spriteB.setState('opened');
-      const rhum = createObject(positionB.x + 30, positionB.y - 30, "", visualB.width / 2, visualB.height / 1.5, rhumSprite, undefined, undefined, 0.2, undefined, undefined, false, false);
-      ecs.addEntity(rhum);
+      const map = createObject(positionB.x + 21, positionB.y - 35, "", visualB.width / 1.5, visualB.height / 1.4, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+      ecs.addEntity(map);
+    }
+    if (stateA.tag == "map" && spriteA.currentState == 'unfold' && spriteA.currentFrame >= spriteA.currentState.length + 1) {
+      spriteA.setState('map');
+      spriteA.setState('map');
+
+    } else if (stateB.tag == "map" && spriteB.currentState == 'unfold' && spriteB.currentFrame >= spriteB.currentState.length + 1) {
+      spriteB.setState('map');
+      spriteB.setState('map');
     }
   }
 }

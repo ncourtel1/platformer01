@@ -269,6 +269,59 @@ export const rhumSprite = new Map();
 rhumSprite.set('rhum', rhumAnim);
 
 /**
+ * @brief exports map
+ * @exports mapSprite
+ */
+const map1 = new Image();
+map1.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/01.png";
+const map2 = new Image();
+map2.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/02.png";
+const map3 = new Image();
+map3.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/03.png";
+const map4 = new Image();
+map4.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/04.png";
+const map5 = new Image();
+map5.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/05.png";
+const map6 = new Image();
+map6.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/06.png";
+const map7 = new Image();
+map7.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/07.png";
+const map8 = new Image();
+map8.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/08.png";
+const map9 = new Image();
+map9.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/09.png";
+const map10 = new Image();
+map10.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/10.png";
+const map11 = new Image();
+map11.src = "assets/Pirate Treasure/Sprites/Big Map/Idle/11.png";
+
+const mapAnim = [map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11];
+
+const in1 = new Image();
+in1.src = "assets/Pirate Treasure/Sprites/Map Effect/In/01.png";
+const in2 = new Image();
+in2.src = "assets/Pirate Treasure/Sprites/Map Effect/In/02.png";
+const in3 = new Image();
+in3.src = "assets/Pirate Treasure/Sprites/Map Effect/In/03.png";
+
+const unfold1 = new Image();
+unfold1.src = "assets/Pirate Treasure/Sprites/Big Map/Unfolding/01.png";
+const unfold2 = new Image();
+unfold2.src = "assets/Pirate Treasure/Sprites/Big Map/Unfolding/02.png";
+const unfold3 = new Image();
+unfold3.src = "assets/Pirate Treasure/Sprites/Big Map/Unfolding/03.png";
+const unfold4 = new Image();
+unfold4.src = "assets/Pirate Treasure/Sprites/Big Map/Unfolding/04.png";
+const unfold5 = new Image();
+unfold5.src = "assets/Pirate Treasure/Sprites/Big Map/Unfolding/05.png";
+
+const unfoldAnim = [in1, in2, in3, unfold1, unfold2, unfold3, unfold4, unfold5];
+
+export const mapSprite = new Map();
+mapSprite.set('unfold', unfoldAnim);
+mapSprite.set('map', mapAnim);
+
+/**
  * @brief character sprites and animations alternative
  *
 const playerIdle1 = new Image();
