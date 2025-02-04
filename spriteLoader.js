@@ -322,6 +322,25 @@ mapSprite.set('unfold', unfoldAnim);
 mapSprite.set('map', mapAnim);
 
 /**
+ * @brief exports foregroundPalmSprite
+ * @exports foregroundPalmSprite
+ */
+
+const foregroundPalm1 = new Image();
+foregroundPalm1.src = "assets/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 01.png";
+const foregroundPalm2 = new Image();
+foregroundPalm2.src = "assets/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 02.png";
+const foregroundPalm3 = new Image();
+foregroundPalm3.src = "assets/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 03.png";
+const foregroundPalm4 = new Image();
+foregroundPalm4.src = "assets/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 04.png";
+
+const foregroundMapAnim = [foregroundPalm1, foregroundPalm2, foregroundPalm3, foregroundPalm4];
+
+export const foregroundPalmSprite = new Map();
+foregroundPalmSprite.set('foreground_palm', foregroundMapAnim);
+
+/**
  * @brief character sprites and animations alternative
  *
 const playerIdle1 = new Image();

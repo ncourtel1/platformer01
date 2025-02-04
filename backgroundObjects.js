@@ -6,7 +6,7 @@ export default function generateBackground() {
     const waterReflections = createObject(200, 700, "", 1500, 50, backgroundWaterReflects, undefined, 0, 0.1, undefined, undefined, false);
     ecs.addEntity(waterReflections);
 
-    const forestYOffset = 100;
+    const forestYOffset = 150;
     // BACK PALMS START
     const obj3 = createObject(350, 500 + forestYOffset, "", 180, 180, backgroundPalmTrees, undefined, 0, 0.2, undefined, undefined, false);
     ecs.addEntity(obj3);

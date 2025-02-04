@@ -60,6 +60,7 @@
       <button id="toggleFlip">Toggle Flip</button>
       <button id="removeShooter">Remove Shooter</button>
       <button id="placeSpikes">Place Spikes</button>
+      <button id="placePalms">Place Palms</button>
       <button id="removeSpikes">Remove Spikes</button>
       <input type="file" id="importFile" accept=".json">
       <input type="text" id="filename" placeholder="map.json">
@@ -88,6 +89,7 @@
     let rhumPosition = null;
     let shooters = [];
     let spikes = [];
+    let palms = [];
     let selectedTile = null;
     let selectedForeground = null;
     let mode = 'tile';
@@ -138,6 +140,10 @@
         mapCtx.fillStyle = 'purple';
         mapCtx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
       })
+      palms.forEach(({ x, y }) => {
+        mapCtx.fillStyle = 'gray';
+        mapCtx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      })
       shooters.forEach(({ x, y, flip }) => {
         mapCtx.fillStyle = 'red';
         mapCtx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
@@ -181,6 +187,7 @@
     document.getElementById('rhum').addEventListener('click', () => mode = 'rhum');
     document.getElementById('shooter').addEventListener('click', () => { mode = 'shooter' });
     document.getElementById('placeSpikes').addEventListener('click', () => { mode = 'spikes' });
+    document.getElementById('placePalms').addEventListener('click', () => { mode = 'palms' });
     document.getElementById('toggleFlip').addEventListener('click', () => {
       mode = 'toggleFlip'; // Nouveau mode pour inverser le flip des shooters
     });
@@ -212,6 +219,8 @@
         shooters = shooters.filter(shooter => shooter.x !== x || shooter.y !== y);
       } else if (mode === 'spikes') {
         spikes.push({ x, y });
+      } else if (mode === 'palms') {
+        palms.push({ x, y });
       } else if (mode === 'removeSpikes') {
         spikes = spikes.filter(spikes => spikes.x !== x || spikes.y !== y);
       } else if (mode === 'toggleFlip') {
@@ -227,7 +236,7 @@
 
 
     document.getElementById('export').addEventListener('click', () => {
-      const json = JSON.stringify({ map, foregroundMap, player: playerPosition, shooters, spikes, chestKey: chestKeyPosition, chest: chestPosition, rhum: rhumPosition });
+      const json = JSON.stringify({ map, foregroundMap, player: playerPosition, shooters, spikes, chestKey: chestKeyPosition, chest: chestPosition, rhum: rhumPosition, palms });
       const blob = new Blob([json], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -258,6 +267,10 @@
           spikes = Array.isArray(data.spikes) ? data.spikes.map(spike => ({
             x: spike.x,
             y: spike.y,
+          })) : [];
+          palms = Array.isArray(data.palms) ? data.palms.map(palm => ({
+            x: palm.x,
+            y: palm.y,
           })) : [];
 
           drawGrid();

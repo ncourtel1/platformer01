@@ -2,7 +2,7 @@ import ECS from "./systems/ecs.js";
 import createPlayer from "./entities/createPlayer.js";
 import createObject from "./entities/createObject.js";
 import createShooter from "./entities/createShooter.js";
-import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim, spikeSprite, chestKeySprite, chestSprite, rhumSprite } from "./spriteLoader.js";
+import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim, spikeSprite, chestKeySprite, chestSprite, rhumSprite, foregroundPalmSprite } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
 
@@ -22,7 +22,7 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('foreground.json');
+  const map1 = await loadMap('palms.json');
   if (!map1) return;
 
   const yoffset = 950;
@@ -82,6 +82,11 @@ async function generateObjectsFromMap() {
         ecs.addEntity(obj);
       }
     }
+  }
+  for (let i = 0; i < map1.palms.length; i++) {
+    const palmsData = map1.palms[i];
+    const palms = createObject(palmsData.x * 32 * zoom, palmsData.y * 32 * zoom - yoffset + 25, "", tileSize * zoom, tileSize * zoom / 1.25, foregroundPalmSprite, undefined, undefined, 0, undefined, undefined, false, false, "palm");
+    ecs.addEntity(palms);
   }
 }
 
