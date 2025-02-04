@@ -171,7 +171,7 @@ async function generateObjectsFromMap() {
 
 let lastTime = performance.now();
 
-function gameLoop(time) {
+async function gameLoop(time) {
   const dt = (time - lastTime) / 1000;
   lastTime = time;
 
@@ -190,10 +190,29 @@ async function startGame() {
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
+  // Retirer le menu
   const startMenu = document.getElementById("start-menu");
-  const gameContainer = document.getElementById("game-container");
+  if (startMenu) startMenu.remove();
 
-  startMenu.style.display = "none"; // Supprime complètement la div du menu
-  gameContainer.style.display = "block"; // Affiche le jeu
-  startGame(); // Lancer la fonction du jeu
+  // Créer le game-container
+  const game_container = document.createElement("div");
+  game_container.id = "game-container";
+
+  // Créer les nuages du fond
+  const big_cloud = document.createElement("div");
+  big_cloud.id = "big-cloud"; 
+  game_container.appendChild(big_cloud);
+
+  // Créer l'HUD
+  const hud = document.createElement("div");
+  hud.id = "HUD";
+  hud.style.transform = "scale(0.7)";
+
+  // Ajouter les éléments au main
+  const main = document.getElementById("game");
+  main.appendChild(game_container);
+  main.appendChild(hud);
+
+  // Lancer le jeu
+  startGame();
 });
