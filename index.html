@@ -9,12 +9,20 @@
   <body>
     <main id="game">
       <div id="start-menu">
-        <div class="title">Main Menu</div>  
+        <div class="title">Main Menu</div>
         <div class="menu">
-          
-          <div id="playButton" class="play-btn"><div class="btn-text">Play</div></div>
+          <div id="playButton" class="play-btn">
+            <div class="btn-text">Play</div>
+          </div>
+          <div id="settingButton" class="stg-btn">
+            <div class="stg-btn-text">Settings</div>
+          </div>
         </div>
       </div>
+      <div id="game-container" style="display: none">
+        <div id="big-cloud"></div>
+      </div>
+      <div id="HUD" style="transform: scale(0.7)"></div>
     </main>
     <script src="main.js" type="module"></script>
 

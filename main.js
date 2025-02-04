@@ -16,6 +16,7 @@ import { getMenuSys, initSystems } from "./initializeSystems.js";
 
 export const ecs = new ECS();
 export let player;
+export let lastTime;
 
 async function loadMap(filename) {
   try {
@@ -169,7 +170,7 @@ async function generateObjectsFromMap() {
   ecs.addEntity(chest);
 }
 
-let lastTime = performance.now();
+lastTime = 0;
 
 async function gameLoop(time) {
   const dt = (time - lastTime) / 1000;
@@ -185,34 +186,20 @@ async function gameLoop(time) {
 async function startGame() {
   generateBackground();
   await generateObjectsFromMap();
-  initSystems();
+  initSystems(lastTime);
   gameLoop(lastTime);
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
-  // Retirer le menu
-  const startMenu = document.getElementById("start-menu");
-  if (startMenu) startMenu.remove();
+  const menu = document.getElementById("start-menu");
+  menu.style.display = "none";
 
-  // Créer le game-container
-  const game_container = document.createElement("div");
-  game_container.id = "game-container";
+  const game_container = document.getElementById("game-container");
+  game_container.style.display = "block";
 
-  // Créer les nuages du fond
-  const big_cloud = document.createElement("div");
-  big_cloud.id = "big-cloud"; 
-  game_container.appendChild(big_cloud);
-
-  // Créer l'HUD
-  const hud = document.createElement("div");
-  hud.id = "HUD";
-  hud.style.transform = "scale(0.7)";
-
-  // Ajouter les éléments au main
-  const main = document.getElementById("game");
-  main.appendChild(game_container);
-  main.appendChild(hud);
+  lastTime = performance.now();
 
   // Lancer le jeu
   startGame();
 });
+  

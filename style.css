@@ -63,8 +63,8 @@ body {
   background-size: contain;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-  gap: 20px;
 }
 
 .play-btn {
@@ -75,19 +75,33 @@ body {
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
   border: none;
-  font-size: xx-large;
+  font-size: x-large;
   font-family: "early_gameboyregular";
   color: rgb(53, 53, 53);
   margin-left: 10px;
-  margin-top: 170px;
+  margin-top: 270px;
 }
+
+.stg-btn {
+    width: 240px;
+    height: 100px;
+    background: url("assets/green-btn.png") no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    border: none;
+    font-size: x-large;
+    font-family: "early_gameboyregular";
+    color: rgb(53, 53, 53);
+    margin-left: 10px;
+  }
 
 .title{
     position: absolute;
     font-size: 55px;
     font-family: "early_gameboyregular";
     color: rgb(53, 53, 53);
-    margin-top: -250px;
+    margin-top: -240px;
     margin-left: 0px;
 }
 
@@ -96,8 +110,17 @@ body {
     align-items: center; 
     justify-content: center; 
     position: relative;
-    top: 25px; 
-    left: 7px
+    top: 29px; 
+    left: 5px
+}
+
+.stg-btn-text {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    position: relative;
+    top: 29px; 
+    left: 4px
 }
 
 /* 📌 Effet au survol */
@@ -105,6 +128,11 @@ body {
   transform: scale(1.1);
   border-color: rgba(255, 255, 255, 0.5);
 }
+
+.stg-btn:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
 
 @keyframes scroll {
   from {

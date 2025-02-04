@@ -1,3 +1,5 @@
+import { lastTime } from "../main.js";
+
 export default class TimerSystem {
   constructor(container, maxTime, player) {
     this.container = container;
@@ -10,6 +12,7 @@ export default class TimerSystem {
     this.lastDarkness = 0;
     this.targetDarkness = 0;
     this.transitionSpeed = 0.009; // Contrôle la vitesse de transition
+    this.lastTime =  lastTime;
 
     const imgSize = 150;
     const xOffset = -150;
@@ -165,10 +168,12 @@ export default class TimerSystem {
 
   pauseTimer() {
     this.isPaused = true;
+    this.lastTime = 0;
   }
 
   resumeTimer() {
     this.isPaused = false;
+    this.lastTime = performance.now();
   }
 
   toggleTimer() {
