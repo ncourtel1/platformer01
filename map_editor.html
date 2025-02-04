@@ -51,6 +51,7 @@
     <canvas id="map" width="512" height="512"></canvas>
     <div id="controls">
       <canvas id="tilemap" width="544" height="166"></canvas>
+      <canvas id="foreground" width="544" height="166"></canvas>
       <button id="player">Place Player</button>
       <button id="chestKey">Place Chest Key</button>
       <button id="chest">Place Chest</button>
@@ -76,8 +77,11 @@
     const mapCtx = mapCanvas.getContext('2d');
     const tilemapCanvas = document.getElementById('tilemap');
     const tilemapCtx = tilemapCanvas.getContext('2d');
+    const foregroundCanvas = document.getElementById('foreground');
+    const foregroundCtx = foregroundCanvas.getContext('2d');
 
     let map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
+    let foregroundMap = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(-1));
     let playerPosition = null;
     let chestKeyPosition = null;
     let chestPosition = null;
@@ -85,11 +89,16 @@
     let shooters = [];
     let spikes = [];
     let selectedTile = null;
+    let selectedForeground = null;
     let mode = 'tile';
 
     const tilemapImage = new Image();
     tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png';
     tilemapImage.onload = () => tilemapCtx.drawImage(tilemapImage, 0, 0);
+
+    const foregroundImage = new Image();
+    foregroundImage.src = 'assets/Palm Tree Island/Sprites/Front Palm Trees/foreground_tileMap.png';
+    foregroundImage.onload = () => foregroundCtx.drawImage(foregroundImage, 0, 0);
 
     function drawGrid() {
       mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
@@ -100,6 +109,11 @@
             const sy = Math.floor(map[y][x] / (tilemapImage.width / tileSize)) * tileSize;
             mapCtx.drawImage(tilemapImage, sx, sy, tileSize, tileSize, x * tileSize, y * tileSize, tileSize, tileSize);
           }
+          if (foregroundMap[y][x] !== -1) {
+        const sx = (foregroundMap[y][x] % (foregroundImage.width / tileSize)) * tileSize;
+        const sy = Math.floor(foregroundMap[y][x] / (foregroundImage.width / tileSize)) * tileSize;
+        mapCtx.drawImage(foregroundImage, sx, sy, tileSize, tileSize, x * tileSize, y * tileSize, tileSize, tileSize);
+      }
           mapCtx.strokeStyle = '#ddd';
           mapCtx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
         }
@@ -153,6 +167,13 @@
       selectedTile = y * (tilemapImage.width / tileSize) + x;
       mode = 'tile';
     });
+    foregroundCanvas.addEventListener('click', (e) => {
+      const rect = foregroundCanvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / tileSize);
+      const y = Math.floor((e.clientY - rect.top) / tileSize);
+      selectedForeground = y * (foregroundImage.width / tileSize) + x;
+      mode = 'foreground';
+    });
 
     document.getElementById('player').addEventListener('click', () => mode = 'player');
     document.getElementById('chestKey').addEventListener('click', () => mode = 'chestKey');
@@ -175,6 +196,8 @@
 
       if (mode === 'tile' && selectedTile !== null) {
         map[y][x] = selectedTile;
+      } else if (mode === 'foreground' && selectedForeground !== null) {
+        foregroundMap[y][x] = selectedForeground;
       } else if (mode === 'player') {
         playerPosition = { x, y };
       } else if (mode === 'chestKey') {
@@ -204,7 +227,7 @@
 
 
     document.getElementById('export').addEventListener('click', () => {
-      const json = JSON.stringify({ map, player: playerPosition, shooters, spikes, chestKey: chestKeyPosition, chest: chestPosition, rhum: rhumPosition });
+      const json = JSON.stringify({ map, foregroundMap, player: playerPosition, shooters, spikes, chestKey: chestKeyPosition, chest: chestPosition, rhum: rhumPosition });
       const blob = new Blob([json], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -222,6 +245,7 @@
         try {
           const data = JSON.parse(event.target.result);
           map = data.map;
+          foregroundMap = data.foregroundMap || foregroundMap;
           playerPosition = data.player;
           chestKeyPosition = data.chestKey;
           chestPosition = data.chest;

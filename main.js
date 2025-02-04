@@ -22,17 +22,22 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('rhum.json');
+  const map1 = await loadMap('foreground.json');
   if (!map1) return;
 
   const yoffset = 950;
   const zoom = 3.75;
   const tileSize = 32;
   const tilesPerRow = 17;
+  const foregroundtilesPerRow = 3;
   const tilemapImage = new Image();
   tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png';
   const states = new Map();
   states.set('tile', [tilemapImage]);
+  const foregroundImage = new Image();
+  foregroundImage.src = 'assets/Palm Tree Island/Sprites/Front Palm Trees/foreground_tileMap.png';
+  const foregroundStates = new Map();
+  foregroundStates.set('tile', [foregroundImage]);
   player = createPlayer(map1.player.x * 32 * zoom, map1.player.y * 32 * zoom - yoffset, 0, 0, "", 80, 92, playerAnimation, playerParticle);
   ecs.addEntity(player);
   for (let y = 0; y < map1.map.length; y++) {
@@ -65,6 +70,19 @@ async function generateObjectsFromMap() {
   ecs.addEntity(chest);
   const rhum = createObject(map1.rhum.x * 32 * zoom + 40, map1.rhum.y * 32 * zoom - yoffset + 50, "", tileSize * zoom / 3, tileSize * zoom / 2.3, rhumSprite, undefined, undefined, 0.2, undefined, undefined, true, false, "healthBonus");
   ecs.addEntity(rhum);
+  for (let y = 0; y < map1.foregroundMap.length; y++) {
+    for (let x = 0; x < map1.foregroundMap[y].length; x++) {
+      const tileIndex = map1.foregroundMap[y][x];
+      if (tileIndex !== -1) {
+        const sx = (tileIndex % foregroundtilesPerRow) * tileSize;
+        const sy = Math.floor(tileIndex / foregroundtilesPerRow) * tileSize;
+        const posX = x * tileSize;
+        const posY = y * tileSize;
+        const obj = createObject(posX * zoom, posY * zoom - yoffset, "", tileSize * zoom, tileSize * zoom, foregroundStates, undefined, undefined, undefined, sx * zoom, sy * zoom, false, false);
+        ecs.addEntity(obj);
+      }
+    }
+  }
 }
 
 let lastTime = performance.now();
