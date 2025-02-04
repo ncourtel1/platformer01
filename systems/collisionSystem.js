@@ -191,15 +191,22 @@ export default class CollisionSystem {
     const inputB = entityB.getComponent("input");
     
     if((inputA && stateB) || (stateA && inputB)){
-      if(stateA.tag == "chess" && stateB.canFinish){
+      if(stateA.tag == "chess" && stateB.canFinish && spriteA.currentState == 'locked'){
         stateB.levelFinish = true;
         spriteA.setState('unlocked');
         spriteA.setState('unlocked');
-      }else if(stateB.tag == "chess" && stateA.canFinish){
+      } else if(stateB.tag == "chess" && stateA.canFinish && spriteB.currentState == 'locked'){
         stateA.levelFinish = true;
         spriteB.setState('unlocked');
         spriteB.setState('unlocked');
       }
+    }
+    if (stateA.tag == "chess" && spriteA.currentState == 'unlocked' && spriteA.currentFrame >= spriteA.currentState.length - 1) {
+      spriteA.setState('opened');
+      spriteA.setState('opened');
+    } else if (stateB.tag == "chess" && spriteB.currentState == 'unlocked' && spriteB.currentFrame >= spriteB.currentState.length - 1) {
+      spriteB.setState('opened');
+      spriteB.setState('opened');
     }
   }
 }

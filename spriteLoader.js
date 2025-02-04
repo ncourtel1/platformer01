@@ -242,6 +242,7 @@ const chestUnlockedAnim = [chestUnlocked1, chestUnlocked2, chestUnlocked3, chest
 export const chestSprite = new Map();
 chestSprite.set('locked', [chest]);
 chestSprite.set('unlocked', chestUnlockedAnim);
+chestSprite.set('opened', [chestUnlocked8]);
 
 /**
  * @brief character sprites and animations alternative
