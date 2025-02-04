@@ -1,4 +1,6 @@
 import { ecs } from "../main.js";
+import createObject from "../entities/createObject.js";
+import { rhumSprite } from "../spriteLoader.js";
 
 export default class CollisionSystem {
   constructor(timerSys){
@@ -185,6 +187,10 @@ export default class CollisionSystem {
   checkEndLevel(entityA, entityB){
     const stateA = entityA.getComponent("state");
     const stateB = entityB.getComponent("state");
+    const positionA = entityA.getComponent("position");
+    const positionB = entityB.getComponent("position");
+    const visualA = entityA.getComponent("visual");
+    const visualB = entityB.getComponent("visual");
     const spriteA = entityA.getComponent('sprite');
     const spriteB = entityB.getComponent('sprite');
     const inputA = entityA.getComponent("input");
@@ -204,9 +210,13 @@ export default class CollisionSystem {
     if (stateA.tag == "chess" && spriteA.currentState == 'unlocked' && spriteA.currentFrame >= spriteA.currentState.length - 1) {
       spriteA.setState('opened');
       spriteA.setState('opened');
+      const rhum = createObject(positionA.x + 30, positionA.y - 30, "", visualA.width / 2, visualA.height / 1.4, rhumSprite, undefined, undefined, 0.2, undefined, undefined, false, false);
+      ecs.addEntity(rhum);
     } else if (stateB.tag == "chess" && spriteB.currentState == 'unlocked' && spriteB.currentFrame >= spriteB.currentState.length - 1) {
       spriteB.setState('opened');
       spriteB.setState('opened');
+      const rhum = createObject(positionB.x + 30, positionB.y - 30, "", visualB.width / 2, visualB.height / 1.5, rhumSprite, undefined, undefined, 0.2, undefined, undefined, false, false);
+      ecs.addEntity(rhum);
     }
   }
 }

@@ -245,6 +245,30 @@ chestSprite.set('unlocked', chestUnlockedAnim);
 chestSprite.set('opened', [chestUnlocked8]);
 
 /**
+ * @brief exports rhum
+ * @exports rhumSprite
+ */
+const rhum1 = new Image();
+rhum1.src = "assets/Pirate Treasure/Sprites/Green Bottle/01.png";
+const rhum2 = new Image();
+rhum2.src = "assets/Pirate Treasure/Sprites/Green Bottle/02.png";
+const rhum3 = new Image();
+rhum3.src = "assets/Pirate Treasure/Sprites/Green Bottle/03.png";
+const rhum4 = new Image();
+rhum4.src = "assets/Pirate Treasure/Sprites/Green Bottle/04.png";
+const rhum5 = new Image();
+rhum5.src = "assets/Pirate Treasure/Sprites/Green Bottle/05.png";
+const rhum6 = new Image();
+rhum6.src = "assets/Pirate Treasure/Sprites/Green Bottle/06.png";
+const rhum7 = new Image();
+rhum7.src = "assets/Pirate Treasure/Sprites/Green Bottle/07.png";
+
+const rhumAnim = [rhum1, rhum2, rhum3, rhum4, rhum5, rhum6, rhum7];
+
+export const rhumSprite = new Map();
+rhumSprite.set('rhum', rhumAnim);
+
+/**
  * @brief character sprites and animations alternative
  *
 const playerIdle1 = new Image();
