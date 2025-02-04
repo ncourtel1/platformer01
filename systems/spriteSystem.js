@@ -31,6 +31,7 @@ export default class SpriteSystem {
                     entityElement.style.backgroundSize = `${visual.width + (data ? 129 : 0)}px auto`;
                     if (data) entityElement.style.backgroundPosition = `center -13px`;
                     else if (sprite.states.has('spike')) entityElement.style.backgroundPosition = `center -60px`;
+                    else if (sprite.states.has('fire')) entityElement.style.backgroundPosition = `center -5px`;
                     else if (sprite.states.has('locked')) entityElement.style.backgroundPosition = `center -31px`;
                     entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"}`;
                     } else {

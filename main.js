@@ -56,7 +56,7 @@ async function generateObjectsFromMap() {
   for (let i = 0; i < map1.shooters.length; i++) {
     const shooterData = map1.shooters[i];
     const canonBallObj = createObject(0, 0, "", 50, 50, canonBallProjectile, undefined, undefined, 0.2, undefined, undefined, true, true, "trap");
-    const canon = createShooter(shooterData.x * 32 * zoom, shooterData.y * 32 * zoom - yoffset + 16, "", 160, 104, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000, !shooterData.flip);
+    const canon = createShooter(shooterData.x * 32 * zoom, shooterData.y * 32 * zoom - yoffset + 21, "", 160, 99, canonFireAnim, undefined, 0, 0.17, true, canonBallObj, 2000, !shooterData.flip);
     ecs.addEntity(canon);
   }
   const chestKey = createObject(map1.chestKey.x * 32 * zoom, map1.chestKey.y * 32 * zoom - yoffset, "", tileSize * zoom / 1.5, tileSize * zoom / 1.5, chestKeySprite, undefined, undefined, 0.2, undefined, undefined, true, false, "keyChess");
