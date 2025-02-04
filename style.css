@@ -1,0 +1,167 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #33323d;
+}
+
+#game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+}
+
+#game-container {
+  position: relative;
+  width: 1920px;
+  height: 970px;
+  background-image: url("assets/Palm Tree Island/Sprites/Background/BG Image.png");
+  background-repeat: repeat-x;
+  background-position-y: center;
+  background-size: cover;
+  image-rendering: pixelated;
+  top: 100px;
+}
+
+#big-cloud {
+  background: url("assets/Palm Tree Island/Sprites/Background/Big Clouds.png")
+    repeat-x;
+  animation: scroll 180s linear infinite;
+  width: 100%;
+  height: 200px;
+  position: absolute;
+  top: 558px;
+}
+
+/* 📌 Le menu */
+#start-menu {
+  position: relative;
+  width: 1920px;
+  height: 970px;
+  background: url("assets/background.gif") no-repeat center center;
+  background-size: cover;
+  image-rendering: pixelated;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 100px;
+}
+
+/* 📌 Conteneur des boutons */
+.menu {
+  width: 900px; /* Taille définie */
+  height: 750px; /* Ajustement */
+  background: url("assets/main-menu.png") no-repeat
+    center center;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.play-btn {
+  width: 240px;
+  height: 100px;
+  background: url("assets/green-btn.png") no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  border: none;
+  font-size: x-large;
+  font-family: "early_gameboyregular";
+  color: rgb(53, 53, 53);
+  margin-left: 10px;
+  margin-top: 270px;
+}
+
+.stg-btn {
+    width: 240px;
+    height: 100px;
+    background: url("assets/green-btn.png") no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    border: none;
+    font-size: x-large;
+    font-family: "early_gameboyregular";
+    color: rgb(53, 53, 53);
+    margin-left: 10px;
+  }
+
+.title{
+    position: absolute;
+    font-size: 55px;
+    font-family: "early_gameboyregular";
+    color: rgb(53, 53, 53);
+    margin-top: -240px;
+    margin-left: 0px;
+}
+
+.btn-text {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    position: relative;
+    top: 29px; 
+    left: 5px
+}
+
+.stg-btn-text {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    position: relative;
+    top: 29px; 
+    left: 4px
+}
+
+/* 📌 Effet au survol */
+.play-btn:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.stg-btn:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+@keyframes scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@font-face {
+  font-family: "aquariusregular";
+  src: url("static/aquarius.regular-webfont.woff2") format("woff2"),
+    url("static/aquarius.regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "smallest_pixel-7regular";
+  src: url("static/smallest_pixel-7-webfont.woff2") format("woff2"),
+    url("static/smallest_pixel-7-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "early_gameboyregular";
+  src: url("static/early_gameboy-webfont.woff2") format("woff2"),
+    url("static/early_gameboy-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

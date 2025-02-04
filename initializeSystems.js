@@ -17,15 +17,16 @@ export function getMenuSys() {
     return menuSys;
 }
 
-export function initSystems() {
+export async function initSystems() {
     const game_container = document.getElementById("game-container");
     const HUD = document.getElementById("HUD");
+
+    ecs.addSystem(new CollisionSystem());
+    ecs.addSystem(new GravitySystem()); 
 
     ecs.addSystem(new RunSystem());
     ecs.addSystem(new JumpSystem());
 
-    ecs.addSystem(new CollisionSystem());
-    ecs.addSystem(new GravitySystem());
     ecs.addSystem(new RenderSystem(game_container));
     ecs.addSystem(new SpriteSystem(game_container));
     ecs.addSystem(new ShooterSystem());

@@ -8,6 +8,8 @@ import { getMenuSys, initSystems } from "./initializeSystems.js";
 
 export const ecs = new ECS();
 export let player;
+export let lastTime;
+
 
 async function loadMap(filename) {
   try {
@@ -21,8 +23,8 @@ async function loadMap(filename) {
   }
 }
 
-async function generateObjectsFromMap() {
-  const map1 = await loadMap('palms.json');
+async function generateObjectsFromMap(map) {
+  const map1 = await loadMap(map);
   if (!map1) return;
 
   const yoffset = 950;
@@ -31,7 +33,7 @@ async function generateObjectsFromMap() {
   const tilesPerRow = 17;
   const foregroundtilesPerRow = 3;
   const tilemapImage = new Image();
-  tilemapImage.src = 'assets/Palm Tree Island/Sprites/Terrain/tileMap.png';
+  tilemapImage.src = "assets/Palm Tree Island/Sprites/Terrain/tileMap.png";
   const states = new Map();
   states.set('tile', [tilemapImage]);
   const foregroundImage = new Image();
@@ -48,14 +50,41 @@ async function generateObjectsFromMap() {
         const sy = Math.floor(tileIndex / tilesPerRow) * tileSize;
         const posX = x * tileSize;
         const posY = y * tileSize;
-        const obj = createObject(posX * zoom, posY * zoom - yoffset, "", tileSize * zoom, tileSize * zoom, states, undefined, undefined, undefined, sx * zoom, sy * zoom);
+        const obj = createObject(
+          posX * zoom,
+          posY * zoom - yoffset,
+          "",
+          tileSize * zoom,
+          tileSize * zoom,
+          states,
+          undefined,
+          undefined,
+          undefined,
+          sx * zoom,
+          sy * zoom
+        );
         ecs.addEntity(obj);
       }
     }
   }
   for (let i = 0; i < map1.spikes.length; i++) {
     const spikesData = map1.spikes[i];
-    const spike = createObject(spikesData.x * 32 * zoom, spikesData.y * 32 * zoom - yoffset + 60, "", tileSize * zoom, tileSize * zoom / 2, spikeSprite, undefined, undefined, 0, undefined, undefined, true, false, "trap");
+    const spike = createObject(
+      spikesData.x * 32 * zoom,
+      spikesData.y * 32 * zoom - yoffset + 60,
+      "",
+      tileSize * zoom,
+      (tileSize * zoom) / 2,
+      spikeSprite,
+      undefined,
+      undefined,
+      0,
+      undefined,
+      undefined,
+      true,
+      false,
+      "trap"
+    );
     ecs.addEntity(spike);
   }
   for (let i = 0; i < map1.shooters.length; i++) {
@@ -90,9 +119,11 @@ async function generateObjectsFromMap() {
   }
 }
 
-let lastTime = performance.now();
 
-function gameLoop(time) {
+lastTime = 0;
+
+async function gameLoop(time) {
+
   const dt = (time - lastTime) / 1000;
   lastTime = time;
 
@@ -103,11 +134,23 @@ function gameLoop(time) {
   requestAnimationFrame(gameLoop);
 }
 
-async function startGame() {
+export async function startGame(map) {
   generateBackground();
-  await generateObjectsFromMap();
-  initSystems();
+  await generateObjectsFromMap(map);
+  initSystems(lastTime);
   gameLoop(lastTime);
 }
 
-startGame();
+document.getElementById("playButton").addEventListener("click", () => {
+  const menu = document.getElementById("start-menu");
+  menu.style.display = "none";
+
+  const game_container = document.getElementById("game-container");
+  game_container.style.display = "block";
+
+  lastTime = performance.now();
+
+  // Lancer le jeu
+  startGame('palms.json');
+});
+  

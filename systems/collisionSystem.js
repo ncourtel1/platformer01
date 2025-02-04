@@ -224,9 +224,13 @@ export default class CollisionSystem {
       spriteA.setState('map');
       spriteA.setState('map');
 
+      // Changer de niveau
+
     } else if (stateB.tag == "map" && spriteB.currentState == 'unfold' && spriteB.currentFrame >= spriteB.currentState.length + 1) {
       spriteB.setState('map');
       spriteB.setState('map');
+
+      // Changer de niveau
     }
   }
 }

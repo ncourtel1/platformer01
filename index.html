@@ -4,85 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Platformer ECS</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #33323d; /* Couleur de fond si jamais */
-        
-      }
-
-      #game {
-        position: fixed; /* Fixe à l'écran */
-        top: 0;
-        left: 0;
-        transform-origin: top left;
-      }
-
-      #game-container {
-        position: relative;
-        width: 1920px;
-        height: 970px;
-        background-image: url("assets/Palm Tree Island/Sprites/Background/BG Image.png");
-        background-repeat: repeat-x;
-        background-position-y: center;
-        background-size: cover;
-        image-rendering: pixelated;
-        top: 100px;
-      }
-
-      #big-cloud {
-        background: url("assets/Palm Tree Island/Sprites/Background/Big Clouds.png")
-          repeat-x;
-        animation: scroll 180s linear infinite;
-        width: 100%;
-        height: 200px;
-        position: absolute;
-        top: 558px;
-      }
-
-      @keyframes scroll {
-        from {
-          background-position: 0 0;
-        }
-        to {
-          background-position: -100% 0;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main id="game">
-      <div id="game-container">
+      <div id="start-menu">
+        <div class="title">Main Menu</div>
+        <div class="menu">
+          <div id="playButton" class="play-btn">
+            <div class="btn-text">Play</div>
+          </div>
+          <div id="settingButton" class="stg-btn">
+            <div class="stg-btn-text">Settings</div>
+          </div>
+        </div>
+      </div>
+      <div id="game-container" style="display: none">
         <div id="big-cloud"></div>
       </div>
-      <div id="HUD" style="transform: scale(0.7); "></div>
+      <div id="HUD" style="transform: scale(0.7)"></div>
     </main>
-    
-
     <script src="main.js" type="module"></script>
+
     <script>
       function adjustScale() {
         const gameElement = document.getElementById("game");
         const gameWidth = 1920;
         const gameHeight = 1080;
 
-        // Calcul du scale global
         const scaleX = window.innerWidth / gameWidth;
         const scaleY = window.innerHeight / gameHeight;
-        const scale = Math.min(scaleX, scaleY)/1.1;
+        const scale = Math.min(scaleX, scaleY) / 1.1;
 
-        // Appliquer le scale
         gameElement.style.transform = `scale(${scale})`;
 
-        // Centrer correctement avec `fixed`
         const offsetX = (window.innerWidth - gameWidth * scale) / 2;
         const offsetY = (window.innerHeight - gameHeight * scale) / 2;
         gameElement.style.left = `${offsetX}px`;
