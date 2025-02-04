@@ -54,6 +54,7 @@
       <button id="player">Place Player</button>
       <button id="chestKey">Place Chest Key</button>
       <button id="chest">Place Chest</button>
+      <button id="rhum">Place Rhum</button>
       <button id="shooter">Place Shooter</button>
       <button id="toggleFlip">Toggle Flip</button>
       <button id="removeShooter">Remove Shooter</button>
@@ -80,6 +81,7 @@
     let playerPosition = null;
     let chestKeyPosition = null;
     let chestPosition = null;
+    let rhumPosition = null;
     let shooters = [];
     let spikes = [];
     let selectedTile = null;
@@ -113,6 +115,10 @@
       if (chestPosition) {
         mapCtx.fillStyle = 'brown';
         mapCtx.fillRect(chestPosition.x * tileSize, chestPosition.y * tileSize, tileSize, tileSize);
+      }
+      if (rhumPosition) {
+        mapCtx.fillStyle = 'green';
+        mapCtx.fillRect(rhumPosition.x * tileSize, rhumPosition.y * tileSize, tileSize, tileSize);
       }
       spikes.forEach(({ x, y }) => {
         mapCtx.fillStyle = 'purple';
@@ -151,6 +157,7 @@
     document.getElementById('player').addEventListener('click', () => mode = 'player');
     document.getElementById('chestKey').addEventListener('click', () => mode = 'chestKey');
     document.getElementById('chest').addEventListener('click', () => mode = 'chest');
+    document.getElementById('rhum').addEventListener('click', () => mode = 'rhum');
     document.getElementById('shooter').addEventListener('click', () => { mode = 'shooter' });
     document.getElementById('placeSpikes').addEventListener('click', () => { mode = 'spikes' });
     document.getElementById('toggleFlip').addEventListener('click', () => {
@@ -174,6 +181,8 @@
         chestKeyPosition = { x, y };
       } else if (mode === 'chest') {
         chestPosition = { x, y };
+      } else if (mode === 'rhum') {
+        rhumPosition = { x, y };
       } else if (mode === 'shooter') {
         shooters.push({ x, y, flip: false });
       } else if (mode === 'removeShooter') {
@@ -195,7 +204,7 @@
 
 
     document.getElementById('export').addEventListener('click', () => {
-      const json = JSON.stringify({ map, player: playerPosition, shooters, spikes, chestKey: chestKeyPosition, chest: chestPosition });
+      const json = JSON.stringify({ map, player: playerPosition, shooters, spikes, chestKey: chestKeyPosition, chest: chestPosition, rhum: rhumPosition });
       const blob = new Blob([json], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -216,6 +225,7 @@
           playerPosition = data.player;
           chestKeyPosition = data.chestKey;
           chestPosition = data.chest;
+          rhumPosition = data.rhum;
           shooters = data.shooters.map(shooter => ({
             x: shooter.x,
             y: shooter.y,

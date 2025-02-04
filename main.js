@@ -2,7 +2,7 @@ import ECS from "./systems/ecs.js";
 import createPlayer from "./entities/createPlayer.js";
 import createObject from "./entities/createObject.js";
 import createShooter from "./entities/createShooter.js";
-import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim, spikeSprite, chestKeySprite, chestSprite } from "./spriteLoader.js";
+import { playerAnimation, playerParticle, canonBallProjectile, canonFireAnim, spikeSprite, chestKeySprite, chestSprite, rhumSprite } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
 
@@ -22,7 +22,7 @@ async function loadMap(filename) {
 }
 
 async function generateObjectsFromMap() {
-  const map1 = await loadMap('chest.json');
+  const map1 = await loadMap('rhum.json');
   if (!map1) return;
 
   const yoffset = 950;
@@ -61,8 +61,10 @@ async function generateObjectsFromMap() {
   }
   const chestKey = createObject(map1.chestKey.x * 32 * zoom, map1.chestKey.y * 32 * zoom - yoffset, "", tileSize * zoom / 1.5, tileSize * zoom / 1.5, chestKeySprite, undefined, undefined, 0.2, undefined, undefined, true, false, "keyChess");
   ecs.addEntity(chestKey);
-  const chest = createObject(map1.chest.x * 32 * zoom, map1.chest.y * 32 * zoom - yoffset, "", tileSize * zoom, tileSize * zoom, chestSprite, undefined, undefined, 0.2, undefined, undefined, true, false, "chess");
+  const chest = createObject(map1.chest.x * 32 * zoom, map1.chest.y * 32 * zoom - yoffset + 30, "", tileSize * zoom, tileSize * zoom / 1.34, chestSprite, undefined, undefined, 0.2, undefined, undefined, true, false, "chess");
   ecs.addEntity(chest);
+  const rhum = createObject(map1.rhum.x * 32 * zoom + 40, map1.rhum.y * 32 * zoom - yoffset + 50, "", tileSize * zoom / 3, tileSize * zoom / 2.3, rhumSprite, undefined, undefined, 0.2, undefined, undefined, true, false, "healthBonus");
+  ecs.addEntity(rhum);
 }
 
 let lastTime = performance.now();

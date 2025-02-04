@@ -152,8 +152,10 @@ export default class CollisionSystem {
     if ((inputA && stateB) || (stateA && inputB)) {
       if (stateA.tag == "healthBonus") {
         healthB.addHealth(1);
+        ecs.removeEntity(entityA);
       } else if (stateB.tag == "healthBonus") {
         healthA.addHealth(1);
+        ecs.removeEntity(entityB);
       }
     }
 
@@ -210,12 +212,12 @@ export default class CollisionSystem {
     if (stateA.tag == "chess" && spriteA.currentState == 'unlocked' && spriteA.currentFrame >= spriteA.currentState.length - 1) {
       spriteA.setState('opened');
       spriteA.setState('opened');
-      const map = createObject(positionA.x + 21, positionA.y - 35, "", visualA.width / 1.5, visualA.height / 1.4, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+      const map = createObject(positionA.x + 21, positionA.y - 70, "", visualA.width / 1.5, visualA.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
       ecs.addEntity(map);
     } else if (stateB.tag == "chess" && spriteB.currentState == 'unlocked' && spriteB.currentFrame >= spriteB.currentState.length - 1) {
       spriteB.setState('opened');
       spriteB.setState('opened');
-      const map = createObject(positionB.x + 21, positionB.y - 35, "", visualB.width / 1.5, visualB.height / 1.4, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+      const map = createObject(positionB.x + 21, positionB.y - 70, "", visualB.width / 1.5, visualB.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
       ecs.addEntity(map);
     }
     if (stateA.tag == "map" && spriteA.currentState == 'unfold' && spriteA.currentFrame >= spriteA.currentState.length + 1) {
