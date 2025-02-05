@@ -1,29 +1,12 @@
+import { startGame } from "../main.js";
+
 // MenuSystem.js
 export default class MenuSystem {
   constructor(container, timerSys) {
     this.container = container;
     this.paused = false;
-    this.timerSys = timerSys
-
-    // Créer une div pour contenir les images
-    this.imagesContainer = document.createElement("div");
-    this.imagesContainer.style.position = "absolute"; // Changed from display to position
-    this.imagesContainer.style.backgroundImage =
-      "url('../assets/Wood and Paper UI/Sprites/board.png')"; // Added url()
-    this.imagesContainer.style.display = "none";
-    this.imagesContainer.style.height = "90px";
-    this.imagesContainer.style.width = "90px"; // Changed from weight to width
-
-    // Ajouter du texte "PAUSE" au menu
-    const pauseText = document.createElement("div");
-    pauseText.textContent = "PAUSE";
-    pauseText.style.color = "white";
-    pauseText.style.fontSize = "24px";
-    pauseText.style.textAlign = "center";
-    pauseText.style.paddingTop = "35px";
-
-    this.imagesContainer.appendChild(pauseText);
-    this.container.appendChild(this.imagesContainer);
+    this.timerSys = timerSys;
+    this.menu = document.getElementById("start-menu");
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
@@ -34,8 +17,38 @@ export default class MenuSystem {
 
   togglePause() {
     this.paused = !this.paused;
-    this.timerSys.toggleTimer()
-    this.imagesContainer.style.display = this.paused ? "block" : "none";
+    this.timerSys.toggleTimer();
+
+    const game = document.getElementById("game");
+    const gameContainer = document.getElementById("game-container");
+    const title = document.getElementById("title");
+    const playBtn = document.getElementById("playButton")
+
+    const restartBtn = document.getElementById("restartButton")
+
+    if (this.paused) {
+      const gameHeight = game.offsetHeight;
+      const gameContainerHeight = gameContainer.offsetHeight;
+
+      this.menu.style.display = "flex";
+      this.menu.style.justifyContent = "center";
+      this.menu.style.alignItems = "center";
+      this.menu.style.position = "fixed";
+      this.menu.style.width = this.container.style.width;
+      this.menu.style.height = this.container.style.height;
+      this.menu.style.background = "none";
+      this.menu.style.backdropFilter = `blur(10px)`;
+
+      this.menu.style.top = `${gameContainer.offsetTop - game.offsetTop}px`; // Aligner en haut du game
+      this.menu.style.left = `${gameContainer.offsetLeft}px`; // Alignement gauche
+      this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
+      this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée
+      title.textContent = `Score: ${0}`;
+      restartBtn.style.display = "block"
+      playBtn.style.display = "none"
+    } else {
+      this.menu.style.display = "none";
+    }
   }
 
   isPaused() {

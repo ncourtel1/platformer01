@@ -119,7 +119,7 @@ async function generateObjectsFromMap(map) {
   }
 }
 
-
+let gameLoopId = null;
 lastTime = 0;
 
 async function gameLoop(time) {
@@ -131,10 +131,17 @@ async function gameLoop(time) {
     ecs.update(dt);
   }
 
-  requestAnimationFrame(gameLoop);
+  gameLoopId = requestAnimationFrame(gameLoop);
 }
 
 export async function startGame(map) {
+  if (gameLoopId) {
+    cancelAnimationFrame(gameLoopId);
+    gameLoopId = null;
+    ecs.clear();
+  }
+
+  
   generateBackground();
   await generateObjectsFromMap(map);
   initSystems(lastTime);
@@ -154,3 +161,16 @@ document.getElementById("playButton").addEventListener("click", () => {
   startGame('palms.json');
 });
   
+
+document.getElementById("restartButton").addEventListener("click", () => {
+  const menu = document.getElementById("start-menu");
+  menu.style.display = "none";
+
+  const game_container = document.getElementById("game-container");
+  game_container.style.display = "block";
+
+  lastTime = performance.now();
+
+  // Lancer le jeu
+  startGame('palms.json');
+});

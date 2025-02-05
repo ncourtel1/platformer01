@@ -52,6 +52,7 @@ body {
   justify-content: center;
   align-items: center;
   top: 100px;
+  z-index: 100;
 }
 
 /* 📌 Conteneur des boutons */

@@ -7,7 +7,6 @@ export default class HealthSystem {
 
     // Créer une div pour contenir les images
     this.imagesContainer = document.createElement("div");
-    
     this.imagesContainer.style.marginLeft = `${xOffset}px`;
     this.imagesContainer.style.marginTop = '-870px';
     this.imagesContainer.style.display = "flex";
