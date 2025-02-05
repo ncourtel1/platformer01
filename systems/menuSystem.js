@@ -2,7 +2,8 @@ import { } from "../main.js";
 
 // MenuSystem.js
 export default class MenuSystem {
-  constructor(container, timerSys) {
+  constructor(container, timerSys, player) {
+    this.player = player;
     this.container = container;
     this.paused = false;
     this.timerSys = timerSys;
@@ -24,6 +25,8 @@ export default class MenuSystem {
     const title = document.getElementById("title");
     const playBtn = document.getElementById("playButton")
 
+    const scoreComponent = this.player.getComponent("score");
+
     const restartBtn = document.getElementById("restartButton")
 
     if (this.paused) {
@@ -43,7 +46,7 @@ export default class MenuSystem {
       this.menu.style.left = `${gameContainer.offsetLeft}px`; // Alignement gauche
       this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
       this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée
-      title.textContent = `Score: ${0}`;
+      title.textContent = `Score: ${scoreComponent.score}`;
       restartBtn.style.display = "block"
       playBtn.style.display = "none"
     } else {

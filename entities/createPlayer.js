@@ -9,6 +9,7 @@ import StateComponent from "../components/stateComponent.js"
 import Entity from "./entity.js"
 import SpriteComponent from "../components/spriteComponent.js"
 import HealthComponent from "../components/healthComponent.js"
+import ScoreComponent from "../components/scoreComponent.js"
 
 // Create an Entity player with components attached to it
 export default function createPlayer(x, y, vx, vy, color, width, height, states, particleStates){
@@ -21,6 +22,7 @@ export default function createPlayer(x, y, vx, vy, color, width, height, states,
    player.addComponent('state', new StateComponent());
    player.addComponent('sprite', new SpriteComponent(states, particleStates))
    player.addComponent('health', new HealthComponent(3))
+   player.addComponent('score', new ScoreComponent(0))
    //player.addComponent('collision', new CollisionComponent("box", {width:32, height: 32}));
    return player;
 }

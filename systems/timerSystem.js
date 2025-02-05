@@ -60,14 +60,14 @@ export default class TimerSystem {
     // Create bar images
     this.imageElement1 = document.createElement("img");
     this.imageElement1.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/2.png";
-    this.imageElement1.style.width = `${imgSize-1}px`;
+    this.imageElement1.style.width = `${imgSize}px`;
     this.imageElement1.style.zIndex = "1";
     this.imageElement1.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement1);
 
     this.imageElement3 = document.createElement("img");
     this.imageElement3.src = "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/3.png";
-    this.imageElement3.style.width = `${imgSize-2}px`;
+    this.imageElement3.style.width = `${imgSize}px`;
     this.imageElement3.style.zIndex = "1";
     this.imageElement3.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement3);
@@ -161,6 +161,7 @@ export default class TimerSystem {
           clearInterval(this.timer);
           this.showGameOver();
         }
+        
         this.update();
       }
     }, 1000);

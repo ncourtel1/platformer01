@@ -10,6 +10,7 @@ import MenuSystem from "./systems/menuSystem.js";
 import SpriteSystem from "./systems/spriteSystem.js";
 import RespawnSystem from "./systems/respawnSystem.js";
 import { ecs, player } from "./main.js";
+import ScoreSystem from "./systems/scoreSystem.js";
 
 let menuSys;
 
@@ -34,10 +35,11 @@ export async function initSystems() {
     ecs.addSystem(new HealthSystem(HUD, player));
     ecs.addSystem(new RespawnSystem());
 
-    const timerSys = new TimerSystem(HUD, 10000, player);
-    menuSys = new MenuSystem(HUD, timerSys);
+    const timerSys = new TimerSystem(HUD, 60, player);
+    menuSys = new MenuSystem(HUD, timerSys, player);
 
     ecs.addSystem(timerSys);
     ecs.addSystem(menuSys);
+    ecs.addSystem(new ScoreSystem(player, timerSys))
     ecs.initialized = true;
 }

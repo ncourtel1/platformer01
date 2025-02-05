@@ -16,7 +16,7 @@ export default class HealthSystem {
     this.imageElement1 = document.createElement("img");
     this.imageElement1.src =
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/1.png";
-    this.imageElement1.style.width = `${imgSize-1}px`;
+    this.imageElement1.style.width = `${imgSize}px`;
     this.imageElement1.style.zIndex = "1";
     this.imageElement1.style.imageRendering = 'pixelated';
     this.imagesContainer.appendChild(this.imageElement1);
@@ -24,7 +24,7 @@ export default class HealthSystem {
     this.imageElement3 = document.createElement("img");
     this.imageElement3.src =
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/3.png";
-    this.imageElement3.style.width = `${imgSize-2}px`;
+    this.imageElement3.style.width = `${imgSize}px`;
     this.imageElement3.style.zIndex = "1";
     this.imageElement3.style.imageRendering = 'pixelated';
     this.imagesContainer.appendChild(this.imageElement3);
