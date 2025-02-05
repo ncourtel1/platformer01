@@ -121,6 +121,8 @@ async function generateObjectsFromMap(map) {
 
 let gameLoopId = null;
 lastTime = 0;
+export let levels = ["level-1.json", "palms.json", ""];
+export let current_level = 0;
 
 async function gameLoop(time) {
 
@@ -158,7 +160,7 @@ document.getElementById("playButton").addEventListener("click", () => {
   lastTime = performance.now();
 
   // Lancer le jeu
-  startGame('palms.json');
+  startGame(levels[0]);
 });
   
 
@@ -172,5 +174,5 @@ document.getElementById("restartButton").addEventListener("click", () => {
   lastTime = performance.now();
 
   // Lancer le jeu
-  startGame('palms.json');
+  startGame(levels[current_level]);
 });
