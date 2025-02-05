@@ -3,6 +3,7 @@ export default class ECS {
   constructor() {
     this.entities = [];
     this.systems = [];
+    this.initialized = false;
   }
 
   addEntity(entity) {
@@ -27,6 +28,11 @@ export default class ECS {
   addSystem(system) {
     this.systems.push(system);
   }
+
+  getSystem(systemClass) {
+    return this.systems.find(system => system instanceof systemClass) || null;
+  }
+  
 
   // apply the update method of every systems on every entities
   update(dt) {

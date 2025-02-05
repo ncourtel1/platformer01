@@ -1,4 +1,4 @@
-import { startGame } from "../main.js";
+import { } from "../main.js";
 
 // MenuSystem.js
 export default class MenuSystem {
@@ -39,7 +39,7 @@ export default class MenuSystem {
       this.menu.style.background = "none";
       this.menu.style.backdropFilter = `blur(10px)`;
 
-      this.menu.style.top = `${gameContainer.offsetTop - game.offsetTop}px`; // Aligner en haut du game
+      this.menu.style.top = `${-80}px`; // Aligner en haut du game
       this.menu.style.left = `${gameContainer.offsetLeft}px`; // Alignement gauche
       this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
       this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée

@@ -39,4 +39,5 @@ export async function initSystems() {
 
     ecs.addSystem(timerSys);
     ecs.addSystem(menuSys);
+    ecs.initialized = true;
 }

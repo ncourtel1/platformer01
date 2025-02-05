@@ -14,7 +14,7 @@
           <div id="playButton" class="play-btn">
             <div class="btn-text">Play</div>
           </div>
-          <div id="restartButton" class="play-btn" style="display: none;">
+          <div id="restartButton" class="play-btn" style="display: none">
             <div class="btn-text">Restart</div>
           </div>
           <div id="settingButton" class="stg-btn">
@@ -30,25 +30,33 @@
     <script src="main.js" type="module"></script>
 
     <script>
-      function adjustScale() {
-        const gameElement = document.getElementById("game");
-        const gameWidth = 1920;
-        const gameHeight = 1080;
+function adjustScale() {
+  const gameElement = document.getElementById("game");
+  const gameWidth = 1920;
+  const gameHeight = 1080;
 
-        const scaleX = window.innerWidth / gameWidth;
-        const scaleY = window.innerHeight / gameHeight;
-        const scale = Math.min(scaleX, scaleY) / 1.1;
+  const scaleX = window.innerWidth / gameWidth;
+  const scaleY = window.innerHeight / gameHeight;
+  const scale = Math.min(scaleX, scaleY) / 1.1;
 
-        gameElement.style.transform = `scale(${scale})`;
+  // Fix des erreurs de pixels avec Math.floor()
+  const roundedScale = Math.floor(scale * 100) / 100;
 
-        const offsetX = (window.innerWidth - gameWidth * scale) / 2;
-        const offsetY = (window.innerHeight - gameHeight * scale) / 2;
-        gameElement.style.left = `${offsetX}px`;
-        gameElement.style.top = `${offsetY}px`;
-      }
+  gameElement.style.transform = `scale(${roundedScale})`;
+  gameElement.style.transformOrigin = "top left"; // Evite les décalages
 
-      window.addEventListener("resize", adjustScale);
-      adjustScale();
+  // Centrer correctement l'élément
+  const offsetX = (window.innerWidth - gameWidth * roundedScale) / 2;
+  const offsetY = (window.innerHeight - gameHeight * roundedScale) / 2;
+
+  gameElement.style.position = "absolute"; 
+  gameElement.style.left = `${Math.floor(offsetX)}px`; // Arrondi pour éviter les 1px d'écart
+  gameElement.style.top = `${Math.floor(offsetY)}px`; 
+}
+
+window.addEventListener("resize", adjustScale);
+adjustScale();
+
     </script>
   </body>
 </html>

@@ -28,7 +28,7 @@ export default class InputComponent{
          this.facingRight = true;
          this.facingLeft = false;
       } 
-      else if(this.keys.has("a")){
+      else if(this.keys.has("a") || this.keys.has("q")){
          this.x = -1;
          this.facingLeft = true;
          this.facingRight = false;

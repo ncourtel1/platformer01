@@ -1,4 +1,4 @@
-import { ecs, current_level, levels } from "../main.js";
+import { ecs, loadNextLevel } from "../main.js";
 import createObject from "../entities/createObject.js";
 import { mapSprite } from "../spriteLoader.js";
 
@@ -223,11 +223,15 @@ export default class CollisionSystem {
     if (stateA.tag == "map" && spriteA.currentState == 'unfold' && spriteA.currentFrame >= spriteA.currentState.length + 1) {
       spriteA.setState('map');
       spriteA.setState('map');
-      console.log(stateA, stateB)
+      setTimeout(() => {
+        loadNextLevel()
+      }, 1500)
     } else if (stateB.tag == "map" && spriteB.currentState == 'unfold' && spriteB.currentFrame >= spriteB.currentState.length + 1) {
       spriteB.setState('map');
       spriteB.setState('map');
-      console.log(stateA, stateB)
+      setTimeout(() => {
+        loadNextLevel()
+      }, 1500)
     }
   }
 }
