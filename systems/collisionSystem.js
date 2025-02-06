@@ -197,28 +197,28 @@ export default class CollisionSystem {
     const spriteB = entityB.getComponent('sprite');
     const inputA = entityA.getComponent("input");
     const inputB = entityB.getComponent("input");
-    
     if((inputA && stateB) || (stateA && inputB)){
       if(stateA.tag == "chess" && stateB.canFinish && spriteA.currentState == 'locked'){
         stateB.levelFinish = true;
         spriteA.setState('unlocked');
         spriteA.setState('unlocked');
+        setTimeout(() => {
+          spriteA.setState('opened');
+          spriteA.setState('opened');
+          const map = createObject(positionA.x + 21, positionA.y - 70, "", visualA.width / 1.5, visualA.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+          ecs.addEntity(map);
+        }, 500);
       } else if(stateB.tag == "chess" && stateA.canFinish && spriteB.currentState == 'locked'){
         stateA.levelFinish = true;
         spriteB.setState('unlocked');
         spriteB.setState('unlocked');
+        setTimeout(() => {
+          spriteB.setState('opened');
+          spriteB.setState('opened');
+          const map = createObject(positionB.x + 21, positionB.y - 70, "", visualB.width / 1.5, visualB.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+          ecs.addEntity(map);
+        }, 500);
       }
-    }
-    if (stateA.tag == "chess" && spriteA.currentState == 'unlocked' && spriteA.currentFrame >= spriteA.currentState.length - 1) {
-      spriteA.setState('opened');
-      spriteA.setState('opened');
-      const map = createObject(positionA.x + 21, positionA.y - 70, "", visualA.width / 1.5, visualA.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
-      ecs.addEntity(map);
-    } else if (stateB.tag == "chess" && spriteB.currentState == 'unlocked' && spriteB.currentFrame >= spriteB.currentState.length - 1) {
-      spriteB.setState('opened');
-      spriteB.setState('opened');
-      const map = createObject(positionB.x + 21, positionB.y - 70, "", visualB.width / 1.5, visualB.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
-      ecs.addEntity(map);
     }
     if (stateA.tag == "map" && spriteA.currentState == 'unfold' && spriteA.currentFrame >= spriteA.currentState.length + 1) {
       spriteA.setState('map');
