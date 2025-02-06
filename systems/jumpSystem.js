@@ -9,13 +9,14 @@ export default class JumpSystem {
          const playerData = entity.getComponent('data');
          const state = entity.getComponent('state');
          const animation = entity.getComponent('sprite');
+         const health = entity.getComponent('health');
 
          if (position && velocity && state && playerData) {
             input.update();
             if (!input.jumpPressed) {
                state.canJump = true;
             }
-            if (input.jumpPressed && state.isGrounded && state.canJump && !state.isJumping) {
+            if (input.jumpPressed && state.isGrounded && state.canJump && !state.isJumping && !health.dead) {
                state.isJumping = true;
                state.isGrounded = false;
                state.canJump = false;

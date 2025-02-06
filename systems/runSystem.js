@@ -7,13 +7,15 @@ export default class RunSystem {
          const input = entity.getComponent('input');
          const playerData = entity.getComponent('data');
          const animation = entity.getComponent('sprite');
-         if (position && velocity && playerData) {
+         const health = entity.getComponent('health');
+
+         if (position && velocity && playerData && !health.dead) {
             
             input.update();
             if (input.x !== 0) 
             {
                animation.setState('run');
-               if (velocity.vx > 0) animation.flip = false;
+               if (input.x > 0) animation.flip = false;
                else animation.flip = true;
             }
             else animation.setState('idle');
