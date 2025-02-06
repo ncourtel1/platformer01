@@ -53,11 +53,23 @@ playerFall1.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain 
 
 const playerFallImages = [playerFall1];
 
+const playerDead1 = new Image();
+playerDead1.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/07-Dead Hit/Dead Hit 01.png";
+const playerDead2 = new Image();
+playerDead2.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/07-Dead Hit/Dead Hit 02.png";
+const playerDead3 = new Image();
+playerDead3.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/07-Dead Hit/Dead Hit 03.png";
+const playerDead4 = new Image();
+playerDead4.src = "assets/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/07-Dead Hit/Dead Hit 04.png";
+
+const playerDeadAnim = [playerDead1, playerDead2, playerDead3, playerDead4];
+
 export const playerAnimation = new Map();
 playerAnimation.set('idle', playerIdleImages)
 playerAnimation.set('run', playerRunImages)
 playerAnimation.set('jump', playerJumpImages)
 playerAnimation.set('fall', playerFallImages)
+playerAnimation.set('dead', playerDeadAnim)
 
 const playerParticleRun1 = new Image();
 playerParticleRun1.src = "assets/Captain Clown Nose/Sprites/Dust Particles/Run 01.png";

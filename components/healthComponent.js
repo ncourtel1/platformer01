@@ -8,13 +8,16 @@ export default class HealthComponent {
   }
 
   removeHealth(dmg) {
-    this.oldCurrent = this.currentHealth;
-    this.currentHealth -= dmg;
-    this.currentHealth = this.currentHealth < 0 ? 0 : this.currentHealth;
+    if (!this.dead) {
+      this.oldCurrent = this.currentHealth;
+      this.currentHealth -= dmg;
+      this.currentHealth = this.currentHealth < 0 ? 0 : this.currentHealth;
 
-    if (this.currentHealth == 0) {
-      this.dead = true;
-      console.log("you die");
+      if (this.currentHealth == 0) {
+        //this.dead = true;
+        console.log("you die");
+      }
+      
     }
     this.loseLife = true;
   }
