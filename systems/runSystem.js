@@ -13,7 +13,7 @@ export default class RunSystem {
             if (input.x !== 0) 
             {
                animation.setState('run');
-               if (velocity.vx > 0) animation.flip = false;
+               if (input.x > 0) animation.flip = false;
                else animation.flip = true;
             }
             else animation.setState('idle');
