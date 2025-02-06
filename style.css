@@ -98,13 +98,19 @@ body {
     margin-left: 10px;
   }
 
-.title{
+  .title {
     position: absolute;
     font-size: 55px;
     font-family: "early_gameboyregular";
     color: rgb(53, 53, 53);
     margin-top: -240px;
-    margin-left: 0px;
+    margin-left: 50px;
+    
+    /* Ajout du text-wrap */
+    white-space: normal; /* Permet le retour à la ligne automatique */
+    word-wrap: break-word; /* Force les mots longs à passer à la ligne */
+    
+    max-width: 250px; /* Ajuste la largeur de la colonne */
 }
 
 .btn-text {

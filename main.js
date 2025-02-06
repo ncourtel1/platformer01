@@ -282,30 +282,39 @@ export async function startGame(map) {
   }
   lastTime = performance.now();
   if (map !== "intermezzo") {
-  generateBackground();
-  await generateObjectsFromMap(map);
-  initSystems(lastTime);
-  gameLoop(lastTime);
-} else {
-  const game = document.getElementById("game-container");
-  const gameWidth = game.offsetWidth;
-  const gameHeight = game.offsetHeight;
-  intermezzo = new Image();
-  intermezzo.src = `assets/mapTransition.gif?t=${new Date().getTime()}`;
-  intermezzo.style.zIndex = 100000;
-  intermezzo.style.width = `${gameWidth}px`;
-  intermezzo.style.height = `${gameHeight}px`;
-  intermezzo.style.imageRendering = "pixelated";
-  game.appendChild(intermezzo);
-  setTimeout(completeIntermezzo, 5000)
-}
+    generateBackground();
+    await generateObjectsFromMap(map);
+    initSystems(lastTime);
+    gameLoop(lastTime);
+  } else {
+    let menuSys = ecs.getSystem(MenuSystem);
+  if(menuSys){
+    menuSys.isIntermezzo = true
+  }
+    
+    const game = document.getElementById("game-container");
+    const gameWidth = game.offsetWidth;
+    const gameHeight = game.offsetHeight;
+    intermezzo = new Image();
+    intermezzo.src = `assets/mapTransition.gif?t=${new Date().getTime()}`;
+    intermezzo.style.zIndex = 100000;
+    intermezzo.style.width = `${gameWidth}px`;
+    intermezzo.style.height = `${gameHeight}px`;
+    intermezzo.style.imageRendering = "pixelated";
+    game.appendChild(intermezzo);
+    setTimeout(completeIntermezzo, 5000);
+  }
 }
 
 let intermezzo = undefined;
 
 function completeIntermezzo() {
-  if (intermezzo) intermezzo.remove()
-    loadNextLevel();
+  let menuSys = ecs.getSystem(MenuSystem);
+  if(menuSys){
+    menuSys.isIntermezzo = false
+  }
+  if (intermezzo) intermezzo.remove();
+  loadNextLevel();
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
@@ -317,6 +326,18 @@ document.getElementById("playButton").addEventListener("click", () => {
 
   // Lancer le jeu
   startGame(levels[0]);
+});
+
+document.getElementById("continueButton").addEventListener("click", () => {
+  let menuSys = ecs.getSystem(MenuSystem);
+  if (menuSys.isIntermezzo) {
+    menuSys.isIntermezzo = !menuSys.isIntermezzo
+    menuSys.togglePause();
+    loadNextLevel()
+  } else{
+    menuSys.togglePause();
+  }
+  
 });
 
 document.getElementById("restartButton").addEventListener("click", () => {
