@@ -246,7 +246,7 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["level-1.json", "palms.json"];
+export let levels = ["intermezzo", "level-1.json", "intermezzo", "palms.json"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -281,11 +281,31 @@ export async function startGame(map) {
     ecs.clear();
   }
   lastTime = performance.now();
-
+  if (map !== "intermezzo") {
   generateBackground();
   await generateObjectsFromMap(map);
   initSystems(lastTime);
   gameLoop(lastTime);
+} else {
+  const game = document.getElementById("game-container");
+  const gameWidth = game.offsetWidth;
+  const gameHeight = game.offsetHeight;
+  intermezzo = new Image();
+  intermezzo.src = `assets/mapTransition.gif?t=${new Date().getTime()}`;
+  intermezzo.style.zIndex = 100000;
+  intermezzo.style.width = `${gameWidth}px`;
+  intermezzo.style.height = `${gameHeight}px`;
+  intermezzo.style.imageRendering = "pixelated";
+  game.appendChild(intermezzo);
+  setTimeout(completeIntermezzo, 5000)
+}
+}
+
+let intermezzo = undefined;
+
+function completeIntermezzo() {
+  if (intermezzo) intermezzo.remove()
+    loadNextLevel();
 }
 
 document.getElementById("playButton").addEventListener("click", () => {

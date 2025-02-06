@@ -38,6 +38,7 @@ body {
   height: 200px;
   position: absolute;
   top: 558px;
+  z-index: -1;
 }
 
 /* 📌 Le menu */
