@@ -288,7 +288,12 @@ export async function startGame(map) {
     initSystems(lastTime);
     gameLoop(lastTime);
   } else {
+    let menuSys = ecs.getSystem(MenuSystem);
+    if(menuSys){
+      menuSys.isIntermezzo = true
+    }
     const game = document.getElementById("game-container");
+
     const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
     const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : "";
@@ -314,8 +319,12 @@ export async function startGame(map) {
 let intermezzo = new Image();
 
 function completeIntermezzo() {
-  if (intermezzo) intermezzo.remove()
-    loadNextLevel();
+  let menuSys = ecs.getSystem(MenuSystem);
+  if(menuSys){
+    menuSys.isIntermezzo = false
+  }
+  if (intermezzo) intermezzo.remove();
+  loadNextLevel();
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
@@ -327,6 +336,18 @@ document.getElementById("playButton").addEventListener("click", () => {
 
   // Lancer le jeu
   startGame(levels[0]);
+});
+
+document.getElementById("continueButton").addEventListener("click", () => {
+  let menuSys = ecs.getSystem(MenuSystem);
+  if (menuSys.isIntermezzo) {
+    menuSys.isIntermezzo = !menuSys.isIntermezzo
+    menuSys.togglePause();
+    loadNextLevel()
+  } else{
+    menuSys.togglePause();
+  }
+  
 });
 
 document.getElementById("restartButton").addEventListener("click", () => {

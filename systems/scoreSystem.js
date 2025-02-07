@@ -3,7 +3,7 @@ export default class ScoreSystem {
     this.player = player;
     this.timerSys = timerSys;
     this.baseScore = 1000;
-    this.minScore = 100;
+    this.minScore = 0;
   }
 
   update() {
