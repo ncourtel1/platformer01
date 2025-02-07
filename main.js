@@ -250,8 +250,7 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-//export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
-export let levels = ["level-1.json", "intermezzo", "palms.json"];
+export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
