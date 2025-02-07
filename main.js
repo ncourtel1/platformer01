@@ -12,6 +12,8 @@ import {
   chestSprite,
   rhumSprite,
   foregroundPalmSprite,
+  playerSounds,
+  cannonSounds,
 } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
@@ -60,7 +62,8 @@ async function generateObjectsFromMap(map) {
     80,
     92,
     playerAnimation,
-    playerParticle
+    playerParticle,
+    playerSounds,
   );
   ecs.addEntity(player);
   for (let y = 0; y < map1.map.length; y++) {
@@ -139,7 +142,8 @@ async function generateObjectsFromMap(map) {
       true,
       canonBallObj,
       2000,
-      !shooterData.flip
+      !shooterData.flip,
+      cannonSounds,
     );
     ecs.addEntity(canon);
   }
@@ -246,7 +250,8 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
+//export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
+export let levels = ["level-1.json", "intermezzo", "palms.json"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package

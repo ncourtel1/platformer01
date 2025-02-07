@@ -366,6 +366,65 @@ const foregroundMapAnim = [foregroundPalm1, foregroundPalm2, foregroundPalm3, fo
 export const foregroundPalmSprite = new Map();
 foregroundPalmSprite.set('foreground_palm', foregroundMapAnim);
 
+//////////////////AUDIO////////////////////
+
+/**
+ * @brief exports playerSounds
+ * @exports playerSounds
+ */
+
+const jump = new Audio();
+jump.src = "assets/jump.wav";
+
+const plop = new Audio();
+plop.src = "assets/plop.wav"
+plop.volume = "0.5";
+
+const drink = new Audio();
+drink.src = "assets/drink.wav";
+
+const key = new Audio();
+key.src = "assets/key.wav";
+key.volume = "0.4";
+
+const loot = new Audio();
+loot.src = "assets/loot.wav";
+loot.volume = "0.6";
+
+const wood = new Audio();
+wood.src = "assets/wood.wav";
+
+const hurt = new Audio();
+hurt.src = "assets/hurt.wav";
+hurt.volume = "0.2";
+
+const cannon = new Audio();
+cannon.src = "assets/cannon.wav";
+
+export const ambience = new Audio();
+ambience.src = "assets/ambience.wav";
+ambience.volume = "0.5";
+ambience.loop = true;
+ambience.play();
+
+export const music = new Audio();
+music.src = "assets/music.wav";
+music.volume = "0.5";
+music.loop = true;
+music.play();
+
+export const playerSounds = new Map();
+playerSounds.set('jump', jump);
+playerSounds.set('plop', plop);
+playerSounds.set('drink', drink);
+playerSounds.set('key', key);
+playerSounds.set('loot', loot);
+playerSounds.set('wood', wood);
+playerSounds.set('hurt', hurt);
+
+export const cannonSounds = new Map();
+cannonSounds.set('fire', cannon);
+
 /**
  * @brief character sprites and animations alternative
  *

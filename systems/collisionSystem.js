@@ -140,10 +140,14 @@ export default class CollisionSystem {
     if ((inputA && stateB) || (stateA && inputB)) {
       if (stateA.tag == "keyChess") {
         stateB.canFinish = true;
+        const audio = entityB.getComponent('audio');
+        audio.sounds.get('key').play();
         ecs.removeEntity(entityA);
         console.log("key");
       } else if (stateB.tag == "keyChess") {
         stateA.canFinish = true;
+        const audio = entityA.getComponent('audio');
+        audio.sounds.get('key').play();
         ecs.removeEntity(entityB);
         console.log("key");
       }
@@ -153,9 +157,15 @@ export default class CollisionSystem {
     if ((inputA && stateB) || (stateA && inputB)) {
       if (stateA.tag == "healthBonus") {
         healthB.addHealth(1);
+        const audio = entityB.getComponent('audio');
+        audio.sounds.get('plop').play();
+        audio.sounds.get('drink').play();
         ecs.removeEntity(entityA);
       } else if (stateB.tag == "healthBonus") {
         healthA.addHealth(1);
+        const audio = entityA.getComponent('audio');
+        audio.sounds.get('plop').play();
+        audio.sounds.get('drink').play();
         ecs.removeEntity(entityB);
       }
     }
@@ -180,8 +190,12 @@ export default class CollisionSystem {
 
     if((inputA && stateB) || (stateA && inputB)){
       if(stateB.tag == "trap"){
+        const audio = entityA.getComponent('audio');
+        audio.sounds.get('hurt').play();
         healthA.removeHealth(1);
       }else if(stateA.tag == "trap"){
+        const audio = entityB.getComponent('audio');
+        audio.sounds.get('hurt').play();
         healthB.removeHealth(1);
       }
     }
@@ -201,6 +215,9 @@ export default class CollisionSystem {
     if((inputA && stateB) || (stateA && inputB)){
       if(stateA.tag == "chess" && stateB.canFinish && spriteA.currentState == 'locked'){
         stateB.levelFinish = true;
+        const audio = entityB.getComponent('audio');
+        audio.sounds.get('loot').play();
+        audio.sounds.get('wood').play();
         spriteA.setState('unlocked');
         spriteA.setState('unlocked');
         setTimeout(() => {
@@ -211,6 +228,9 @@ export default class CollisionSystem {
         }, 500);
       } else if(stateB.tag == "chess" && stateA.canFinish && spriteB.currentState == 'locked'){
         stateA.levelFinish = true;
+        const audio = entityA.getComponent('audio');
+        audio.sounds.get('loot').play();
+        audio.sounds.get('wood').play();
         spriteB.setState('unlocked');
         spriteB.setState('unlocked');
         setTimeout(() => {

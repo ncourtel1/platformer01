@@ -10,9 +10,10 @@ import Entity from "./entity.js"
 import SpriteComponent from "../components/spriteComponent.js"
 import HealthComponent from "../components/healthComponent.js"
 import ScoreComponent from "../components/scoreComponent.js"
+import audioComponent from "../components/audioComponent.js"
 
 // Create an Entity player with components attached to it
-export default function createPlayer(x, y, vx, vy, color, width, height, states, particleStates){
+export default function createPlayer(x, y, vx, vy, color, width, height, states, particleStates, sounds){
    const player = new Entity();
    player.addComponent('input', new InputComponent());
    player.addComponent('data', PlayerDataComponent);
@@ -23,6 +24,7 @@ export default function createPlayer(x, y, vx, vy, color, width, height, states,
    player.addComponent('sprite', new SpriteComponent(states, particleStates))
    player.addComponent('health', new HealthComponent(3))
    player.addComponent('score', new ScoreComponent(0))
+   player.addComponent('audio', new audioComponent(sounds))
    //player.addComponent('collision', new CollisionComponent("box", {width:32, height: 32}));
    return player;
 }

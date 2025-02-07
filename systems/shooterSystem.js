@@ -12,6 +12,7 @@ export default class ShooterSystem {
          const position = entity.getComponent('position');
          const state = entity.getComponent('state');
          const sprite = entity.getComponent('sprite');
+         const audio = entity.getComponent('audio');
          if (sprite.currentState === 'fire' && Math.round(sprite.currentFrame) === sprite.currentState.length && projectileComp) {
             sprite.setState('idle');
             sprite.setState('idle');
@@ -35,6 +36,9 @@ export default class ShooterSystem {
                projectileVelocity.vx = sprite.flip ? 6 : -6;
 
                ecs.addEntity(projectile);
+               const audioFire = audio.sounds.get('fire').cloneNode()
+               audioFire.volume = "0.4";
+               audioFire.play();
                sprite.setState('fire');
                sprite.setState('fire');
 
