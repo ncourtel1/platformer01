@@ -286,7 +286,7 @@ export async function startGame(map) {
   }
   lastTime = performance.now();
   
-  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2") {
+  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death") {
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
@@ -300,7 +300,7 @@ export async function startGame(map) {
 
     const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
-    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : "";
+    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : "";
     intermezzo.src = `assets/${source}`;
     intermezzo.style.zIndex = 10;
     intermezzo.style.width = `${gameWidth}px`;
@@ -314,20 +314,21 @@ export async function startGame(map) {
     }, 50);
     setTimeout(() => {
       intermezzo.style.filter = "brightness(0%)";
-    }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : 0));
-    setTimeout(completeIntermezzo, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : 0));
+    }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
+    setTimeout(() => {completeIntermezzo(map == "death" ? true : false)}, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
   }
 }
 
 
 let intermezzo = new Image();
 
-function completeIntermezzo() {
+function completeIntermezzo(gameOver) {
   let menuSys = ecs.getSystem(MenuSystem);
   if(menuSys){
     menuSys.isIntermezzo = false
   }
   if (intermezzo) intermezzo.remove();
+  if (gameOver) setCurrentLevel(2);
   loadNextLevel();
 }
 

@@ -1,5 +1,4 @@
-import { ecs } from "../main.js";
-import MenuSystem from "./menuSystem.js";
+import { startGame } from "../main.js";
 
 export default class HealthSystem {
   constructor(container, player) {
@@ -73,10 +72,7 @@ export default class HealthSystem {
     if (playerHealth.currentHealth === 0 && !playerHealth.gameOver)
       {
       playerHealth.gameOver = true;
-    setTimeout(() => {
-      let menuSys = ecs.getSystem(MenuSystem)
-      menuSys.togglePause(true)
-    }, 200)
+      startGame("death");
   }
   }
 }
