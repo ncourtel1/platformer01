@@ -281,25 +281,36 @@ export async function startGame(map) {
     ecs.clear();
   }
   lastTime = performance.now();
+  
   if (map !== "intermezzo") {
-  generateBackground();
-  await generateObjectsFromMap(map);
-  initSystems(lastTime);
-  gameLoop(lastTime);
-} else {
-  const game = document.getElementById("game-container");
-  const gameWidth = game.offsetWidth;
-  const gameHeight = game.offsetHeight;
-  intermezzo = new Image();
-  intermezzo.src = `assets/mapTransition.gif?t=${new Date().getTime()}`;
-  intermezzo.style.zIndex = 100000;
-  intermezzo.style.width = `${gameWidth}px`;
-  intermezzo.style.height = `${gameHeight}px`;
-  intermezzo.style.imageRendering = "pixelated";
-  game.appendChild(intermezzo);
-  setTimeout(completeIntermezzo, 5000)
+    generateBackground();
+    await generateObjectsFromMap(map);
+    initSystems(lastTime);
+    gameLoop(lastTime);
+  } else {
+    const game = document.getElementById("game-container");
+    const gameWidth = game.offsetWidth;
+    const gameHeight = game.offsetHeight;
+    
+    intermezzo = new Image();
+    intermezzo.src = `assets/mapTransition.gif?t=${new Date().getTime()}`;
+    intermezzo.style.zIndex = 100000;
+    intermezzo.style.width = `${gameWidth}px`;
+    intermezzo.style.height = `${gameHeight}px`;
+    intermezzo.style.imageRendering = "pixelated";
+    game.appendChild(intermezzo);
+    intermezzo.style.filter = "brightness(0%)";
+    intermezzo.style.transition = "filter 1s ease-in-out";    
+    setTimeout(() => {
+      intermezzo.style.filter = "brightness(100%)";
+    }, 50);
+    setTimeout(() => {
+      intermezzo.style.filter = "brightness(0%)";
+    }, 3450);
+    setTimeout(completeIntermezzo, 4500);
+  }
 }
-}
+
 
 let intermezzo = undefined;
 

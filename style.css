@@ -63,6 +63,7 @@ body {
   background: url("assets/main-menu.png") no-repeat
     center center;
   background-size: contain;
+  image-rendering: "pixelated";
   display: flex;
   align-items: center;
   flex-direction: column;
