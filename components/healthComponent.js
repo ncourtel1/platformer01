@@ -5,6 +5,7 @@ export default class HealthComponent {
     this.oldCurrent = health;
     this.loseLife = false;
     this.dead = false;
+    this.gameOver = false;
   }
 
   removeHealth(dmg) {
@@ -14,7 +15,6 @@ export default class HealthComponent {
       this.currentHealth = this.currentHealth < 0 ? 0 : this.currentHealth;
 
       if (this.currentHealth == 0) {
-        //this.dead = true;
         console.log("you die");
       }
       

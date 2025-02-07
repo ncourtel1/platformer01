@@ -1,3 +1,6 @@
+import { ecs } from "../main.js";
+import MenuSystem from "./menuSystem.js";
+
 export default class HealthSystem {
   constructor(container, player) {
     this.container = container;
@@ -67,5 +70,13 @@ export default class HealthSystem {
     const maxBarWidth = 150 * 2.34;
     const healthBarWidth = maxBarWidth * healthRatio;
     this.imageHealthBar.style.width = `${healthBarWidth}px`;
+    if (playerHealth.currentHealth === 0 && !playerHealth.gameOver)
+      {
+      playerHealth.gameOver = true;
+    setTimeout(() => {
+      let menuSys = ecs.getSystem(MenuSystem)
+      menuSys.togglePause(true)
+    }, 200)
+  }
   }
 }

@@ -16,7 +16,7 @@ export default class MenuSystem {
     });
   }
 
-  togglePause() {
+  togglePause(gameOver) {
     this.paused = !this.paused;
     this.timerSys.toggleTimer();
 
@@ -68,9 +68,10 @@ export default class MenuSystem {
       this.menu.style.left = `${gameContainer.offsetLeft}px`; // Alignement gauche
       this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
       this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée
-      title.textContent = `Time ---- ${scoreComponent.score}`;
+      title.textContent = gameOver ? 'Game Over' : `Time ---- ${scoreComponent.score}`;
       restartBtn.style.display = "block";
-      continueBtn.style.display = "block";
+      if (gameOver) restartBtn.style.marginTop = "300px";
+      continueBtn.style.display = gameOver ? "none" : "block";
       continueText.textContent = "Play"
       playBtn.style.display = "none";
     } else {
