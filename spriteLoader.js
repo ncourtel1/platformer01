@@ -222,7 +222,19 @@ chestKey8.src = "assets/Merchant Ship/Sprites/Chest Key/Idle/8.png";
 
 const chestKeyAnim = [chestKey1, chestKey2, chestKey3, chestKey4, chestKey5, chestKey6, chestKey7, chestKey8];
 
+const keyParticle1 = new Image();
+keyParticle1.src = "assets/Merchant Ship/Sprites/Chest Key/Effect/1.png";
+const keyParticle2 = new Image();
+keyParticle2.src = "assets/Merchant Ship/Sprites/Chest Key/Effect/2.png";
+const keyParticle3 = new Image();
+keyParticle3.src = "assets/Merchant Ship/Sprites/Chest Key/Effect/3.png";
+const keyParticle4 = new Image();
+keyParticle4.src = "assets/Merchant Ship/Sprites/Chest Key/Effect/4.png";
+
+const keyParticleAnim = [keyParticle1, keyParticle2, keyParticle3, keyParticle4]
+
 export const chestKeySprite = new Map();
+chestKeySprite.set('pop', keyParticleAnim);
 chestKeySprite.set('chestKey', chestKeyAnim);
 
 /**
@@ -252,6 +264,7 @@ chestUnlocked8.src = "assets/Merchant Ship/Sprites/Chest/Unlocked/8.png";
 const chestUnlockedAnim = [chestUnlocked1, chestUnlocked2, chestUnlocked3, chestUnlocked4, chestUnlocked5, chestUnlocked6, chestUnlocked7, chestUnlocked8];
 
 export const chestSprite = new Map();
+chestSprite.set('pop', keyParticleAnim);
 chestSprite.set('locked', [chest]);
 chestSprite.set('unlocked', chestUnlockedAnim);
 chestSprite.set('opened', [chestUnlocked8]);
@@ -278,6 +291,7 @@ rhum7.src = "assets/Pirate Treasure/Sprites/Green Bottle/07.png";
 const rhumAnim = [rhum1, rhum2, rhum3, rhum4, rhum5, rhum6, rhum7];
 
 export const rhumSprite = new Map();
+rhumSprite.set('pop', keyParticleAnim);
 rhumSprite.set('rhum', rhumAnim);
 
 /**

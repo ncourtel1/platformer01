@@ -33,6 +33,17 @@ export default class SpriteSystem {
                     else if (sprite.states.has('spike')) entityElement.style.backgroundPosition = `center -60px`;
                     else if (sprite.states.has('fire')) entityElement.style.backgroundPosition = `center -5px`;
                     else if (sprite.states.has('locked')) entityElement.style.backgroundPosition = `center -31px`;
+                    if (sprite.currentState === "pop" && sprite.isPoping) {
+                        sprite.isPoping = false;
+                        setTimeout(() => {
+                            const keys = [...sprite.states.keys()]; // Stocke les clés dans un tableau
+                            const currentIndex = keys.indexOf(sprite.currentState);
+                            const nextKey = keys[currentIndex + 1] ?? keys[0]; // Passe à la clé suivante ou revient à la première
+                            
+                            sprite.setState(nextKey);
+                            sprite.setState(nextKey);
+                        }, 70);
+                    }
                     entityElement.style.transform = `translate(${position.x}px, ${position.y}px) ${sprite.flip ? "scaleX(-1)" : "scaleX(1)"}`;
                     } else {
                         if (currentStateImages && currentStateImages.length > 0) {

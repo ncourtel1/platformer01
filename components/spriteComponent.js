@@ -12,6 +12,7 @@ export default class SpriteComponent {
       this.sy = sy || 0;
       this.lastRequestedState = this.currentState;
       this.stateRequestCount = 0;
+      this.isPoping = true;
     }
     setState(state) {
       const currentTime = Date.now();
