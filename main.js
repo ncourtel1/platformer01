@@ -246,7 +246,7 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["intermezzo", "level-1.json", "intermezzo", "palms.json"];
+export let levels = ["introduction", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -282,7 +282,7 @@ export async function startGame(map) {
   }
   lastTime = performance.now();
   
-  if (map !== "intermezzo") {
+  if (map !== "intermezzo" && map !== "introduction") {
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
@@ -291,28 +291,27 @@ export async function startGame(map) {
     const game = document.getElementById("game-container");
     const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
-    
-    intermezzo = new Image();
-    intermezzo.src = `assets/mapTransition.gif?t=${new Date().getTime()}`;
-    intermezzo.style.zIndex = 100000;
+    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : "";
+    intermezzo.src = `assets/${source}?t=${new Date().getTime()}`;
+    intermezzo.style.zIndex = 10;
     intermezzo.style.width = `${gameWidth}px`;
     intermezzo.style.height = `${gameHeight}px`;
     intermezzo.style.imageRendering = "pixelated";
-    game.appendChild(intermezzo);
     intermezzo.style.filter = "brightness(0%)";
-    intermezzo.style.transition = "filter 1s ease-in-out";    
+    intermezzo.style.transition = "filter 1s ease-in-out"; 
+    game.appendChild(intermezzo);   
     setTimeout(() => {
       intermezzo.style.filter = "brightness(100%)";
     }, 50);
     setTimeout(() => {
       intermezzo.style.filter = "brightness(0%)";
-    }, 3450);
-    setTimeout(completeIntermezzo, 4500);
+    }, 3450 - (map == "introduction" ? 400 : 0));
+    setTimeout(completeIntermezzo, 4500 - (map == "introduction" ? 400 : 0));
   }
 }
 
 
-let intermezzo = undefined;
+let intermezzo = new Image();
 
 function completeIntermezzo() {
   if (intermezzo) intermezzo.remove()
