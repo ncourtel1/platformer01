@@ -246,7 +246,7 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
+export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -282,7 +282,7 @@ export async function startGame(map) {
   }
   lastTime = performance.now();
   
-  if (map !== "intermezzo" && map !== "introduction") {
+  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2") {
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
@@ -291,7 +291,7 @@ export async function startGame(map) {
     const game = document.getElementById("game-container");
     const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
-    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : "";
+    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : "";
     intermezzo.src = `assets/${source}`;
     intermezzo.style.zIndex = 10;
     intermezzo.style.width = `${gameWidth}px`;
@@ -305,8 +305,8 @@ export async function startGame(map) {
     }, 50);
     setTimeout(() => {
       intermezzo.style.filter = "brightness(0%)";
-    }, 3450 - (map == "introduction" ? 400 : 0));
-    setTimeout(completeIntermezzo, 4500 - (map == "introduction" ? 400 : 0));
+    }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : 0));
+    setTimeout(completeIntermezzo, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : 0));
   }
 }
 
