@@ -10,6 +10,7 @@ export default class JumpSystem {
          const state = entity.getComponent('state');
          const animation = entity.getComponent('sprite');
          const health = entity.getComponent('health');
+         const audio = entity.getComponent('audio');
 
          if (position && velocity && state && playerData) {
             input.update();
@@ -22,6 +23,8 @@ export default class JumpSystem {
                state.canJump = false;
                jumpCounter = 0;
                animation.setState('jump');
+               audio.sounds.get('jump').currentTime = 0.1;
+               audio.sounds.get('jump').play();
             }
             if (state.isJumping && input.jumpPressed && jumpCounter < playerData.maxHeight) {
                position.y += -playerData.jumpForce / playerData.mass;
