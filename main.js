@@ -292,7 +292,7 @@ export async function startGame(map) {
     const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
     const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : "";
-    intermezzo.src = `assets/${source}?t=${new Date().getTime()}`;
+    intermezzo.src = `assets/${source}`;
     intermezzo.style.zIndex = 10;
     intermezzo.style.width = `${gameWidth}px`;
     intermezzo.style.height = `${gameHeight}px`;
