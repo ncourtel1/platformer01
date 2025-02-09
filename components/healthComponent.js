@@ -1,8 +1,8 @@
 export default class HealthComponent {
-  constructor(health) {
-    this.maxHealth = health;
-    this.currentHealth = health;
-    this.oldCurrent = health;
+  constructor(maxHealth, healthObj) {
+    this.maxHealth = maxHealth;
+    this.healthObj = healthObj;
+    this.oldCurrent = healthObj.value;
     this.loseLife = false;
     this.dead = false;
     this.gameOver = false;
@@ -10,20 +10,19 @@ export default class HealthComponent {
 
   removeHealth(dmg) {
     if (!this.dead) {
-      this.oldCurrent = this.currentHealth;
-      this.currentHealth -= dmg;
-      this.currentHealth = this.currentHealth < 0 ? 0 : this.currentHealth;
+      this.oldCurrent = this.healthObj.value;
+      this.healthObj.value -= dmg;
+      this.healthObj.value = Math.max(0, this.healthObj.value);
 
-      if (this.currentHealth == 0) {
+      if (this.healthObj.value === 0) {
         console.log("you die");
       }
-      
     }
     this.loseLife = true;
   }
 
   addHealth(hp) {
-    this.currentHealth += hp
-    this.currentHealth = this.currentHealth < this.maxHealth ? this.currentHealth : this.maxHealth
+    this.healthObj.value += hp;
+    this.healthObj.value = Math.min(this.maxHealth, this.healthObj.value);
   }
 }

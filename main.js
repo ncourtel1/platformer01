@@ -22,6 +22,9 @@ import MenuSystem from "./systems/menuSystem.js";
 export const ecs = new ECS();
 export let player;
 export let lastTime;
+let playerHealth = { value: 3 };
+const maxHealth = 3;
+
 
 async function loadMap(filename) {
   try {
@@ -64,6 +67,8 @@ async function generateObjectsFromMap(map) {
     playerAnimation,
     playerParticle,
     playerSounds,
+    maxHealth,
+    playerHealth,
   );
   ecs.addEntity(player);
   for (let y = 0; y < map1.map.length; y++) {
@@ -250,7 +255,7 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
+export let levels = [ "level-1.json", "intermezzo", "palms.json"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
