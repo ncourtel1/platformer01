@@ -12,7 +12,7 @@ export default class TimerSystem {
     this.lastDarkness = 0;
     this.targetDarkness = 0;
     this.transitionSpeed = 0.009; // Contrôle la vitesse de transition
-    this.lastTime =  lastTime;
+    this.lastTime = lastTime;
 
     const imgSize = 150;
     const xOffset = -150;
@@ -29,8 +29,8 @@ export default class TimerSystem {
     this.darkOverlay.style.zIndex = "1000";
     
     // Set initial radial gradient
-    this.updateRadialGradient(0);
-    document.body.appendChild(this.darkOverlay);
+    // this.updateRadialGradient(0);
+    // document.body.appendChild(this.darkOverlay);
 
     // Create div for GameOver text
     this.gameOverText = document.createElement("div");
@@ -100,7 +100,7 @@ export default class TimerSystem {
     this.imagesContainer.appendChild(this.imageTimerBar);
 
     // Start the animation loop for continuous player position updates
-    this.startAnimationLoop();
+    // this.startAnimationLoop();
     this.startTimer();
     this.update();
   }
@@ -156,6 +156,7 @@ export default class TimerSystem {
     this.timer = setInterval(() => {
       if (!this.isPaused) {
         this.currTime--;
+        console.log("time: ", this.currTime)
         if (this.currTime <= 0) {
           this.currTime = 0;
           clearInterval(this.timer);

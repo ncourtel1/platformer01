@@ -2,7 +2,7 @@ export default class HealthComponent {
   constructor(maxHealth, healthObj) {
     this.maxHealth = maxHealth;
     this.healthObj = healthObj;
-    this.oldCurrent = healthObj.value;
+    this.oldCurrent = healthObj.old;
     this.loseLife = false;
     this.dead = false;
     this.gameOver = false;
@@ -10,7 +10,6 @@ export default class HealthComponent {
 
   removeHealth(dmg) {
     if (!this.dead) {
-      this.oldCurrent = this.healthObj.value;
       this.healthObj.value -= dmg;
       this.healthObj.value = Math.max(0, this.healthObj.value);
 

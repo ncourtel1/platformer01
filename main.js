@@ -22,7 +22,7 @@ import MenuSystem from "./systems/menuSystem.js";
 export const ecs = new ECS();
 export let player;
 export let lastTime;
-let playerHealth = { value: 3 };
+let playerHealth = { value: 3, old: 3 };
 const maxHealth = 3;
 
 
@@ -296,6 +296,7 @@ export async function startGame(map) {
   }
   
   if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death") {
+    playerHealth.old = playerHealth.value;
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
@@ -372,6 +373,7 @@ document.getElementById("restartButton").addEventListener("click", () => {
   game_container.style.display = "block";
 
   // relancer le jeu au niveau actuel
+  playerHealth.value = playerHealth.old
 
   startGame(levels[current_level]);
 });
@@ -380,14 +382,14 @@ window.addEventListener("blur", () => {
   if (ecs.initialized) {
     lastTime = 0;
     let menuSys = ecs.getSystem(MenuSystem);
-    menuSys.togglePause();
+    if (!menuSys.isIntermezzo) menuSys.togglePause();
   }
 });
 
 window.addEventListener("focus", () => {
   if (ecs.initialized) {
     let menuSys = ecs.getSystem(MenuSystem);
-    menuSys.togglePause();
-    lastTime = performance.now();
+    if (!menuSys.isIntermezzo){ menuSys.togglePause();
+    lastTime = performance.now();}
   }
 });
