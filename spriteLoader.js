@@ -391,7 +391,7 @@ const loot = new Audio();
 loot.src = "assets/loot.wav";
 loot.volume = "0.6";
 
-const wood = new Audio();
+export const wood = new Audio();
 wood.src = "assets/wood.wav";
 
 const hurt = new Audio();
@@ -403,19 +403,22 @@ cannon.src = "assets/cannon.wav";
 
 export const ambience = new Audio();
 ambience.src = "assets/ambience.wav";
-ambience.volume = "0.5";
-ambience.loop = true;
-//ambience.play();
-
 
 export const music = new Audio();
 music.src = "assets/music.wav";
+
+export const bloup = new Audio();
+bloup.src = "assets/bloup.wav";
 music.volume = "0.5";
-music.loop = true;
-//music.play();
+
+const run = new Audio();
+run.src = "assets/run.mp3";
+run.volume = "0.4";
+run.loop = true;
 
 export const playerSounds = new Map();
 playerSounds.set('jump', jump);
+playerSounds.set('run', run);
 playerSounds.set('plop', plop);
 playerSounds.set('drink', drink);
 playerSounds.set('key', key);

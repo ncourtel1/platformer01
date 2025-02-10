@@ -16,6 +16,8 @@ import {
   cannonSounds,
   ambience,
   music,
+  bloup,
+  wood,
 } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
@@ -253,7 +255,7 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
+export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "conclusion1"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -289,7 +291,7 @@ export async function startGame(map) {
   }
   lastTime = performance.now();
   
-  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death") {
+  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death" && map !== "conclusion1") {
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
@@ -303,7 +305,7 @@ export async function startGame(map) {
 
     const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
-    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : "";
+    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : map == "conclusion1" ? "conclusion1.gif" : "";
     intermezzo.src = `assets/${source}`;
     intermezzo.style.zIndex = 10;
     intermezzo.style.width = `${gameWidth}px`;
@@ -336,20 +338,33 @@ function completeIntermezzo(gameOver) {
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
+  bloup.volume = "0.4";
+  bloup.play();
   const menu = document.getElementById("start-menu");
   menu.style.display = "none";
 
   const game_container = document.getElementById("game-container");
   game_container.style.display = "block";
 
+  ambience.volume = "0.3";
+  ambience.loop = true;
   ambience.play();
+  music.volume = "0.3";
+  music.loop = true;
   music.play();
   
   // Lancer le jeu
   startGame(levels[0]);
 });
 
+document.getElementById("playButton").addEventListener("mouseenter", () => {
+  wood.currentTime = 0.4;
+  wood.play();
+});
+
 document.getElementById("continueButton").addEventListener("click", () => {
+  bloup.volume = "0.4";
+  bloup.play();
   let menuSys = ecs.getSystem(MenuSystem);
   if (menuSys.isIntermezzo) {
     menuSys.isIntermezzo = !menuSys.isIntermezzo
@@ -361,7 +376,14 @@ document.getElementById("continueButton").addEventListener("click", () => {
   
 });
 
+document.getElementById("continueButton").addEventListener("mouseenter", () => {
+  wood.currentTime = 0.4;
+  wood.play();
+});
+
 document.getElementById("restartButton").addEventListener("click", () => {
+  bloup.volume = "0.4";
+  bloup.play();
   const menu = document.getElementById("start-menu");
   menu.style.display = "none";
 
@@ -371,6 +393,11 @@ document.getElementById("restartButton").addEventListener("click", () => {
   // relancer le jeu au niveau actuel
 
   startGame(levels[current_level]);
+});
+
+document.getElementById("restartButton").addEventListener("mouseenter", () => {
+  wood.currentTime = 0.4;
+  wood.play();
 });
 
 window.addEventListener("blur", () => {

@@ -25,11 +25,13 @@ export default class JumpSystem {
                animation.setState('jump');
                audio.sounds.get('jump').currentTime = 0.1;
                audio.sounds.get('jump').play();
+               audio.sounds.get('run').pause();
             }
             if (state.isJumping && input.jumpPressed && jumpCounter < playerData.maxHeight) {
                position.y += -playerData.jumpForce / playerData.mass;
                jumpCounter++;
                animation.setState('jump');
+               audio.sounds.get('run').pause();
             } else {
                state.isJumping = false;
             }
@@ -37,6 +39,7 @@ export default class JumpSystem {
                position.y += velocity.vy * dt;
                if (!state.isJumping) {
                   animation.setState("fall");
+                  audio.sounds.get('run').pause();
                 }
             }
             if (state.isGrounded) {

@@ -8,6 +8,7 @@ export default class RunSystem {
          const playerData = entity.getComponent('data');
          const animation = entity.getComponent('sprite');
          const health = entity.getComponent('health');
+         const audio = entity.getComponent('audio');
 
          if (position && velocity && playerData && !health.dead) {
             
@@ -15,10 +16,15 @@ export default class RunSystem {
             if (input.x !== 0) 
             {
                animation.setState('run');
+               audio.sounds.get('run').play();
                if (input.x > 0) animation.flip = false;
                else animation.flip = true;
             }
-            else animation.setState('idle');
+            else
+            {
+               animation.setState('idle');
+               audio.sounds.get('run').pause();
+            }
             const acceleration = (input.x * playerData.x_acceleration) / playerData.mass;
             velocity.vx += acceleration * dt;
             if (input.x === 0 || Math.sign(input.x) !== Math.sign(velocity.vx)) {
