@@ -26,4 +26,5 @@ export default class HealthComponent {
     this.currentHealth += hp
     this.currentHealth = this.currentHealth < this.maxHealth ? this.currentHealth : this.maxHealth
   }
+
 }
