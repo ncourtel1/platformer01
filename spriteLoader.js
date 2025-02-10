@@ -405,13 +405,14 @@ export const ambience = new Audio();
 ambience.src = "assets/ambience.wav";
 ambience.volume = "0.5";
 ambience.loop = true;
-ambience.play();
+//ambience.play();
+
 
 export const music = new Audio();
 music.src = "assets/music.wav";
 music.volume = "0.5";
 music.loop = true;
-music.play();
+//music.play();
 
 export const playerSounds = new Map();
 playerSounds.set('jump', jump);

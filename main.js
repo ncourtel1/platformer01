@@ -14,6 +14,8 @@ import {
   foregroundPalmSprite,
   playerSounds,
   cannonSounds,
+  ambience,
+  music,
 } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
@@ -22,6 +24,7 @@ import MenuSystem from "./systems/menuSystem.js";
 export const ecs = new ECS();
 export let player;
 export let lastTime;
+export let playerHealth = 3;
 
 async function loadMap(filename) {
   try {
@@ -339,6 +342,9 @@ document.getElementById("playButton").addEventListener("click", () => {
   const game_container = document.getElementById("game-container");
   game_container.style.display = "block";
 
+  ambience.play();
+  music.play();
+  
   // Lancer le jeu
   startGame(levels[0]);
 });
