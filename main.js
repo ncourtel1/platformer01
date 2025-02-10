@@ -24,7 +24,9 @@ import MenuSystem from "./systems/menuSystem.js";
 export const ecs = new ECS();
 export let player;
 export let lastTime;
-export let playerHealth = 3;
+let playerHealth = { value: 3, old: 3 };
+const maxHealth = 3;
+
 
 async function loadMap(filename) {
   try {
@@ -67,6 +69,8 @@ async function generateObjectsFromMap(map) {
     playerAnimation,
     playerParticle,
     playerSounds,
+    maxHealth,
+    playerHealth,
   );
   ecs.addEntity(player);
   for (let y = 0; y < map1.map.length; y++) {
@@ -288,8 +292,13 @@ export async function startGame(map) {
     ecs.clear();
   }
   lastTime = performance.now();
+
+  if (playerHealth.value <= 0){
+    playerHealth.value = maxHealth;
+  }
   
   if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death") {
+    playerHealth.old = playerHealth.value;
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
@@ -369,6 +378,7 @@ document.getElementById("restartButton").addEventListener("click", () => {
   game_container.style.display = "block";
 
   // relancer le jeu au niveau actuel
+  playerHealth.value = playerHealth.old
 
   startGame(levels[current_level]);
 });
@@ -377,14 +387,14 @@ window.addEventListener("blur", () => {
   if (ecs.initialized) {
     lastTime = 0;
     let menuSys = ecs.getSystem(MenuSystem);
-    menuSys.togglePause();
+    if (!menuSys.isIntermezzo) menuSys.togglePause();
   }
 });
 
 window.addEventListener("focus", () => {
   if (ecs.initialized) {
     let menuSys = ecs.getSystem(MenuSystem);
-    menuSys.togglePause();
-    lastTime = performance.now();
+    if (!menuSys.isIntermezzo){ menuSys.togglePause();
+    lastTime = performance.now();}
   }
 });

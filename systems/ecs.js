@@ -1,3 +1,5 @@
+import TimerSystem from "./timerSystem.js";
+
 // ECS class that contains all entities and system of the game
 export default class ECS {
   constructor() {
@@ -20,11 +22,16 @@ export default class ECS {
     this.entities.forEach((entity) => {
       this.removeEntity(entity);
     });
+  
+    const timerSystem = this.getSystem(TimerSystem);
+    if (timerSystem && timerSystem.timer) {
+      clearInterval(timerSystem.timer);
+    }
+  
     this.systems = [];
-
     document.getElementById("HUD").innerHTML = "";
   }
-
+  
   addSystem(system) {
     this.systems.push(system);
   }
