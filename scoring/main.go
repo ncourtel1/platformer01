@@ -75,7 +75,7 @@ func getScores(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	loadScores()
-	fs := http.FileServer(http.Dir("../"))
+	fs := http.FileServer(http.Dir("./"))
 	http.Handle("/", fs)
 	http.HandleFunc("/scores", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {

@@ -26,7 +26,7 @@ export let player;
 export let lastTime;
 let playerHealth = { value: 3, old: 3 };
 const maxHealth = 3;
-
+let score = { defaultValue: 0, currentValue: 0}
 
 async function loadMap(filename) {
   try {
@@ -70,7 +70,8 @@ async function generateObjectsFromMap(map) {
     playerParticle,
     playerSounds,
     maxHealth,
-    playerHealth,
+    playerHealth, 
+    score
   );
   ecs.addEntity(player);
   for (let y = 0; y < map1.map.length; y++) {
@@ -150,7 +151,7 @@ async function generateObjectsFromMap(map) {
       canonBallObj,
       2000,
       !shooterData.flip,
-      cannonSounds,
+      cannonSounds
     );
     ecs.addEntity(canon);
   }
@@ -257,7 +258,8 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json"];
+export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "score"];
+
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -293,51 +295,99 @@ export async function startGame(map) {
   }
   lastTime = performance.now();
 
-  if (playerHealth.value <= 0){
-    playerHealth.value = maxHealth;
-  }
-  
-  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death") {
+  if (
+    map !== "intermezzo" &&
+    map !== "introduction" &&
+    map !== "introduction2" &&
+    map !== "death" &&
+    map !== "score"
+  ) {
+    if (playerHealth.value <= 0) {
+      playerHealth.value = maxHealth;
+    }
     playerHealth.old = playerHealth.value;
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
     gameLoop(lastTime);
   } else {
-    let menuSys = ecs.getSystem(MenuSystem);
-    if(menuSys){
-      menuSys.isIntermezzo = true
-    }
-    const game = document.getElementById("game-container");
+    if (map == "score") {
+      const menu = document.getElementById("start-menu");
 
-    const gameWidth = game.offsetWidth;
-    const gameHeight = game.offsetHeight;
-    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : "";
-    intermezzo.src = `assets/${source}`;
-    intermezzo.style.zIndex = 10;
-    intermezzo.style.width = `${gameWidth}px`;
-    intermezzo.style.height = `${gameHeight}px`;
-    intermezzo.style.imageRendering = "pixelated";
-    intermezzo.style.filter = "brightness(0%)";
-    intermezzo.style.transition = "filter 1s ease-in-out"; 
-    game.appendChild(intermezzo);   
-    setTimeout(() => {
-      intermezzo.style.filter = "brightness(100%)";
-    }, 50);
-    setTimeout(() => {
+      if (menu) {
+        Object.assign(menu.style, {
+          position: "relative",
+          width: "1920px",
+          height: "970px",
+          background: 'url("assets/background.gif") no-repeat center center',
+          backgroundSize: "cover",
+          imageRendering: "pixelated",
+          justifyContent: "center",
+          alignItems: "center",
+          top: "100px",
+          zIndex: "10001",
+        });
+      }
+
+      const title = document.getElementById("title");
+      title.innerHTML = `Score ----- ${player.getComponent("score").score}`
+      title.style.maxWidth = "300px";
+
+      const playBtn = document.getElementById("playButton");
+      const continueBtn = document.getElementById("continueButton");
+      const restartBtn = document.getElementById("restartButton");
+      menu.style.display = "flex";
+
+      restartBtn.style.display = "none";
+      continueBtn.style.display ="none";
+
+      const game_container = document.getElementById("game-container");
+      game_container.style.display = "none";
+    } else {
+      let menuSys = ecs.getSystem(MenuSystem);
+      if (menuSys) {
+        menuSys.isIntermezzo = true;
+      }
+      const game = document.getElementById("game-container");
+      const gameWidth = game.offsetWidth;
+      const gameHeight = game.offsetHeight;
+      const source =
+        map == "intermezzo"
+          ? "mapTransition.gif"
+          : map == "introduction"
+          ? "introduction.gif"
+          : map == "introduction2"
+          ? "introduction2.gif"
+          : map == "death"
+          ? "death.gif"
+          : "";
+      intermezzo.src = `assets/${source}`;
+      intermezzo.style.zIndex = 10;
+      intermezzo.style.width = `${gameWidth}px`;
+      intermezzo.style.height = `${gameHeight}px`;
+      intermezzo.style.imageRendering = "pixelated";
       intermezzo.style.filter = "brightness(0%)";
-    }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
-    setTimeout(() => {completeIntermezzo(map == "death" ? true : false)}, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
+      intermezzo.style.transition = "filter 1s ease-in-out";
+      game.appendChild(intermezzo);
+      setTimeout(() => {
+        intermezzo.style.filter = "brightness(100%)";
+      }, 50);
+      setTimeout(() => {
+        intermezzo.style.filter = "brightness(0%)";
+      }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
+      setTimeout(() => {
+        completeIntermezzo(map == "death" ? true : false);
+      }, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
+    }
   }
 }
-
 
 let intermezzo = new Image();
 
 function completeIntermezzo(gameOver) {
   let menuSys = ecs.getSystem(MenuSystem);
-  if(menuSys){
-    menuSys.isIntermezzo = false
+  if (menuSys) {
+    menuSys.isIntermezzo = false;
   }
   if (intermezzo) intermezzo.remove();
   if (gameOver) setCurrentLevel(2);
@@ -349,11 +399,11 @@ document.getElementById("playButton").addEventListener("click", () => {
   menu.style.display = "none";
 
   const game_container = document.getElementById("game-container");
-  game_container.style.display = "block";
+  game_container.style.display = "flex";
 
   ambience.play();
   music.play();
-  
+
   // Lancer le jeu
   startGame(levels[0]);
 });
@@ -361,13 +411,12 @@ document.getElementById("playButton").addEventListener("click", () => {
 document.getElementById("continueButton").addEventListener("click", () => {
   let menuSys = ecs.getSystem(MenuSystem);
   if (menuSys.isIntermezzo) {
-    menuSys.isIntermezzo = !menuSys.isIntermezzo
+    menuSys.isIntermezzo = !menuSys.isIntermezzo;
     menuSys.togglePause();
-    loadNextLevel()
-  } else{
+    loadNextLevel();
+  } else {
     menuSys.togglePause();
   }
-  
 });
 
 document.getElementById("restartButton").addEventListener("click", () => {
@@ -378,7 +427,7 @@ document.getElementById("restartButton").addEventListener("click", () => {
   game_container.style.display = "block";
 
   // relancer le jeu au niveau actuel
-  playerHealth.value = playerHealth.old
+  playerHealth.value = playerHealth.old;
 
   startGame(levels[current_level]);
 });
@@ -394,7 +443,20 @@ window.addEventListener("blur", () => {
 window.addEventListener("focus", () => {
   if (ecs.initialized) {
     let menuSys = ecs.getSystem(MenuSystem);
-    if (!menuSys.isIntermezzo){ menuSys.togglePause();
-    lastTime = performance.now();}
+    if (!menuSys.isIntermezzo) {
+      menuSys.togglePause();
+      lastTime = performance.now();
+    }
+  }
+});
+
+document.getElementById("submitButton").addEventListener("click", () => {
+  const inputValue = document.getElementById("menuInput").value;
+  
+  if (inputValue.trim() !== "") {
+    
+    //envoyer les données au serveur
+  } else {
+    console.log("Input empty!");
   }
 });
