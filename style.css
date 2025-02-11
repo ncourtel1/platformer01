@@ -100,17 +100,16 @@ body {
 
   .title {
     position: absolute;
-    font-size: 55px;
-    font-family: "early_gameboyregular";
+    font-size: 65px;
+    font-family: "pixel_pirate";
     color: rgb(53, 53, 53);
     margin-top: -240px;
-    margin-left: 50px;
+    margin-left: 10px;
     
     /* Ajout du text-wrap */
     white-space: normal; /* Permet le retour à la ligne automatique */
     word-wrap: break-word; /* Force les mots longs à passer à la ligne */
     
-    max-width: 250px; /* Ajuste la largeur de la colonne */
 }
 
 .btn-text {
@@ -170,6 +169,13 @@ body {
   font-family: "early_gameboyregular";
   src: url("static/early_gameboy-webfont.woff2") format("woff2"),
     url("static/early_gameboy-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "pixel_pirate";
+  src: url("static/pixel_pirate.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
