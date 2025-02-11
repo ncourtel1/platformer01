@@ -52,6 +52,7 @@ export default class MenuSystem {
       continueText.textContent  = "Next Lvl"
       playBtn.style.display = "none";
     } else if (this.paused) {
+      
       const gameHeight = game.offsetHeight;
       const gameContainerHeight = gameContainer.offsetHeight;
 

@@ -255,7 +255,8 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "conclusion1"];
+//export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "conclusion1", "conclusion2"];
+export let levels = ["conclusion1", "conclusion2"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -291,7 +292,7 @@ export async function startGame(map) {
   }
   lastTime = performance.now();
   
-  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death" && map !== "conclusion1") {
+  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death" && map !== "conclusion1" && map !== "conclusion2") {
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
@@ -305,7 +306,7 @@ export async function startGame(map) {
 
     const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
-    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : map == "conclusion1" ? "conclusion1.gif" : "";
+    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : map == "conclusion1" ? "conclusion1.gif" : map == "conclusion2" ? "conclusion2.gif" : "";
     intermezzo.src = `assets/${source}`;
     intermezzo.style.zIndex = 10;
     intermezzo.style.width = `${gameWidth}px`;
@@ -319,8 +320,8 @@ export async function startGame(map) {
     }, 50);
     setTimeout(() => {
       intermezzo.style.filter = "brightness(0%)";
-    }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
-    setTimeout(() => {completeIntermezzo(map == "death" ? true : false)}, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : 0));
+    }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : 0));
+    setTimeout(() => {completeIntermezzo(map == "death" ? true : false)}, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : 0));
   }
 }
 
