@@ -20,6 +20,7 @@ import {
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
 import MenuSystem from "./systems/menuSystem.js";
+import { submitScore } from "./scoring/scoring.js";
 
 export const ecs = new ECS();
 export let player;
@@ -333,6 +334,11 @@ export async function startGame(map) {
       title.innerHTML = `Score ----- ${player.getComponent("score").score}`
       title.style.maxWidth = "300px";
 
+      const display = document.getElementById("display");
+      display.style.display = "flex"
+
+
+
       const playBtn = document.getElementById("playButton");
       const continueBtn = document.getElementById("continueButton");
       const restartBtn = document.getElementById("restartButton");
@@ -454,9 +460,13 @@ document.getElementById("submitButton").addEventListener("click", () => {
   const inputValue = document.getElementById("menuInput").value;
   
   if (inputValue.trim() !== "") {
-    
-    //envoyer les données au serveur
-  } else {
-    console.log("Input empty!");
-  }
+    submitScore(inputValue, player.getComponent("score").score, 0)
+    document.getElementById("title").style.display = "none"
+    document.getElementById("scoreboard").style.fontSize = "20px"
+    document.getElementById("scoreboard").style.marginLeft = "-15px"
+
+    document.getElementById("submitButton").style.display = "none"
+    document.getElementById("menuInput").style.display = "none"
+    document.getElementById("playButton").style.display = "block"
+  } 
 });

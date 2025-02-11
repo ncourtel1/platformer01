@@ -13,7 +13,7 @@ import (
 type Score struct {
 	Name  string `json:"name"`
 	Score int    `json:"score"`
-	Time  string `json:"time"`
+	Time  int    `json:"time"`
 }
 
 var (
@@ -38,9 +38,12 @@ func saveScores() {
 func addScore(w http.ResponseWriter, r *http.Request) {
 	var newScore Score
 	if err := json.NewDecoder(r.Body).Decode(&newScore); err != nil {
+		fmt.Println(err)
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
+
+	fmt.Println(newScore)
 
 	mu.Lock()
 	scores = append(scores, newScore)

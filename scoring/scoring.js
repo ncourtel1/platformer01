@@ -1,5 +1,5 @@
 
-async function submitScore(name, score, time) {
+export async function submitScore(name, score, time) {
     await fetch("http://localhost:8080/scores", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -8,7 +8,7 @@ async function submitScore(name, score, time) {
     displayScores(1);
 }
 
-async function displayScores(page) {
+export async function displayScores(page) {
     const res = await fetch(`http://localhost:8080/scores?page=${page}`);
     const scores = await res.json();
 

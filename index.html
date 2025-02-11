@@ -10,9 +10,18 @@
     <main id="game">
       <div id="start-menu">
         <div id="title" class="title">Main Menu</div>
+        <div id="scoreboard" class="title"></div>
         <div class="menu">
-          <input id="menuInput" type="text" class="menu-input" placeholder="Enter text..." style="display: none;"/>
-          <button id="submitButton" class="submit-btn" style="display: none;">Submit</button>
+          <div id="display" style="display: none;">
+            <input
+              id="menuInput"
+              type="text"
+              class="menu-input"
+              placeholder="Enter text..."
+            />
+            <button id="submitButton" class="submit-btn">Submit</button>
+            
+          </div>
           <div id="playButton" class="play-btn">
             <div class="btn-text">Play</div>
           </div>
@@ -22,7 +31,6 @@
           <div id="restartButton" class="stg-btn" style="display: none">
             <div class="btn-text">Restart</div>
           </div>
- 
         </div>
       </div>
       <div id="game-container" style="display: none">
@@ -33,33 +41,32 @@
     <script src="main.js" type="module"></script>
 
     <script>
-function adjustScale() {
-  const gameElement = document.getElementById("game");
-  const gameWidth = 1920;
-  const gameHeight = 1080;
+      function adjustScale() {
+        const gameElement = document.getElementById("game");
+        const gameWidth = 1920;
+        const gameHeight = 1080;
 
-  const scaleX = window.innerWidth / gameWidth;
-  const scaleY = window.innerHeight / gameHeight;
-  const scale = Math.min(scaleX, scaleY) / 1.11;
+        const scaleX = window.innerWidth / gameWidth;
+        const scaleY = window.innerHeight / gameHeight;
+        const scale = Math.min(scaleX, scaleY) / 1.11;
 
-  // Fix des erreurs de pixels avec Math.floor()
-  const roundedScale = Math.floor(scale * 100) / 100;
+        // Fix des erreurs de pixels avec Math.floor()
+        const roundedScale = Math.floor(scale * 100) / 100;
 
-  gameElement.style.transform = `scale(${roundedScale})`;
-  gameElement.style.transformOrigin = "top left"; // Evite les décalages
+        gameElement.style.transform = `scale(${roundedScale})`;
+        gameElement.style.transformOrigin = "top left"; // Evite les décalages
 
-  // Centrer correctement l'élément
-  const offsetX = (window.innerWidth - gameWidth * roundedScale) / 2;
-  const offsetY = (window.innerHeight - gameHeight * roundedScale) / 2;
+        // Centrer correctement l'élément
+        const offsetX = (window.innerWidth - gameWidth * roundedScale) / 2;
+        const offsetY = (window.innerHeight - gameHeight * roundedScale) / 2;
 
-  gameElement.style.position = "absolute"; 
-  gameElement.style.left = `${Math.floor(offsetX)}px`; // Arrondi pour éviter les 1px d'écart
-  gameElement.style.top = `${Math.floor(offsetY)}px`; 
-}
+        gameElement.style.position = "absolute";
+        gameElement.style.left = `${Math.floor(offsetX)}px`; // Arrondi pour éviter les 1px d'écart
+        gameElement.style.top = `${Math.floor(offsetY)}px`;
+      }
 
-window.addEventListener("resize", adjustScale);
-adjustScale();
-
+      window.addEventListener("resize", adjustScale);
+      adjustScale();
     </script>
   </body>
 </html>
