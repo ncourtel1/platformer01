@@ -1,3 +1,5 @@
+import { ecs } from "../main.js";
+
 export default class InputComponent{
    constructor(){
       this.x = 0;
@@ -7,12 +9,16 @@ export default class InputComponent{
       this.facingRight = false;
       this.facingLeft = false;
 
-      window.addEventListener("keydown", (e) =>{
+      this.handleKeyDown = (e) => {
          this.keys.add(e.key);
-      })
-      window.addEventListener("keyup", (e) =>{
+       };
+   
+       this.handleKeyUp = (e) => {
          this.keys.delete(e.key);
-      })
+       };
+
+      ecs.addEventListener(window, "keydown", this.handleKeyDown);
+      ecs.addEventListener(window, "keyup", this.handleKeyUp);
    }
 
    update(){

@@ -1,3 +1,5 @@
+import { current_level, ecs, levels } from "../main.js";
+
 // MenuSystem.js
 export default class MenuSystem {
   constructor(container, timerSys, player) {
@@ -8,12 +10,14 @@ export default class MenuSystem {
     this.menu = document.getElementById("start-menu");
     this.isIntermezzo = false;
 
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !this.isIntermezzo) {
-
+    this.handleKeydown = (e) => {
+      if (e.key === "Escape" && !this.isIntermezzo && current_level != levels.length-1) {
         this.togglePause();
       }
-    });
+    };
+
+    // Ajouter l'écouteur via le système ECS
+    ecs.addEventListener(window, "keydown", this.handleKeydown);
   }
 
   togglePause(gameOver) {
@@ -51,6 +55,7 @@ export default class MenuSystem {
       continueBtn.style.display = "block";
       continueText.textContent  = "Next Lvl"
       playBtn.style.display = "none";
+      ecs.removeEventListeners(['keydown', 'keyup', 'keypress'])
     } else if (this.paused) {
       const gameHeight = game.offsetHeight;
       const gameContainerHeight = gameContainer.offsetHeight;

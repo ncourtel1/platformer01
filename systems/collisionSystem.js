@@ -2,6 +2,7 @@ import { ecs, loadNextLevel } from "../main.js";
 import createObject from "../entities/createObject.js";
 import { mapSprite } from "../spriteLoader.js";
 import MenuSystem from "./menuSystem.js";
+import { getMenuSys } from "../initializeSystems.js";
 
 export default class CollisionSystem {
   constructor(timerSys){
@@ -245,17 +246,18 @@ export default class CollisionSystem {
       spriteA.setState('map');
       spriteA.setState('map');
       setTimeout(() => {
-        let menuSys = ecs.getSystem(MenuSystem)
-        menuSys.isIntermezzo = true;
-        menuSys.togglePause()
+        getMenuSys().isIntermezzo = true;
+        getMenuSys().togglePause()
+        ecs.removeEventListeners()
       }, 1500)
     } else if (stateB.tag == "map" && spriteB.currentState == 'unfold' && spriteB.currentFrame >= spriteB.currentState.length + 1) {
       spriteB.setState('map');
       spriteB.setState('map');
       setTimeout(() => {
-        let menuSys = ecs.getSystem(MenuSystem)
-        menuSys.isIntermezzo = true;
-        menuSys.togglePause()
+        
+        getMenuSys().isIntermezzo = true;
+        getMenuSys().togglePause()
+        ecs.removeEventListeners()
       }, 1500)
     }
   }

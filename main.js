@@ -19,15 +19,15 @@ import {
 } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, initSystems } from "./initializeSystems.js";
-import MenuSystem from "./systems/menuSystem.js";
-import { submitScore } from "./scoring/scoring.js";
+import { displayScores, submitScore } from "./scoring/scoring.js";
 
 export const ecs = new ECS();
 export let player;
 export let lastTime;
 let playerHealth = { value: 3, old: 3 };
 const maxHealth = 3;
-let score = { defaultValue: 0, currentValue: 0}
+export let score = { point: 0, time: 0 };
+let isTitle = true;
 
 async function loadMap(filename) {
   try {
@@ -71,7 +71,7 @@ async function generateObjectsFromMap(map) {
     playerParticle,
     playerSounds,
     maxHealth,
-    playerHealth, 
+    playerHealth,
     score
   );
   ecs.addEntity(player);
@@ -292,8 +292,13 @@ export async function startGame(map) {
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
+    score.point += player.getComponent("score").score
+    score.time += ( getMenuSys().timerSys.maxTime -  getMenuSys().timerSys.currTime)
+    console.log(score)
     ecs.clear();
   }
+  document.getElementById("scoreboard").style.display = "none";
+  document.getElementById("scoreButton").style.display = "none";
   lastTime = performance.now();
 
   if (
@@ -331,28 +336,25 @@ export async function startGame(map) {
       }
 
       const title = document.getElementById("title");
-      title.innerHTML = `Score ----- ${player.getComponent("score").score}`
+      title.innerHTML = `Score ----- ${player.getComponent("score").score}`;
       title.style.maxWidth = "300px";
 
       const display = document.getElementById("display");
-      display.style.display = "flex"
+      display.style.display = "flex";
 
-
-
-      const playBtn = document.getElementById("playButton");
       const continueBtn = document.getElementById("continueButton");
       const restartBtn = document.getElementById("restartButton");
       menu.style.display = "flex";
 
       restartBtn.style.display = "none";
-      continueBtn.style.display ="none";
+      continueBtn.style.display = "none";
 
       const game_container = document.getElementById("game-container");
       game_container.style.display = "none";
     } else {
-      let menuSys = ecs.getSystem(MenuSystem);
-      if (menuSys) {
-        menuSys.isIntermezzo = true;
+      
+      if (ecs.initialized) {
+        getMenuSys().isIntermezzo = true
       }
       const game = document.getElementById("game-container");
       const gameWidth = game.offsetWidth;
@@ -391,21 +393,22 @@ export async function startGame(map) {
 let intermezzo = new Image();
 
 function completeIntermezzo(gameOver) {
-  let menuSys = ecs.getSystem(MenuSystem);
-  if (menuSys) {
-    menuSys.isIntermezzo = false;
-  }
+  getMenuSys().isIntermezzo = false;
   if (intermezzo) intermezzo.remove();
   if (gameOver) setCurrentLevel(2);
   loadNextLevel();
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
+  if (ecs.initialized) {
+    ecs.clear();
+  }
+
   const menu = document.getElementById("start-menu");
   menu.style.display = "none";
 
   const game_container = document.getElementById("game-container");
-  game_container.style.display = "flex";
+  game_container.style.display = "block";
 
   ambience.play();
   music.play();
@@ -415,13 +418,13 @@ document.getElementById("playButton").addEventListener("click", () => {
 });
 
 document.getElementById("continueButton").addEventListener("click", () => {
-  let menuSys = ecs.getSystem(MenuSystem);
-  if (menuSys.isIntermezzo) {
-    menuSys.isIntermezzo = !menuSys.isIntermezzo;
-    menuSys.togglePause();
+  
+  if (getMenuSys().isIntermezzo) {
+    getMenuSys().isIntermezzo = !getMenuSys().isIntermezzo;
+    getMenuSys().togglePause();
     loadNextLevel();
   } else {
-    menuSys.togglePause();
+    getMenuSys().togglePause();
   }
 });
 
@@ -439,18 +442,18 @@ document.getElementById("restartButton").addEventListener("click", () => {
 });
 
 window.addEventListener("blur", () => {
-  if (ecs.initialized) {
+  if (ecs.initialized && current_level != levels.length-1) {
     lastTime = 0;
-    let menuSys = ecs.getSystem(MenuSystem);
-    if (!menuSys.isIntermezzo) menuSys.togglePause();
+    
+    if (!getMenuSys().isIntermezzo) getMenuSys().togglePause();
   }
 });
 
 window.addEventListener("focus", () => {
-  if (ecs.initialized) {
-    let menuSys = ecs.getSystem(MenuSystem);
-    if (!menuSys.isIntermezzo) {
-      menuSys.togglePause();
+  if (ecs.initialized && current_level != levels.length-1 ) {
+    
+    if (!getMenuSys().isIntermezzo) {
+      getMenuSys().togglePause();
       lastTime = performance.now();
     }
   }
@@ -458,15 +461,23 @@ window.addEventListener("focus", () => {
 
 document.getElementById("submitButton").addEventListener("click", () => {
   const inputValue = document.getElementById("menuInput").value;
-  
-  if (inputValue.trim() !== "") {
-    submitScore(inputValue, player.getComponent("score").score, 0)
-    document.getElementById("title").style.display = "none"
-    document.getElementById("scoreboard").style.fontSize = "20px"
-    document.getElementById("scoreboard").style.marginLeft = "-15px"
 
-    document.getElementById("submitButton").style.display = "none"
-    document.getElementById("menuInput").style.display = "none"
-    document.getElementById("playButton").style.display = "block"
-  } 
+  if (inputValue.trim() !== "") {
+    submitScore(inputValue, score.point, score.time);
+    window.location.reload();
+  }
+});
+
+document.getElementById("scoreButton").addEventListener("click", () => {
+  if (isTitle) {
+    document.getElementById("title").style.display = "none";
+    displayScores(1);
+    document.getElementById("scoreboard").style.fontSize = "20px";
+    document.getElementById("scoreboard").style.marginLeft = "-120px";
+    isTitle = !isTitle
+  } else {
+    document.getElementById("title").style.display = "block";
+    document.getElementById("scoreboard").innerHTML = "";
+    isTitle = !isTitle
+  }
 });
