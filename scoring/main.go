@@ -11,9 +11,8 @@ import (
 )
 
 type Score struct {
-	Name  string `json:"name"`
-	Score int    `json:"score"`
-	Time  int    `json:"time"`
+	Name string `json:"name"`
+	Time string `json:"time"`
 }
 
 var (
@@ -35,6 +34,22 @@ func saveScores() {
 	os.WriteFile(filePath, data, 0644)
 }
 
+func sortScores() {
+	sort.Slice(scores, func(i, j int) bool {
+		timeI, errI := strconv.ParseFloat(scores[i].Time, 64)
+		timeJ, errJ := strconv.ParseFloat(scores[j].Time, 64)
+
+		if errI != nil {
+			timeI = 0
+		}
+		if errJ != nil {
+			timeJ = 0
+		}
+
+		return timeI < timeJ
+	})
+}
+
 func addScore(w http.ResponseWriter, r *http.Request) {
 	var newScore Score
 	if err := json.NewDecoder(r.Body).Decode(&newScore); err != nil {
@@ -47,9 +62,7 @@ func addScore(w http.ResponseWriter, r *http.Request) {
 
 	mu.Lock()
 	scores = append(scores, newScore)
-	sort.Slice(scores, func(i, j int) bool {
-		return scores[i].Score > scores[j].Score
-	})
+	sortScores()
 	saveScores()
 	mu.Unlock()
 
@@ -64,11 +77,14 @@ func getScores(w http.ResponseWriter, r *http.Request) {
 	perPage := 5
 	start := (page - 1) * perPage
 	end := start + perPage
+
+	mu.Lock()
+	sortScores() // S'assure que les scores sont triés avant la pagination
+
 	if end > len(scores) {
 		end = len(scores)
 	}
 
-	mu.Lock()
 	data, _ := json.Marshal(scores[start:end])
 	mu.Unlock()
 

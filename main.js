@@ -18,8 +18,9 @@ import {
   music,
 } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
-import { getMenuSys, initSystems } from "./initializeSystems.js";
+import { getMenuSys, getTimerSys, initSystems } from "./initializeSystems.js";
 import { displayScores, submitScore } from "./scoring/scoring.js";
+import TimerSystem from "./systems/timerSystem.js";
 
 export const ecs = new ECS();
 export let player;
@@ -259,7 +260,10 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "score"];
+export let levels = [
+  
+   "palms.json", "score"];
+
 
 export let current_level = 0;
 
@@ -292,9 +296,9 @@ export async function startGame(map) {
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
-    score.point += player.getComponent("score").score
-    score.time += ( getMenuSys().timerSys.maxTime -  getMenuSys().timerSys.currTime)
-    console.log(score)
+    if (map != "death") {
+      score.time += getMenuSys().timerSys.maxTime - getMenuSys().timerSys.currTime.toFixed(3);
+    }
     ecs.clear();
   }
   document.getElementById("scoreboard").style.display = "none";
@@ -318,8 +322,10 @@ export async function startGame(map) {
     gameLoop(lastTime);
   } else {
     if (map == "score") {
+      if (ecs.initialized) {
+          getTimerSys().pauseTimer()
+      }
       const menu = document.getElementById("start-menu");
-
       if (menu) {
         Object.assign(menu.style, {
           position: "relative",
@@ -336,8 +342,8 @@ export async function startGame(map) {
       }
 
       const title = document.getElementById("title");
-      title.innerHTML = `Score ----- ${player.getComponent("score").score}`;
-      title.style.maxWidth = "300px";
+      title.innerHTML = `Time ---- ${(Math.round(score.time * 1000) / 1000).toFixed(3)}`;
+      title.style.maxWidth = "250px";
 
       const display = document.getElementById("display");
       display.style.display = "flex";
@@ -352,9 +358,9 @@ export async function startGame(map) {
       const game_container = document.getElementById("game-container");
       game_container.style.display = "none";
     } else {
-      
       if (ecs.initialized) {
-        getMenuSys().isIntermezzo = true
+        getMenuSys().isIntermezzo = true;
+        getTimerSys().pauseTimer()
       }
       const game = document.getElementById("game-container");
       const gameWidth = game.offsetWidth;
@@ -393,7 +399,9 @@ export async function startGame(map) {
 let intermezzo = new Image();
 
 function completeIntermezzo(gameOver) {
+ if (ecs.initialized){
   getMenuSys().isIntermezzo = false;
+ }
   if (intermezzo) intermezzo.remove();
   if (gameOver) setCurrentLevel(2);
   loadNextLevel();
@@ -418,7 +426,6 @@ document.getElementById("playButton").addEventListener("click", () => {
 });
 
 document.getElementById("continueButton").addEventListener("click", () => {
-  
   if (getMenuSys().isIntermezzo) {
     getMenuSys().isIntermezzo = !getMenuSys().isIntermezzo;
     getMenuSys().togglePause();
@@ -442,16 +449,15 @@ document.getElementById("restartButton").addEventListener("click", () => {
 });
 
 window.addEventListener("blur", () => {
-  if (ecs.initialized && current_level != levels.length-1) {
+  if (ecs.initialized && current_level != levels.length - 1) {
     lastTime = 0;
-    
+
     if (!getMenuSys().isIntermezzo) getMenuSys().togglePause();
   }
 });
 
 window.addEventListener("focus", () => {
-  if (ecs.initialized && current_level != levels.length-1 ) {
-    
+  if (ecs.initialized && current_level != levels.length - 1) {
     if (!getMenuSys().isIntermezzo) {
       getMenuSys().togglePause();
       lastTime = performance.now();
@@ -463,7 +469,8 @@ document.getElementById("submitButton").addEventListener("click", () => {
   const inputValue = document.getElementById("menuInput").value;
 
   if (inputValue.trim() !== "") {
-    submitScore(inputValue, score.point, score.time);
+    const formattedTime = (Math.round(score.time * 1000) / 1000).toFixed(3);
+    submitScore(inputValue, formattedTime);
     window.location.reload();
   }
 });
@@ -473,11 +480,14 @@ document.getElementById("scoreButton").addEventListener("click", () => {
     document.getElementById("title").style.display = "none";
     displayScores(1);
     document.getElementById("scoreboard").style.fontSize = "20px";
-    document.getElementById("scoreboard").style.marginLeft = "-120px";
-    isTitle = !isTitle
+    document.getElementById("scoreboard").style.margin = "-100 auto";
+    document.getElementById("scoreboard").style.transform = "translateX(-90%)";
+    
+    document.getElementById("scoreboard").style.left = "50%";
+    isTitle = !isTitle;
   } else {
     document.getElementById("title").style.display = "block";
     document.getElementById("scoreboard").innerHTML = "";
-    isTitle = !isTitle
+    isTitle = !isTitle;
   }
 });
