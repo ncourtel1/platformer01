@@ -53,7 +53,7 @@ export default class MenuSystem {
       this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
       this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée
       title.style.display = "block";
-      title.textContent = `Time ---- ${this.timerSys ? (Math.round((this.timerSys.maxTime - this.timerSys.currTime ) * 1000) / 1000).toFixed(3) : (Math.round(score.time  * 1000) / 1000).toFixed(3)}`;
+      title.textContent = `Time - ${this.timerSys ? (Math.round((this.timerSys.maxTime - this.timerSys.currTime ) * 1000) / 1000).toFixed(3) : (Math.round(score.time  * 1000) / 1000).toFixed(3)}`;
       restartBtn.style.display = "block";
       continueBtn.style.display = "block";
       continueText.textContent  = "Next Lvl"
@@ -77,7 +77,7 @@ export default class MenuSystem {
       this.menu.style.left = `${gameContainer.offsetLeft}px`; // Alignement gauche
       this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
       this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée
-      title.textContent = `Time ---- ${this.timerSys ? (Math.round((this.timerSys.maxTime - this.timerSys.currTime ) * 1000) / 1000).toFixed(3) : (Math.round(score.time  * 1000) / 1000).toFixed(3)}`;
+      title.textContent = `Time - ${this.timerSys ? (Math.round((this.timerSys.maxTime - this.timerSys.currTime ) * 1000) / 1000).toFixed(3) : (Math.round(score.time  * 1000) / 1000).toFixed(3)}`;
       title.style.display = "block"
       restartBtn.style.display = "block";
       continueText.textContent  = "Play"

@@ -77,7 +77,7 @@ export async function displayScores(page) {
   const scoreboardElement = document.getElementById("scoreboard");
   scoreboardElement.innerHTML = "";
   scoreboardElement.appendChild(table);
-  scoreboardElement.style.marginLeft = "50px";
+  scoreboardElement.style.marginLeft = "290px";
 
   // Pagination
   const paginationDiv = document.createElement("div");
