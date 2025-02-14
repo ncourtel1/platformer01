@@ -79,13 +79,29 @@ func getScores(w http.ResponseWriter, r *http.Request) {
 	end := start + perPage
 
 	mu.Lock()
-	sortScores() // S'assure que les scores sont triés avant la pagination
+	sortScores() // Assure que les scores sont triés avant la pagination
 
-	if end > len(scores) {
+	if start >= len(scores) {
+		// Si 'start' dépasse la longueur des scores, retourner un résultat vide
+		start = len(scores)
+		end = len(scores)
+	} else if end > len(scores) {
+		// Si 'end' dépasse la longueur des scores, ajuster 'end'
 		end = len(scores)
 	}
 
-	data, _ := json.Marshal(scores[start:end])
+	hasNextPage := (end < len(scores)) // Si la page suivante existe
+
+	// Créer une structure pour la réponse
+	response := struct {
+		Scores      []Score `json:"scores"`
+		HasNextPage bool    `json:"hasNextPage"`
+	}{
+		Scores:      scores[start:end],
+		HasNextPage: hasNextPage,
+	}
+
+	data, _ := json.Marshal(response)
 	mu.Unlock()
 
 	w.Header().Set("Content-Type", "application/json")

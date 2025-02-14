@@ -53,7 +53,6 @@ export default class HealthSystem {
     const leftOffsetRatio = 48 / 90;
 
     // Appliquer les dimensions relatives
-    console.log(imgSize * heightRatio + 1, this.player);
     this.imageHealthBar.style.height = `${imgSize * heightRatio + 1}px`;
     this.imageHealthBar.style.top = `${imgSize * topOffsetRatio - 1}px`;
     this.imageHealthBar.style.left = `${imgSize * leftOffsetRatio}px`;

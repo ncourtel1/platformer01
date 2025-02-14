@@ -20,7 +20,6 @@ import {
 import generateBackground from "./backgroundObjects.js";
 import { getMenuSys, getTimerSys, initSystems } from "./initializeSystems.js";
 import { displayScores, submitScore } from "./scoring/scoring.js";
-import TimerSystem from "./systems/timerSystem.js";
 
 export const ecs = new ECS();
 export let player;
@@ -261,9 +260,14 @@ let gameLoopId = null;
 lastTime = 0;
 
 export let levels = [
-  
-   "palms.json", "score"];
-
+  // "introduction",
+  // "introduction2",
+  // "intermezzo",
+  // "level-1.json",
+  // "intermezzo",
+  "palms.json",
+  "score",
+];
 
 export let current_level = 0;
 
@@ -276,9 +280,9 @@ export const setCurrentLevel = (lvl) => {
 };
 
 // Fonction pour passer au niveau suivant depuis un autre package
-export const loadNextLevel = () => {
+export const loadNextLevel = (gameOver) => {
   setCurrentLevel(current_level + 1);
-  startGame(levels[current_level]);
+  startGame(levels[current_level], gameOver);
 };
 
 async function gameLoop(time) {
@@ -292,12 +296,14 @@ async function gameLoop(time) {
   gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-export async function startGame(map) {
+export async function startGame(map, restart = false) {
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
-    if (map != "death") {
-      score.time += getMenuSys().timerSys.maxTime - getMenuSys().timerSys.currTime.toFixed(3);
+    if (map != "death" && !restart) {
+      score.time +=
+        getMenuSys().timerSys.maxTime -
+        getMenuSys().timerSys.currTime.toFixed(3);
     }
     ecs.clear();
   }
@@ -312,18 +318,40 @@ export async function startGame(map) {
     map !== "death" &&
     map !== "score"
   ) {
+    // cas ou c'est un map de jeu
     if (playerHealth.value <= 0) {
       playerHealth.value = maxHealth;
     }
-    playerHealth.old = playerHealth.value;
+    if (restart) {
+      playerHealth.value = playerHealth.old;
+    } else {
+      playerHealth.old = playerHealth.value;
+    }
+
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
+
+    ecs.addEventListener(
+      document.getElementById("continueButton"),
+      "click",
+      handleContinue
+    );
+    ecs.addEventListener(
+      document.getElementById("restartButton"),
+      "click",
+      handleRestart
+    );
+    ecs.addEventListener(window, "blur", handleBlur);
+    ecs.addEventListener(window, "focus", handleFocus);
+    
+
     gameLoop(lastTime);
   } else {
     if (map == "score") {
+      // Cas ou c'est la fin du jeu
       if (ecs.initialized) {
-          getTimerSys().pauseTimer()
+        getTimerSys().pauseTimer();
       }
       const menu = document.getElementById("start-menu");
       if (menu) {
@@ -342,7 +370,9 @@ export async function startGame(map) {
       }
 
       const title = document.getElementById("title");
-      title.innerHTML = `Time ---- ${(Math.round(score.time * 1000) / 1000).toFixed(3)}`;
+      title.innerHTML = `Time ---- ${(
+        Math.round(score.time * 1000) / 1000
+      ).toFixed(3)}`;
       title.style.maxWidth = "250px";
 
       const display = document.getElementById("display");
@@ -359,9 +389,13 @@ export async function startGame(map) {
       game_container.style.display = "none";
     } else {
       if (ecs.initialized) {
-        getMenuSys().isIntermezzo = true;
-        getTimerSys().pauseTimer()
+        ecs.removeEventListeners();
+        getTimerSys().pauseTimer();
+        if (getMenuSys().paused) {
+          getMenuSys().togglePause(true);
+        }
       }
+
       const game = document.getElementById("game-container");
       const gameWidth = game.offsetWidth;
       const gameHeight = game.offsetHeight;
@@ -399,12 +433,16 @@ export async function startGame(map) {
 let intermezzo = new Image();
 
 function completeIntermezzo(gameOver) {
- if (ecs.initialized){
-  getMenuSys().isIntermezzo = false;
- }
+  if (ecs.initialized) {
+    getMenuSys().isIntermezzo = false;
+  }
   if (intermezzo) intermezzo.remove();
   if (gameOver) setCurrentLevel(2);
-  loadNextLevel();
+  if (ecs.initialized) {
+    ecs.clear();
+  }
+
+  loadNextLevel(gameOver);
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
@@ -425,7 +463,7 @@ document.getElementById("playButton").addEventListener("click", () => {
   startGame(levels[0]);
 });
 
-document.getElementById("continueButton").addEventListener("click", () => {
+const handleContinue = () => {
   if (getMenuSys().isIntermezzo) {
     getMenuSys().isIntermezzo = !getMenuSys().isIntermezzo;
     getMenuSys().togglePause();
@@ -433,61 +471,80 @@ document.getElementById("continueButton").addEventListener("click", () => {
   } else {
     getMenuSys().togglePause();
   }
-});
+};
 
-document.getElementById("restartButton").addEventListener("click", () => {
+const handleRestart = () => {
   const menu = document.getElementById("start-menu");
   menu.style.display = "none";
 
   const game_container = document.getElementById("game-container");
   game_container.style.display = "block";
 
-  // relancer le jeu au niveau actuel
   playerHealth.value = playerHealth.old;
+  startGame(levels[current_level], true);
+};
 
-  startGame(levels[current_level]);
-});
-
-window.addEventListener("blur", () => {
+const handleBlur = () => {
   if (ecs.initialized && current_level != levels.length - 1) {
-    lastTime = 0;
-
-    if (!getMenuSys().isIntermezzo) getMenuSys().togglePause();
+    if (!getMenuSys().isIntermezzo && !getMenuSys().paused) {
+      getMenuSys().togglePause();
+      lastTime = 0;
+    }
   }
-});
+};
 
-window.addEventListener("focus", () => {
+const handleFocus = () => {
   if (ecs.initialized && current_level != levels.length - 1) {
     if (!getMenuSys().isIntermezzo) {
       getMenuSys().togglePause();
       lastTime = performance.now();
     }
   }
-});
+};
 
-document.getElementById("submitButton").addEventListener("click", () => {
+const handleSubmit = () => {
   const inputValue = document.getElementById("menuInput").value;
-
-  if (inputValue.trim() !== "") {
+  if (inputValue.trim() !== "" && inputValue.length >= 1) {
     const formattedTime = (Math.round(score.time * 1000) / 1000).toFixed(3);
     submitScore(inputValue, formattedTime);
-    window.location.reload();
+    window.location.reload(true);
+  } else {
+    window.location.reload(true);
   }
-});
+};
 
-document.getElementById("scoreButton").addEventListener("click", () => {
+const handleScore = () => {
   if (isTitle) {
     document.getElementById("title").style.display = "none";
     displayScores(1);
     document.getElementById("scoreboard").style.fontSize = "20px";
     document.getElementById("scoreboard").style.margin = "-100 auto";
     document.getElementById("scoreboard").style.transform = "translateX(-90%)";
-    
     document.getElementById("scoreboard").style.left = "50%";
+    document.getElementById("scoreButton-text").innerHTML = "Back";
     isTitle = !isTitle;
   } else {
     document.getElementById("title").style.display = "block";
     document.getElementById("scoreboard").innerHTML = "";
+    document.getElementById("scoreButton-text").innerHTML = "Score";
     isTitle = !isTitle;
   }
-});
+};
+
+const handleInput = (e) => {
+  let currentValue = e.target.value;
+  
+  let text = document.getElementById("submit-btn-text")
+  
+  if (currentValue.length > 6) {
+    e.target.value = currentValue.substring(0, 6);
+  } else if (currentValue.length >= 1){
+    text.innerText = "Submit"
+  } else if (currentValue == 0){
+    text.innerText = "Menu"
+  }
+};
+
+document.getElementById("submitButton").addEventListener("click", handleSubmit);
+document.getElementById("scoreButton").addEventListener("click", handleScore);
+document.getElementById("menuInput").addEventListener("input", handleInput);

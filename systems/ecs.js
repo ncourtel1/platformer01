@@ -37,7 +37,7 @@ export default class ECS {
 
   // Méthode améliorée pour supprimer les listeners
   removeEventListeners(eventTypes = ['click', 'keydown', 'keyup', 'keypress', 'blur', 'focus']) {
-    console.log("removing listeners...");
+    
     
     // Parcourir tous les éléments dans notre Map d'écouteurs
     for (const [element, elementEvents] of this.eventListeners) {
