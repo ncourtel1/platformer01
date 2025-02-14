@@ -468,6 +468,11 @@ const handleContinue = () => {
   }
 };
 
+document.getElementById("scoreButton").addEventListener("mouseenter", () => {
+  wood.currentTime = 0.4;
+  wood.play();
+});
+
 document.getElementById("continueButton").addEventListener("mouseenter", () => {
   wood.currentTime = 0.4;
   wood.play();

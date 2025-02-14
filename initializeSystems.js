@@ -40,7 +40,7 @@ export async function initSystems() {
     ecs.addSystem(new HealthSystem(HUD, player));
     ecs.addSystem(new RespawnSystem());
 
-    timerSys = new TimerSystem(HUD, 10, player);
+    timerSys = new TimerSystem(HUD, 60, player);
     menuSys = new MenuSystem(HUD, timerSys, player);
 
     ecs.addSystem(timerSys);
