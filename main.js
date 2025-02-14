@@ -260,11 +260,11 @@ let gameLoopId = null;
 lastTime = 0;
 
 export let levels = [
-  // "introduction",
-  // "introduction2",
-  // "intermezzo",
-  // "level-1.json",
-  // "intermezzo",
+  "introduction",
+  "introduction2",
+  "intermezzo",
+  "level-1.json",
+  "intermezzo",
   "palms.json",
   "score",
 ];
