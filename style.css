@@ -84,6 +84,24 @@ body {
   margin-top: 270px;
 }
 
+.submit-btn {
+
+  position: absolute;
+  width: 240px;
+  height: 100px;
+  background : url("assets/green-btn.png") no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  border: none;
+  font-size: x-large;
+  font-family: "early_gameboyregular";
+  color: rgb(53, 53, 53);
+  margin-left: 10px;
+  margin-top: 270px;
+}
+
+
 .stg-btn {
     width: 240px;
     height: 100px;
@@ -128,6 +146,36 @@ body {
     position: relative;
     top: 29px; 
     left: 4px
+}
+.menu-input {
+  position: absolute;
+  border: none;
+  width: 240px;
+  height: 100px;
+  margin-left: 10px;
+  margin-top: 80px;
+  background: url("assets/green-btn.png") no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  font-size: x-large;
+  font-family: "early_gameboyregular";
+  z-index: 1001;
+  text-align: center;
+  
+}
+
+input:focus, textarea:focus, select:focus, button:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: initial;
+}
+
+.display {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* 📌 Effet au survol */

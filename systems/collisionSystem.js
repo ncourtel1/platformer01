@@ -2,10 +2,11 @@ import { ecs, loadNextLevel } from "../main.js";
 import createObject from "../entities/createObject.js";
 import { mapSprite } from "../spriteLoader.js";
 import MenuSystem from "./menuSystem.js";
+import { getMenuSys, getTimerSys } from "../initializeSystems.js";
 
 export default class CollisionSystem {
-  constructor(timerSys){
-    this.timerSys = timerSys
+  constructor(timerSys) {
+    this.timerSys = timerSys;
   }
   update(entities) {
     // Réinitialisation des états
@@ -140,14 +141,14 @@ export default class CollisionSystem {
     if ((inputA && stateB) || (stateA && inputB)) {
       if (stateA.tag == "keyChess") {
         stateB.canFinish = true;
-        const audio = entityB.getComponent('audio');
-        audio.sounds.get('key').play();
+        const audio = entityB.getComponent("audio");
+        audio.sounds.get("key").play();
         ecs.removeEntity(entityA);
         console.log("key");
       } else if (stateB.tag == "keyChess") {
         stateA.canFinish = true;
-        const audio = entityA.getComponent('audio');
-        audio.sounds.get('key').play();
+        const audio = entityA.getComponent("audio");
+        audio.sounds.get("key").play();
         ecs.removeEntity(entityB);
         console.log("key");
       }
@@ -157,15 +158,15 @@ export default class CollisionSystem {
     if ((inputA && stateB) || (stateA && inputB)) {
       if (stateA.tag == "healthBonus") {
         healthB.addHealth(1);
-        const audio = entityB.getComponent('audio');
-        audio.sounds.get('plop').play();
-        audio.sounds.get('drink').play();
+        const audio = entityB.getComponent("audio");
+        audio.sounds.get("plop").play();
+        audio.sounds.get("drink").play();
         ecs.removeEntity(entityA);
       } else if (stateB.tag == "healthBonus") {
         healthA.addHealth(1);
-        const audio = entityA.getComponent('audio');
-        audio.sounds.get('plop').play();
-        audio.sounds.get('drink').play();
+        const audio = entityA.getComponent("audio");
+        audio.sounds.get("plop").play();
+        audio.sounds.get("drink").play();
         ecs.removeEntity(entityB);
       }
     }
@@ -173,14 +174,14 @@ export default class CollisionSystem {
     // Handle Time Bonus
     if ((inputA && stateB) || (stateA && inputB)) {
       if (stateA.tag == "timeBonus") {
-        this.timerSys.addTime()
+        this.timerSys.addTime();
       } else if (stateB.tag == "timeBonus") {
-        this.timerSys.addTime()
+        this.timerSys.addTime();
       }
     }
   }
 
-  trapCollision(entityA, entityB){
+  trapCollision(entityA, entityB) {
     const stateA = entityA.getComponent("state");
     const stateB = entityB.getComponent("state");
     const inputA = entityA.getComponent("input");
@@ -188,75 +189,132 @@ export default class CollisionSystem {
     const healthA = entityA.getComponent("health");
     const healthB = entityB.getComponent("health");
 
-    if((inputA && stateB) || (stateA && inputB)){
-      if(stateB.tag == "trap"){
-        const audio = entityA.getComponent('audio');
-        audio.sounds.get('hurt').play();
+    if ((inputA && stateB) || (stateA && inputB)) {
+      if (stateB.tag == "trap" && !stateA.levelFinish) {
+        const audio = entityA.getComponent("audio");
+        audio.sounds.get("hurt").play();
         healthA.removeHealth(1);
-      }else if(stateA.tag == "trap"){
-        const audio = entityB.getComponent('audio');
-        audio.sounds.get('hurt').play();
+      } else if (stateA.tag == "trap" && !stateB.levelFinish) {
+        const audio = entityB.getComponent("audio");
+        audio.sounds.get("hurt").play();
         healthB.removeHealth(1);
       }
     }
   }
   // Handle chess collision for new level
-  checkEndLevel(entityA, entityB){
+  checkEndLevel(entityA, entityB) {
     const stateA = entityA.getComponent("state");
     const stateB = entityB.getComponent("state");
     const positionA = entityA.getComponent("position");
     const positionB = entityB.getComponent("position");
     const visualA = entityA.getComponent("visual");
     const visualB = entityB.getComponent("visual");
-    const spriteA = entityA.getComponent('sprite');
-    const spriteB = entityB.getComponent('sprite');
+    const spriteA = entityA.getComponent("sprite");
+    const spriteB = entityB.getComponent("sprite");
     const inputA = entityA.getComponent("input");
     const inputB = entityB.getComponent("input");
-    if((inputA && stateB) || (stateA && inputB)){
-      if(stateA.tag == "chess" && stateB.canFinish && spriteA.currentState == 'locked'){
+    if ((inputA && stateB) || (stateA && inputB)) {
+      if (
+        stateA.tag == "chess" &&
+        stateB.canFinish &&
+        spriteA.currentState == "locked"
+      ) {
         stateB.levelFinish = true;
-        const audio = entityB.getComponent('audio');
-        audio.sounds.get('loot').play();
-        audio.sounds.get('wood').play();
-        spriteA.setState('unlocked');
-        spriteA.setState('unlocked');
+        const audio = entityB.getComponent("audio");
+        audio.sounds.get("loot").play();
+        audio.sounds.get("wood").play();
+        spriteA.setState("unlocked");
+        spriteA.setState("unlocked");
+        getTimerSys().pauseTimer();
+        let velocity = entityB.getComponent("velocity");
+        velocity.vx = 0;
+        velocity.vy = 0;
+        ecs.removeEventListeners(["blur", "focus"]);
         setTimeout(() => {
-          spriteA.setState('opened');
-          spriteA.setState('opened');
-          const map = createObject(positionA.x + 21, positionA.y - 70, "", visualA.width / 1.5, visualA.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+          spriteA.setState("opened");
+          spriteA.setState("opened");
+          const map = createObject(
+            positionA.x + 21,
+            positionA.y - 70,
+            "",
+            visualA.width / 1.5,
+            visualA.height / 1,
+            mapSprite,
+            undefined,
+            undefined,
+            0.2,
+            undefined,
+            undefined,
+            false,
+            false,
+            "map"
+          );
           ecs.addEntity(map);
         }, 500);
-      } else if(stateB.tag == "chess" && stateA.canFinish && spriteB.currentState == 'locked'){
+      } else if (
+        stateB.tag == "chess" &&
+        stateA.canFinish &&
+        spriteB.currentState == "locked"
+      ) {
         stateA.levelFinish = true;
-        const audio = entityA.getComponent('audio');
-        audio.sounds.get('loot').play();
-        audio.sounds.get('wood').play();
-        spriteB.setState('unlocked');
-        spriteB.setState('unlocked');
+        const audio = entityA.getComponent("audio");
+        audio.sounds.get("loot").play();
+        audio.sounds.get("wood").play();
+        spriteB.setState("unlocked");
+        spriteB.setState("unlocked");
+        getTimerSys().pauseTimer();
+        let velocity = entityA.getComponent("velocity");
+        velocity.vx = 0;
+        velocity.vy = 0;
+        ecs.removeEventListeners(["blur", "focus"]);
         setTimeout(() => {
-          spriteB.setState('opened');
-          spriteB.setState('opened');
-          const map = createObject(positionB.x + 21, positionB.y - 70, "", visualB.width / 1.5, visualB.height / 1, mapSprite, undefined, undefined, 0.2, undefined, undefined, false, false, "map");
+          spriteB.setState("opened");
+          spriteB.setState("opened");
+          const map = createObject(
+            positionB.x + 21,
+            positionB.y - 70,
+            "",
+            visualB.width / 1.5,
+            visualB.height / 1,
+            mapSprite,
+            undefined,
+            undefined,
+            0.2,
+            undefined,
+            undefined,
+            false,
+            false,
+            "map"
+          );
           ecs.addEntity(map);
         }, 500);
       }
     }
-    if (stateA.tag == "map" && spriteA.currentState == 'unfold' && spriteA.currentFrame >= spriteA.currentState.length + 1) {
-      spriteA.setState('map');
-      spriteA.setState('map');
+    if (
+      stateA.tag == "map" &&
+      spriteA.currentState == "unfold" &&
+      spriteA.currentFrame >= spriteA.currentState.length + 1
+    ) {
+      spriteA.setState("map");
+      spriteA.setState("map");
+
       setTimeout(() => {
-        let menuSys = ecs.getSystem(MenuSystem)
-        menuSys.isIntermezzo = true;
-        menuSys.togglePause()
-      }, 1500)
-    } else if (stateB.tag == "map" && spriteB.currentState == 'unfold' && spriteB.currentFrame >= spriteB.currentState.length + 1) {
-      spriteB.setState('map');
-      spriteB.setState('map');
+        ecs.removeEventListeners(["keydown", "keyup", "keypress"]);
+        getMenuSys().isIntermezzo = true;
+        getMenuSys().togglePause(true);
+      }, 1500);
+    } else if (
+      stateB.tag == "map" &&
+      spriteB.currentState == "unfold" &&
+      spriteB.currentFrame >= spriteB.currentState.length + 1
+    ) {
+      spriteB.setState("map");
+      spriteB.setState("map");
       setTimeout(() => {
-        let menuSys = ecs.getSystem(MenuSystem)
-        menuSys.isIntermezzo = true;
-        menuSys.togglePause()
-      }, 1500)
+        ecs.removeEventListeners(["keydown", "keyup", "keypress"]);
+        getMenuSys().isIntermezzo = true;
+        getMenuSys().togglePause(true);
+      }, 1500);
     }
   }
 }

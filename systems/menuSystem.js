@@ -1,3 +1,5 @@
+import { current_level, ecs, levels, player } from "../main.js";
+
 // MenuSystem.js
 export default class MenuSystem {
   constructor(container, timerSys, player) {
@@ -8,17 +10,21 @@ export default class MenuSystem {
     this.menu = document.getElementById("start-menu");
     this.isIntermezzo = false;
 
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !this.isIntermezzo) {
-
+    this.handleKeydown = (e) => {
+      if (e.key === "Escape" && !this.isIntermezzo && current_level != levels.length-1 && !this.player.getComponent("state").levelFinish ) {
         this.togglePause();
       }
-    });
+    };
+
+    // Ajouter l'écouteur via le système ECS
+    ecs.addEventListener(window, "keydown", this.handleKeydown);
   }
 
-  togglePause(gameOver) {
+  togglePause(alreadyPaused = false) {
     this.paused = !this.paused;
-    this.timerSys.toggleTimer();
+    if (!alreadyPaused && !this.isIntermezzo) {
+      this.timerSys.toggleTimer();
+    }
 
     const game = document.getElementById("game");
     const gameContainer = document.getElementById("game-container");
@@ -26,10 +32,10 @@ export default class MenuSystem {
     const playBtn = document.getElementById("playButton");
     const continueBtn = document.getElementById("continueButton");
     const continueText = document.getElementById("continueButton-Text") 
-    const scoreComponent = this.player.getComponent("score");
     const restartBtn = document.getElementById("restartButton");
 
     if (this.isIntermezzo) {
+      console.log("ici")
       const gameHeight = game.offsetHeight;
       const gameContainerHeight = gameContainer.offsetHeight;
 
@@ -46,13 +52,15 @@ export default class MenuSystem {
       this.menu.style.left = `${gameContainer.offsetLeft}px`; // Alignement gauche
       this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
       this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée
-      title.textContent = `Time ---- ${scoreComponent.score}`;
+      title.style.display = "block";
+      title.textContent = `Time ---- ${this.timerSys ? (Math.round((this.timerSys.maxTime - this.timerSys.currTime ) * 1000) / 1000).toFixed(3) : (Math.round(score.time  * 1000) / 1000).toFixed(3)}`;
       restartBtn.style.display = "block";
       continueBtn.style.display = "block";
       continueText.textContent  = "Next Lvl"
       playBtn.style.display = "none";
+      ecs.removeEventListeners(['keydown', 'keyup', 'keypress'])
     } else if (this.paused) {
-      
+      playBtn.style.display = "none";
       const gameHeight = game.offsetHeight;
       const gameContainerHeight = gameContainer.offsetHeight;
 
@@ -69,12 +77,11 @@ export default class MenuSystem {
       this.menu.style.left = `${gameContainer.offsetLeft}px`; // Alignement gauche
       this.menu.style.width = `${game.offsetWidth}px`; // Largeur du jeu
       this.menu.style.height = `${gameHeight + gameContainerHeight}px`; // Hauteur totale combinée
-      title.textContent = gameOver ? 'Game Over' : `Time ---- ${scoreComponent.score}`;
+      title.textContent = `Time ---- ${this.timerSys ? (Math.round((this.timerSys.maxTime - this.timerSys.currTime ) * 1000) / 1000).toFixed(3) : (Math.round(score.time  * 1000) / 1000).toFixed(3)}`;
+      title.style.display = "block"
       restartBtn.style.display = "block";
-      if (gameOver) restartBtn.style.marginTop = "300px";
-      continueBtn.style.display = gameOver ? "none" : "block";
-      continueText.textContent = "Play"
-      playBtn.style.display = "none";
+      continueText.textContent  = "Play"
+      continueBtn.style.display = "block";
     } else {
       this.menu.style.display = "none";
     }

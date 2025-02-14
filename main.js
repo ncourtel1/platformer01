@@ -20,13 +20,16 @@ import {
   wood,
 } from "./spriteLoader.js";
 import generateBackground from "./backgroundObjects.js";
-import { getMenuSys, initSystems } from "./initializeSystems.js";
-import MenuSystem from "./systems/menuSystem.js";
+import { getMenuSys, getTimerSys, initSystems } from "./initializeSystems.js";
+import { displayScores, submitScore } from "./scoring/scoring.js";
 
 export const ecs = new ECS();
 export let player;
 export let lastTime;
-export let playerHealth = 3;
+let playerHealth = { value: 3, old: 3 };
+const maxHealth = 3;
+export let score = { point: 0, time: 0 };
+let isTitle = true;
 
 async function loadMap(filename) {
   try {
@@ -69,6 +72,9 @@ async function generateObjectsFromMap(map) {
     playerAnimation,
     playerParticle,
     playerSounds,
+    maxHealth,
+    playerHealth,
+    score
   );
   ecs.addEntity(player);
   for (let y = 0; y < map1.map.length; y++) {
@@ -148,7 +154,7 @@ async function generateObjectsFromMap(map) {
       canonBallObj,
       2000,
       !shooterData.flip,
-      cannonSounds,
+      cannonSounds
     );
     ecs.addEntity(canon);
   }
@@ -255,8 +261,7 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-//export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "intermezzo", "boss.json", "intermezzo", "joker.json", "conclusion1", "conclusion2", "conclusion3"];
-export let levels = ["conclusion1", "conclusion2", "conclusion3"];
+export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "intermezzo", "boss.json", "intermezzo", "joker.json", "conclusion1", "conclusion2", "conclusion3", "score"];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -268,9 +273,9 @@ export const setCurrentLevel = (lvl) => {
 };
 
 // Fonction pour passer au niveau suivant depuis un autre package
-export const loadNextLevel = () => {
+export const loadNextLevel = (gameOver) => {
   setCurrentLevel(current_level + 1);
-  startGame(levels[current_level]);
+  startGame(levels[current_level], gameOver);
 };
 
 async function gameLoop(time) {
@@ -284,27 +289,108 @@ async function gameLoop(time) {
   gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-export async function startGame(map) {
+export async function startGame(map, restart = false) {
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
+    if (map != "death" && !restart) {
+      score.time +=
+        getMenuSys().timerSys.maxTime -
+        getMenuSys().timerSys.currTime.toFixed(3);
+    }
     ecs.clear();
   }
+  document.getElementById("scoreboard").style.display = "none";
+  document.getElementById("scoreButton").style.display = "none";
   lastTime = performance.now();
-  
-  if (map !== "intermezzo" && map !== "introduction" && map !== "introduction2" && map !== "death" && map !== "conclusion1" && map !== "conclusion2" && map !== "conclusion3") {
+  if (
+    map !== "intermezzo" &&
+    map !== "introduction" &&
+    map !== "introduction2" &&
+    map !== "death" &&
+    map !== "conclusion1" &&
+    map !== "conclusion2" &&
+    map !== "conclusion3" &&
+    map !== "score"
+  ) {
+    // cas ou c'est un map de jeu
+    if (playerHealth.value <= 0) {
+      playerHealth.value = maxHealth;
+    }
+    if (restart) {
+      playerHealth.value = playerHealth.old;
+    } else {
+      playerHealth.old = playerHealth.value;
+    }
     generateBackground();
     await generateObjectsFromMap(map);
     initSystems(lastTime);
+
+    ecs.addEventListener(
+      document.getElementById("continueButton"),
+      "click",
+      handleContinue
+    );
+    ecs.addEventListener(
+      document.getElementById("restartButton"),
+      "click",
+      handleRestart
+    );
+    ecs.addEventListener(window, "blur", handleBlur);
+    ecs.addEventListener(window, "focus", handleFocus);
+    
+
     gameLoop(lastTime);
   } else {
-    let menuSys = ecs.getSystem(MenuSystem);
-    if(menuSys){
-      menuSys.isIntermezzo = true
-    }
-    const game = document.getElementById("game-container");
+    if (map == "score") {
+      // Cas ou c'est la fin du jeu
+      if (ecs.initialized) {
+        getTimerSys().pauseTimer();
+      }
+      const menu = document.getElementById("start-menu");
+      if (menu) {
+        Object.assign(menu.style, {
+          position: "relative",
+          width: "1920px",
+          height: "970px",
+          background: 'url("assets/background.gif") no-repeat center center',
+          backgroundSize: "cover",
+          imageRendering: "pixelated",
+          justifyContent: "center",
+          alignItems: "center",
+          top: "100px",
+          zIndex: "10001",
+        });
+      }
+      const title = document.getElementById("title");
+      title.innerHTML = `Time ---- ${(
+        Math.round(score.time * 1000) / 1000
+      ).toFixed(3)}`;
+      title.style.maxWidth = "250px";
 
-    const gameWidth = game.offsetWidth;
+      const display = document.getElementById("display");
+      display.style.display = "flex";
+
+      const continueBtn = document.getElementById("continueButton");
+      const restartBtn = document.getElementById("restartButton");
+      menu.style.display = "flex";
+
+      restartBtn.style.display = "none";
+      continueBtn.style.display = "none";
+
+      const game_container = document.getElementById("game-container");
+      game_container.style.display = "none";
+    } else {
+      if (ecs.initialized) {
+        ecs.removeEventListeners();
+        getTimerSys().pauseTimer();
+        if (getMenuSys().paused) {
+          getMenuSys().togglePause(true);
+        }
+      }
+
+      const game = document.getElementById("game-container");
+      const gameWidth = game.offsetWidth;
     const gameHeight = game.offsetHeight;
     const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : map == "conclusion1" ? "conclusion1.gif" : map == "conclusion2" ? "conclusion2.gif" : map == "conclusion3" ? "conclusion3.gif" : "";
     intermezzo.src = `assets/${source}`;
@@ -322,25 +408,32 @@ export async function startGame(map) {
       intermezzo.style.filter = "brightness(0%)";
     }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : map == "conclusion3" ? -8000 : 0));
     setTimeout(() => {completeIntermezzo(map == "death" ? true : false)}, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : map == "conclusion3" ? -8000 : 0));
+    }
   }
 }
-
 
 let intermezzo = new Image();
 
 function completeIntermezzo(gameOver) {
-  let menuSys = ecs.getSystem(MenuSystem);
-  if(menuSys){
-    menuSys.isIntermezzo = false
+  if (ecs.initialized) {
+    getMenuSys().isIntermezzo = false;
   }
   if (intermezzo) intermezzo.remove();
   if (gameOver) setCurrentLevel(2);
-  loadNextLevel();
+  if (ecs.initialized) {
+    ecs.clear();
+  }
+
+  loadNextLevel(gameOver);
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
   bloup.volume = "0.4";
   bloup.play();
+  if (ecs.initialized) {
+    ecs.clear();
+  }
+
   const menu = document.getElementById("start-menu");
   menu.style.display = "none";
 
@@ -353,7 +446,7 @@ document.getElementById("playButton").addEventListener("click", () => {
   music.volume = "0.3";
   music.loop = true;
   music.play();
-  
+
   // Lancer le jeu
   startGame(levels[0]);
 });
@@ -363,19 +456,17 @@ document.getElementById("playButton").addEventListener("mouseenter", () => {
   wood.play();
 });
 
-document.getElementById("continueButton").addEventListener("click", () => {
+const handleContinue = () => {
   bloup.volume = "0.4";
   bloup.play();
-  let menuSys = ecs.getSystem(MenuSystem);
-  if (menuSys.isIntermezzo) {
-    menuSys.isIntermezzo = !menuSys.isIntermezzo
-    menuSys.togglePause();
-    loadNextLevel()
-  } else{
-    menuSys.togglePause();
+  if (getMenuSys().isIntermezzo) {
+    getMenuSys().isIntermezzo = !getMenuSys().isIntermezzo;
+    getMenuSys().togglePause();
+    loadNextLevel();
+  } else {
+    getMenuSys().togglePause();
   }
-  
-});
+};
 
 document.getElementById("continueButton").addEventListener("mouseenter", () => {
   wood.currentTime = 0.4;
@@ -385,34 +476,85 @@ document.getElementById("continueButton").addEventListener("mouseenter", () => {
 document.getElementById("restartButton").addEventListener("click", () => {
   bloup.volume = "0.4";
   bloup.play();
+});
+
+const handleRestart = () => {
   const menu = document.getElementById("start-menu");
   menu.style.display = "none";
 
   const game_container = document.getElementById("game-container");
   game_container.style.display = "block";
 
-  // relancer le jeu au niveau actuel
-
-  startGame(levels[current_level]);
-});
+  playerHealth.value = playerHealth.old;
+  startGame(levels[current_level], true);
+};
 
 document.getElementById("restartButton").addEventListener("mouseenter", () => {
   wood.currentTime = 0.4;
   wood.play();
 });
 
-window.addEventListener("blur", () => {
-  if (ecs.initialized) {
-    lastTime = 0;
-    let menuSys = ecs.getSystem(MenuSystem);
-    menuSys.togglePause();
+const handleBlur = () => {
+  if (ecs.initialized && current_level != levels.length - 1) {
+    if (!getMenuSys().isIntermezzo && !getMenuSys().paused) {
+      getMenuSys().togglePause();
+      lastTime = 0;
+    }
   }
-});
+};
 
-window.addEventListener("focus", () => {
-  if (ecs.initialized) {
-    let menuSys = ecs.getSystem(MenuSystem);
-    menuSys.togglePause();
-    lastTime = performance.now();
+const handleFocus = () => {
+  if (ecs.initialized && current_level != levels.length - 1) {
+    if (!getMenuSys().isIntermezzo) {
+      getMenuSys().togglePause();
+      lastTime = performance.now();
+    }
   }
-});
+};
+
+const handleSubmit = () => {
+  const inputValue = document.getElementById("menuInput").value;
+  if (inputValue.trim() !== "" && inputValue.length >= 1) {
+    const formattedTime = (Math.round(score.time * 1000) / 1000).toFixed(3);
+    submitScore(inputValue, formattedTime);
+    window.location.reload(true);
+  } else {
+    window.location.reload(true);
+  }
+};
+
+const handleScore = () => {
+  if (isTitle) {
+    document.getElementById("title").style.display = "none";
+    displayScores(1);
+    document.getElementById("scoreboard").style.fontSize = "20px";
+    document.getElementById("scoreboard").style.margin = "-100 auto";
+    document.getElementById("scoreboard").style.transform = "translateX(-90%)";
+    document.getElementById("scoreboard").style.left = "50%";
+    document.getElementById("scoreButton-text").innerHTML = "Back";
+    isTitle = !isTitle;
+  } else {
+    document.getElementById("title").style.display = "block";
+    document.getElementById("scoreboard").innerHTML = "";
+    document.getElementById("scoreButton-text").innerHTML = "Score";
+    isTitle = !isTitle;
+  }
+};
+
+const handleInput = (e) => {
+  let currentValue = e.target.value;
+  
+  let text = document.getElementById("submit-btn-text")
+  
+  if (currentValue.length > 6) {
+    e.target.value = currentValue.substring(0, 6);
+  } else if (currentValue.length >= 1){
+    text.innerText = "Submit"
+  } else if (currentValue == 0){
+    text.innerText = "Menu"
+  }
+};
+
+document.getElementById("submitButton").addEventListener("click", handleSubmit);
+document.getElementById("scoreButton").addEventListener("click", handleScore);
+document.getElementById("menuInput").addEventListener("input", handleInput);

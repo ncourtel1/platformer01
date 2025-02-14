@@ -10,7 +10,7 @@ export default class HealthSystem {
     // Créer une div pour contenir les images
     this.imagesContainer = document.createElement("div");
     this.imagesContainer.style.marginLeft = `${xOffset}px`;
-    this.imagesContainer.style.marginTop = '-870px';
+    this.imagesContainer.style.marginTop = "-870px";
     this.imagesContainer.style.display = "flex";
     this.container.appendChild(this.imagesContainer);
 
@@ -20,7 +20,7 @@ export default class HealthSystem {
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/1.png";
     this.imageElement1.style.width = `${imgSize}px`;
     this.imageElement1.style.zIndex = "1";
-    this.imageElement1.style.imageRendering = 'pixelated';
+    this.imageElement1.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement1);
 
     this.imageElement3 = document.createElement("img");
@@ -28,7 +28,7 @@ export default class HealthSystem {
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/3.png";
     this.imageElement3.style.width = `${imgSize}px`;
     this.imageElement3.style.zIndex = "1";
-    this.imageElement3.style.imageRendering = 'pixelated';
+    this.imageElement3.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement3);
 
     this.imageElement4 = document.createElement("img");
@@ -36,7 +36,7 @@ export default class HealthSystem {
       "../assets/Wood and Paper UI/Sprites/Life Bars/Big Bars/4.png";
     this.imageElement4.style.width = `${imgSize}px`;
     this.imageElement4.style.zIndex = "1";
-    this.imageElement4.style.imageRendering = 'pixelated';
+    this.imageElement4.style.imageRendering = "pixelated";
     this.imagesContainer.appendChild(this.imageElement4);
 
     // Créer l'image de la barre de vie
@@ -44,7 +44,7 @@ export default class HealthSystem {
     this.imageHealthBar.style.backgroundColor = "#db4848";
     this.imageHealthBar.style.transition = "width 0.3s ease";
     this.imageHealthBar.style.position = "absolute";
-    this.imageHealthBar.style.marginLeft = `${xOffset}px`;;
+    this.imageHealthBar.style.marginLeft = `${xOffset}px`;
     this.imageHealthBar.style.zIndex = "10";
 
     // Calculer les dimensions relatives à imgSize
@@ -53,7 +53,6 @@ export default class HealthSystem {
     const leftOffsetRatio = 48 / 90;
 
     // Appliquer les dimensions relatives
-    console.log(imgSize * heightRatio + 1, this.player)
     this.imageHealthBar.style.height = `${imgSize * heightRatio + 1}px`;
     this.imageHealthBar.style.top = `${imgSize * topOffsetRatio - 1}px`;
     this.imageHealthBar.style.left = `${imgSize * leftOffsetRatio}px`;
@@ -65,14 +64,13 @@ export default class HealthSystem {
 
   update() {
     let playerHealth = this.player.getComponent("health");
-    const healthRatio = playerHealth.currentHealth / playerHealth.maxHealth;;
+    const healthRatio = playerHealth.healthObj.value / playerHealth.maxHealth;
     const maxBarWidth = 150 * 2.34;
     const healthBarWidth = maxBarWidth * healthRatio;
     this.imageHealthBar.style.width = `${healthBarWidth}px`;
-    if (playerHealth.currentHealth === 0 && !playerHealth.gameOver)
-      {
+    if (playerHealth.healthObj.value === 0 && !playerHealth.gameOver) {
       playerHealth.gameOver = true;
       startGame("death");
-  }
+    }
   }
 }
