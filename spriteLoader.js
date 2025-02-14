@@ -414,7 +414,6 @@ music.volume = "0.5";
 const run = new Audio();
 run.src = "assets/run.mp3";
 run.volume = "0.4";
-run.loop = true;
 
 export const playerSounds = new Map();
 playerSounds.set('jump', jump);
