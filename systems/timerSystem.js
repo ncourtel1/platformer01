@@ -81,7 +81,7 @@ export default class TimerSystem {
           this.showGameOver()
           return;
         }
-        console.log(this.currTime.toFixed(3))
+        //console.log(this.currTime.toFixed(3))
         this.update();
       }
       this.lastFrameTime = currentTime;

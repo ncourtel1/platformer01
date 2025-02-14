@@ -412,7 +412,7 @@ bloup.src = "assets/bloup.wav";
 music.volume = "0.5";
 
 const run = new Audio();
-run.src = "assets/run.mp3";
+run.src = "assets/run3.wav";
 run.volume = "0.4";
 
 export const playerSounds = new Map();

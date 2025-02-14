@@ -44,8 +44,8 @@
       <div id="HUD" style="transform: scale(0.7)"></div>
     </main>
     <script src="main.js" type="module"></script>
-
     <script>
+      
       function adjustScale() {
         const gameElement = document.getElementById("game");
         const gameWidth = 1920;
@@ -53,7 +53,7 @@
 
         const scaleX = window.innerWidth / gameWidth;
         const scaleY = window.innerHeight / gameHeight;
-        const scale = Math.min(scaleX, scaleY) / 1.11;
+        const scale = Math.min(scaleX, scaleY);
 
         // Fix des erreurs de pixels avec Math.floor()
         const roundedScale = Math.floor(scale * 100) / 100;
