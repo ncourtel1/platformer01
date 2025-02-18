@@ -278,17 +278,24 @@ export const loadNextLevel = (gameOver) => {
   startGame(levels[current_level], gameOver);
 };
 
-async function gameLoop(time) {
-  const dt = (time - lastTime) / 1000;
-  lastTime = time;
+const TARGET_FPS = 60;
+const FRAME_TIME = 1000 / TARGET_FPS;
 
-  if (!getMenuSys().isPaused()) {
-    ecs.update(dt);
+async function gameLoop(timestamp) {
+  if (!lastTime) {
+    lastTime = timestamp;
   }
-
+  const elapsed = timestamp - lastTime;
+  if (elapsed >= FRAME_TIME) {
+    const dt = FRAME_TIME / 1000;
+    
+    if (!getMenuSys().isPaused()) {
+      ecs.update(dt);
+    }
+    lastTime = timestamp - (elapsed % FRAME_TIME);
+  }
   gameLoopId = requestAnimationFrame(gameLoop);
 }
-
 export async function startGame(map, restart = false) {
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
@@ -467,11 +474,6 @@ const handleContinue = () => {
     getMenuSys().togglePause();
   }
 };
-
-document.getElementById("scoreButton").addEventListener("mouseenter", () => {
-  wood.currentTime = 0.4;
-  wood.play();
-});
 
 document.getElementById("continueButton").addEventListener("mouseenter", () => {
   wood.currentTime = 0.4;
