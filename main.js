@@ -370,7 +370,7 @@ export async function startGame(map, restart = false) {
         });
       }
       const title = document.getElementById("title");
-      title.innerHTML = `Time ---- ${(
+      title.innerHTML = `Time ${(
         Math.round(score.time * 1000) / 1000
       ).toFixed(3)}`;
       title.style.maxWidth = "250px";
