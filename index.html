@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Capt'Head</title>
-    <link rel="icon" type="image/x-icon" href="assets/Pirate Treasure/Sprites/Green Bottle/01.png">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="assets/Pirate Treasure/Sprites/Green Bottle/01.png"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -13,7 +17,11 @@
         <div id="title" class="title">@ Capt<br />'Head @</div>
         <div id="scoreboard" class="title"></div>
         <div class="menu">
-          <div id="display" class="display" style="display: none; margin-top: 100px;">
+          <div
+            id="display"
+            class="display"
+            style="display: none; margin-top: 100px"
+          >
             <input
               id="menuInput"
               type="text"
@@ -21,8 +29,9 @@
               placeholder="Enter text..."
               autocomplete="off"
             />
-            <div id="submitButton" class="submit-btn" ><div id="submit-btn-text" class="btn-text">Menu</div></div>
-            
+            <div id="submitButton" class="submit-btn">
+              <div id="submit-btn-text" class="btn-text">Menu</div>
+            </div>
           </div>
           <div id="playButton" class="play-btn">
             <div class="btn-text">Play</div>
@@ -45,32 +54,50 @@
     </main>
     <script src="main.js" type="module"></script>
     <script>
-      
       function adjustScale() {
         const gameElement = document.getElementById("game");
         const gameWidth = 1920;
         const gameHeight = 1080;
 
-        const scaleX = window.innerWidth / gameWidth;
-        const scaleY = window.innerHeight / gameHeight;
-        const scale = Math.min(scaleX, scaleY);
+        // Calculer les ratios de mise à l'échelle
+        let scaleX = Math.floor((window.innerWidth / gameWidth) * 100) / 100;
+        let scaleY = Math.floor((window.innerHeight / gameHeight) * 100) / 100;
 
-        // Fix des erreurs de pixels avec Math.floor()
-        const roundedScale = Math.floor(scale * 100) / 100;
+        // Prendre le plus petit ratio pour maintenir les proportions
+        let scale = Math.min(scaleX, scaleY);
 
-        gameElement.style.transform = `scale(${roundedScale})`;
-        gameElement.style.transformOrigin = "top left"; // Evite les décalages
+        // Arrondir à 0.05 près pour éviter les valeurs qui causent du flou
+        scale = Math.floor(scale * 20) / 20;
 
-        // Centrer correctement l'élément
-        const offsetX = (window.innerWidth - gameWidth * roundedScale) / 2;
-        const offsetY = (window.innerHeight - gameHeight * roundedScale) / 2;
+        // Appliquer la transformation
+        gameElement.style.transform = `scale(${scale})`;
+        gameElement.style.transformOrigin = "top left";
 
+        // Calculer les offsets pour le centrage
+        const scaledWidth = gameWidth * scale;
+        const scaledHeight = gameHeight * scale;
+        const offsetX = Math.floor((window.innerWidth - scaledWidth) / 2);
+        const offsetY = Math.floor((window.innerHeight - scaledHeight) / 2);
+
+        // Positionner l'élément
         gameElement.style.position = "absolute";
-        gameElement.style.left = `${Math.floor(offsetX)}px`; // Arrondi pour éviter les 1px d'écart
-        gameElement.style.top = `${Math.floor(offsetY)}px`;
+        gameElement.style.left = `${offsetX}px`;
+        gameElement.style.top = `${offsetY}px`;
+
+        // Ajouter des propriétés pour garantir le rendu pixel perfect
+        gameElement.style.imageRendering = "pixelated";
+        gameElement.style.backfaceVisibility = "hidden";
+        gameElement.style.willChange = "transform";
       }
 
-      window.addEventListener("resize", adjustScale);
+      // Ajouter un petit délai au redimensionnement pour éviter les calculs trop fréquents
+      let resizeTimeout;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(adjustScale, 100);
+      });
+
+      // Appel initial
       adjustScale();
     </script>
   </body>
