@@ -322,6 +322,7 @@ export async function startGame(map, restart = false) {
     }
     if (map == "death") {
       playerHealth = { value: 3, old: 3 };
+      score = { point: 0, time: 0 };
     }
     ecs.clear();
   }
@@ -344,6 +345,7 @@ export async function startGame(map, restart = false) {
     }
     if (restart) {
       playerHealth.value = playerHealth.old;
+      
     } else {
       playerHealth.old = playerHealth.value;
     }
