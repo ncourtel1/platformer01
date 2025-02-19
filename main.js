@@ -269,6 +269,8 @@ export let levels = [
   "intermezzo",
   "palms.json",
   "intermezzo",
+  "boss (1).json",
+  "intermezzo",
   "joker.json",
   "conclusion1",
   "conclusion2",
