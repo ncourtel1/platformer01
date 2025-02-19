@@ -261,7 +261,20 @@ async function generateObjectsFromMap(map) {
 let gameLoopId = null;
 lastTime = 0;
 
-export let levels = ["introduction", "introduction2", "intermezzo", "level-1.json", "intermezzo", "palms.json", "intermezzo", "boss.json", "intermezzo", "joker.json", "conclusion1", "conclusion2", "conclusion3", "score"];
+export let levels = [
+  "introduction",
+  "introduction2",
+  "intermezzo",
+  "level-1.json",
+  "intermezzo",
+  "palms.json",
+  "intermezzo",
+  "joker.json",
+  "conclusion1",
+  "conclusion2",
+  "conclusion3",
+  "score",
+];
 export let current_level = 0;
 
 // Fonction pour set une valeur au current_level, utilisable depuis un autre package
@@ -288,7 +301,7 @@ async function gameLoop(timestamp) {
   const elapsed = timestamp - lastTime;
   if (elapsed >= FRAME_TIME) {
     const dt = FRAME_TIME / 1000;
-    
+
     if (!getMenuSys().isPaused()) {
       ecs.update(dt);
     }
@@ -304,6 +317,9 @@ export async function startGame(map, restart = false) {
       score.time +=
         getMenuSys().timerSys.maxTime -
         getMenuSys().timerSys.currTime.toFixed(3);
+    }
+    if (map == "death") {
+      playerHealth = { value: 3, old: 3 };
     }
     ecs.clear();
   }
@@ -345,7 +361,6 @@ export async function startGame(map, restart = false) {
     );
     ecs.addEventListener(window, "blur", handleBlur);
     ecs.addEventListener(window, "focus", handleFocus);
-    
 
     gameLoop(lastTime);
   } else {
@@ -370,9 +385,9 @@ export async function startGame(map, restart = false) {
         });
       }
       const title = document.getElementById("title");
-      title.innerHTML = `Time ${(
-        Math.round(score.time * 1000) / 1000
-      ).toFixed(3)}`;
+      title.innerHTML = `Time ${(Math.round(score.time * 1000) / 1000).toFixed(
+        3
+      )}`;
       title.style.maxWidth = "250px";
 
       const display = document.getElementById("display");
@@ -398,23 +413,40 @@ export async function startGame(map, restart = false) {
 
       const game = document.getElementById("game-container");
       const gameWidth = game.offsetWidth;
-    const gameHeight = game.offsetHeight;
-    const source = map == "intermezzo" ? 'mapTransition.gif' : map == "introduction" ? "introduction.gif" : map == "introduction2" ? "introduction2.gif" : map == "death" ? "death.gif" : map == "conclusion1" ? "conclusion1.gif" : map == "conclusion2" ? "conclusion2.gif" : map == "conclusion3" ? "conclusion3.gif" : "";
-    intermezzo.src = `assets/${source}`;
-    intermezzo.style.zIndex = 10;
-    intermezzo.style.width = `${gameWidth}px`;
-    intermezzo.style.height = `${gameHeight}px`;
-    intermezzo.style.imageRendering = "pixelated";
-    intermezzo.style.filter = "brightness(0%)";
-    intermezzo.style.transition = "filter 1s ease-in-out"; 
-    game.appendChild(intermezzo);   
-    setTimeout(() => {
-      intermezzo.style.filter = "brightness(100%)";
-    }, 50);
-    setTimeout(() => {
+      const gameHeight = game.offsetHeight;
+      const source =
+        map == "intermezzo"
+          ? "mapTransition.gif"
+          : map == "introduction"
+          ? "introduction.gif"
+          : map == "introduction2"
+          ? "introduction2.gif"
+          : map == "death"
+          ? "death.gif"
+          : map == "conclusion1"
+          ? "conclusion1.gif"
+          : map == "conclusion2"
+          ? "conclusion2.gif"
+          : map == "conclusion3"
+          ? "conclusion3.gif"
+          : "";
+      intermezzo.src = `assets/${source}`;
+      intermezzo.style.zIndex = 10;
+      intermezzo.style.width = `${gameWidth}px`;
+      intermezzo.style.height = `${gameHeight}px`;
+      intermezzo.style.imageRendering = "pixelated";
       intermezzo.style.filter = "brightness(0%)";
-    }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : map == "conclusion3" ? -8000 : 0));
-    setTimeout(() => {completeIntermezzo(map == "death" ? true : false)}, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : map == "conclusion3" ? -8000 : 0));
+      intermezzo.style.transition = "filter 1s ease-in-out";
+      game.appendChild(intermezzo);
+      setTimeout(() => {
+        intermezzo.style.filter = "brightness(100%)";
+      }, 50);
+      setTimeout(() => {
+        intermezzo.style.filter = "brightness(0%)";
+      }, 3450 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : map == "conclusion3" ? -8000 : 0));
+      setTimeout(() => {
+        completeIntermezzo(map == "death" ? true : false);
+      }, 4500 - (map == "introduction" ? 400 : map == "introduction2" ? 1200 : map == "death" ? 2000 : map == "conclusion1" ? -8000 : map == "conclusion2" ? -3000 : map == "conclusion3" ? -8000 : 0));
     }
   }
 }
@@ -550,15 +582,15 @@ const handleScore = () => {
 
 const handleInput = (e) => {
   let currentValue = e.target.value;
-  
-  let text = document.getElementById("submit-btn-text")
-  
+
+  let text = document.getElementById("submit-btn-text");
+
   if (currentValue.length > 6) {
     e.target.value = currentValue.substring(0, 6);
-  } else if (currentValue.length >= 1){
-    text.innerText = "Submit"
-  } else if (currentValue == 0){
-    text.innerText = "Menu"
+  } else if (currentValue.length >= 1) {
+    text.innerText = "Submit";
+  } else if (currentValue == 0) {
+    text.innerText = "Menu";
   }
 };
 
